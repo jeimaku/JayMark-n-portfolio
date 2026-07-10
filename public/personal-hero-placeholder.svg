@@ -1,0 +1,12 @@
+<svg width="900" height="1100" viewBox="0 0 900 1100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="1100" fill="#020617"></rect>
+  <circle cx="450" cy="300" r="150" fill="#0F172A" stroke="#22D3EE" stroke-width="8"></circle>
+  <path d="M240 840C260 650 340 560 450 560C560 560 640 650 660 840" fill="#0F172A" stroke="#22D3EE" stroke-width="8"></path>
+  <rect x="170" y="870" width="560" height="70" rx="35" fill="#0F172A" stroke="#22D3EE" stroke-width="6"></rect>
+  <path d="M280 965H620" stroke="#22D3EE" stroke-width="8" stroke-linecap="round"></path>
+  <path d="M350 995H550" stroke="#67E8F9" stroke-width="6" stroke-linecap="round"></path>
+  <circle cx="295" cy="220" r="18" fill="#22D3EE"></circle>
+  <circle cx="615" cy="220" r="18" fill="#22D3EE"></circle>
+  <path d="M255 155C320 105 382 80 450 80C518 80 580 105 645 155" stroke="#67E8F9" stroke-width="8" stroke-linecap="round"></path>
+  <text x="450" y="1035" text-anchor="middle" fill="#E0F2FE" font-family="Arial, sans-serif" font-size="38" font-weight="700">PERSONAL PHOTO</text>
+</svg>
