@@ -18,7 +18,7 @@ export const assetPaths = {
 
   resume: {
     jayMarkResume: `${oldAssetsBase}/resume/JayMark_Resume.pdf`,
-    jayMarkApeladoResume: `${oldAssetsBase}/resume/JayMarkApelado_Resume.pdf`,
+    jayMarkApeladoResume: `${oldAssetsBase}/resume/JayMark_Apelado_Resume.pdf`,
   },
 
   projects: {

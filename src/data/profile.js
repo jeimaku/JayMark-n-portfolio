@@ -8,8 +8,8 @@ export const profile = {
   avatar: assetPaths.profile.avatar,
 
   resume: {
-    primary: assetPaths.resume.jayMarkResume,
-    alternate: assetPaths.resume.jayMarkApeladoResume,
+    primary: assetPaths.resume.jayMarkApeladoResume,
+    alternate: assetPaths.resume.jayMarkResume,
   },
 
   logos: {

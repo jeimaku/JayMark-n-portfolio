@@ -1,8 +1,12 @@
 import {
   Brain,
   Code2,
+  Cpu,
   Database,
+  GitBranch,
+  HardDrive,
   Layers,
+  Network,
   Palette,
   Server,
   Smartphone,
@@ -29,6 +33,53 @@ const iconMap = {
   creative: Palette,
 };
 
+const simpleIconBase = "https://cdn.simpleicons.org";
+
+const skillIconMap = {
+  "React.js": `${simpleIconBase}/react/67E8F9`,
+  JavaScript: `${simpleIconBase}/javascript/67E8F9`,
+  HTML5: `${simpleIconBase}/html5/67E8F9`,
+  CSS3: `${simpleIconBase}/css/67E8F9`,
+  "Tailwind CSS": `${simpleIconBase}/tailwindcss/67E8F9`,
+
+  "Node.js": `${simpleIconBase}/nodedotjs/67E8F9`,
+  "Express.js": `${simpleIconBase}/express/67E8F9`,
+  MySQL: `${simpleIconBase}/mysql/67E8F9`,
+  SQL: `${simpleIconBase}/mysql/67E8F9`,
+  Firebase: `${simpleIconBase}/firebase/67E8F9`,
+  Supabase: `${simpleIconBase}/supabase/67E8F9`,
+
+  Flutter: `${simpleIconBase}/flutter/67E8F9`,
+  Dart: `${simpleIconBase}/dart/67E8F9`,
+
+  "OpenAI API": `${simpleIconBase}/openai/67E8F9`,
+  "Azure AI": `${simpleIconBase}/microsoftazure/67E8F9`,
+
+  "Windows Server & AD": `${simpleIconBase}/windows/67E8F9`,
+
+  Git: `${simpleIconBase}/git/67E8F9`,
+  GitHub: `${simpleIconBase}/github/67E8F9`,
+  "VS Code": `${simpleIconBase}/visualstudiocode/67E8F9`,
+  npm: `${simpleIconBase}/npm/67E8F9`,
+  Render: `${simpleIconBase}/render/67E8F9`,
+
+  Figma: `${simpleIconBase}/figma/67E8F9`,
+  "Adobe Photoshop": `${simpleIconBase}/adobephotoshop/67E8F9`,
+  "Adobe Premiere Pro": `${simpleIconBase}/adobepremierepro/67E8F9`,
+};
+
+const fallbackSkillIcons = {
+  "Speech Assessment": Cpu,
+  "AI Feedback Systems": Brain,
+  "Network Troubleshooting": Network,
+  "Hardware Troubleshooting": HardDrive,
+  "RAID Setup": Server,
+  "Technical Support": Wrench,
+  "IT Support": Wrench,
+  "UI/UX Design": Palette,
+  "Graphic Design": Palette,
+};
+
 export default function SkillsSection() {
   return (
     <Section id="skills" spacing="compact">
@@ -48,7 +99,7 @@ export default function SkillsSection() {
 
               <div className="mt-5 flex flex-wrap gap-2">
                 {primarySkills.map((skill) => (
-                  <Badge key={skill}>{skill}</Badge>
+                  <SkillBadge key={skill} skill={skill} featured />
                 ))}
               </div>
             </div>
@@ -93,12 +144,7 @@ export default function SkillsSection() {
 
                     <div className="mt-6 flex flex-wrap gap-2">
                       {category.skills.map((skill) => (
-                        <Badge
-                          key={skill}
-                          className="border-white/10 bg-white/[0.03] text-slate-200"
-                        >
-                          {skill}
-                        </Badge>
+                        <SkillBadge key={skill} skill={skill} />
                       ))}
                     </div>
                   </Card>
@@ -109,5 +155,35 @@ export default function SkillsSection() {
         </div>
       </Container>
     </Section>
+  );
+}
+
+function SkillBadge({ skill, featured = false }) {
+  const iconUrl = skillIconMap[skill];
+  const FallbackIcon = fallbackSkillIcons[skill];
+
+  return (
+    <span
+      className={[
+        "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold leading-none transition duration-300",
+        featured
+          ? "border-cyan-300/30 bg-cyan-300/10 text-cyan-50"
+          : "border-white/10 bg-white/[0.03] text-slate-200",
+      ].join(" ")}
+    >
+      {iconUrl ? (
+        <img
+          src={iconUrl}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="h-3.5 w-3.5 shrink-0"
+        />
+      ) : FallbackIcon ? (
+        <FallbackIcon className="h-3.5 w-3.5 shrink-0 text-cyan-200" />
+      ) : null}
+
+      <span>{skill}</span>
+    </span>
   );
 }
