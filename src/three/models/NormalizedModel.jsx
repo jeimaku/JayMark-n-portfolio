@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import * as THREE from "three";
-import { Clone, useGLTF } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 
 function getReferenceDimension(size, fit) {
   switch (fit) {
@@ -25,13 +25,50 @@ export default function NormalizedModel({
   position = [0, 0, 0],
   rotation = [0, 0, 0],
   visible = true,
+  materialStyler,
 }) {
   const { scene } = useGLTF(url);
 
-  const modelTransform = useMemo(() => {
-    scene.updateMatrixWorld(true);
+  const styledScene = useMemo(() => {
+    const clonedScene = scene.clone(true);
 
-    const box = new THREE.Box3().setFromObject(scene);
+    clonedScene.traverse((object) => {
+      if (!object.isMesh) {
+        return;
+      }
+
+      object.castShadow = true;
+      object.receiveShadow = true;
+
+      const sourceMaterials = Array.isArray(object.material)
+        ? object.material
+        : [object.material];
+
+      const clonedMaterials = sourceMaterials.map(
+        (sourceMaterial) => {
+          const clonedMaterial = sourceMaterial.clone();
+
+          materialStyler?.({
+            object,
+            material: clonedMaterial,
+          });
+
+          return clonedMaterial;
+        }
+      );
+
+      object.material = Array.isArray(object.material)
+        ? clonedMaterials
+        : clonedMaterials[0];
+    });
+
+    clonedScene.updateMatrixWorld(true);
+
+    return clonedScene;
+  }, [materialStyler, scene]);
+
+  const modelTransform = useMemo(() => {
+    const box = new THREE.Box3().setFromObject(styledScene);
     const size = new THREE.Vector3();
     const center = new THREE.Vector3();
 
@@ -67,7 +104,7 @@ export default function NormalizedModel({
         -center.z * scale,
       ],
     };
-  }, [fit, scene, targetSize, url]);
+  }, [fit, styledScene, targetSize, url]);
 
   return (
     <group
@@ -76,11 +113,9 @@ export default function NormalizedModel({
       visible={visible}
     >
       <group position={modelTransform.offset}>
-        <Clone
-          object={scene}
+        <primitive
+          object={styledScene}
           scale={modelTransform.scale}
-          castShadow
-          receiveShadow
         />
       </group>
     </group>
