@@ -34,3 +34,17 @@
 - **Status:** Technically validated, visually rejected as primary asset
 - **Reason:** Realistic textures, visible branding, and inconsistent style
 - **Attribution required:** Yes if ultimately used
+
+## Server Rack
+
+- **Title:** Server Rack
+- **Creator:** Anaïs3Dcraft
+- **Source:** Sketchfab
+- **License:** CC BY 4.0
+- **Format:** GLB
+- **Local path:** `public/old-portfolio-assets/3d/hero/infrastructure/server-rack/anais3dcraft-server-rack.glb`
+- **File size:** Add result here
+- **Portfolio use:** Hero server and IT-infrastructure representation
+- **Status:** Approved — technically and visually validated
+- **Attribution required:** Yes
+- **Planned modifications:** Material color and door appearance may be adjusted through React Three Fiber

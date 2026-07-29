@@ -316,5 +316,21 @@ Draft prepared for asset research and approval.
 | Main computer or monitor | Approved | Kenney — Computer Screen, CC0 |
 | Router or network device | Approved | MasterTux — Wireless Router |
 | Router or network device | Approved | MasterTux — Wireless Router, CC0 |
-| Server or server rack | Searching — first candidate rejected visually | Jeremy Eyring model retained as backup |
+| Server or server rack | Approved pending size recording | Anaïs3Dcraft — Server Rack, CC BY 4.0 |
 
+### Selected Server-Rack Asset
+
+The Anaïs3Dcraft Server Rack was selected as the primary server asset.
+
+Reasons:
+
+- Valid CC BY 4.0 license
+- 1,036 triangles
+- 1,582 vertices
+- Three draw calls
+- No validation errors or warnings
+- Recognizable infrastructure design
+- Better visual consistency than the previous realistic candidate
+- Materials can be adjusted through React Three Fiber
+
+The Jeremy Eyring server rack remains a backup candidate only.
