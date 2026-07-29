@@ -313,3 +313,5 @@ Phase 3 will be complete when:
 ## Current Status
 
 Draft prepared for asset research and approval.
+
+| Main computer or monitor | Approved | Kenney — Computer Screen, CC0 |
