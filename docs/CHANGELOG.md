@@ -73,3 +73,28 @@
 - Added smooth damping to drag interaction.
 - Disabled canvas mouse-wheel zoom to preserve normal page scrolling.
 - Completed Phase 4 Task 4.
+
+### Phase 4 — Mobile, Accessibility, and Performance
+
+- Added responsive desktop and mobile 3D behavior.
+- Disabled automatic motion on mobile.
+- Added support for `prefers-reduced-motion`.
+- Disabled drag interaction for reduced-motion users.
+- Added viewport and page-visibility rendering control.
+- Added adaptive device-pixel ratio and quality monitoring.
+- Added high, balanced, and low rendering modes.
+- Removed expensive effects from low-quality mode.
+- Added WebGL capability detection.
+- Added a static hero fallback and 3D error boundary.
+- Completed Phase 4 Task 5.
+
+### Phase 5 — Production Hero Content
+
+- Replaced all Version 2 development-preview copy with production
+  portfolio content.
+- Added Jay Mark Apelado's professional identity and role.
+- Added a concise software, AI, and infrastructure value proposition.
+- Added project, résumé, and contact calls to action.
+- Added professional focus-area indicators.
+- Reframed the 3D scene as an interactive systems workspace.
+- Completed Phase 5 Task 1.
