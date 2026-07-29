@@ -89,8 +89,8 @@ function styleMonitor({ material }) {
   if (material.name === "metalDark") {
     updateStandardMaterial(material, {
       color: "#111827",
-      roughness: 0.34,
-      metalness: 0.58,
+      roughness: 0.3,
+      metalness: 0.62,
     });
 
     return;
@@ -98,14 +98,21 @@ function styleMonitor({ material }) {
 
   if (material.name === "metal") {
     /*
-     * Keep this surface neutral for now.
-     * Task 3C will add the actual glowing screen interface.
+     * Keep the original GLB screen dark.
+     * The actual dashboard will be rendered on a separate plane.
      */
+    material.map = null;
+    material.emissiveMap = null;
+
     updateStandardMaterial(material, {
-      color: "#94a3b8",
-      roughness: 0.32,
-      metalness: 0.38,
+      color: "#020617",
+      emissive: "#020617",
+      emissiveIntensity: 0.08,
+      roughness: 0.24,
+      metalness: 0.12,
     });
+
+    material.needsUpdate = true;
   }
 }
 

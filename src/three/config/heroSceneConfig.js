@@ -33,6 +33,31 @@ export const HERO_WORKSPACE_TRANSFORM = {
   scale: 1,
 };
 
+/*
+ * These values are now local to the monitor itself.
+ *
+ * The screen automatically inherits the monitor's position,
+ * rotation, and slant.
+ */
+export const HERO_MONITOR_SCREEN_LAYOUT = {
+  centerX: 0,
+  centerY: 0.495  ,
+
+  /*
+   * Distance in front of the physical screen.
+   * Keep this very small to avoid a visible gap.
+   */
+  surfaceOffset: -0.12,
+
+  width: 1.01,
+  height: 0.610,
+
+  /*
+   * The original monitor screen faces local -Z.
+   */
+  rotation: [0.1, Math.PI, 0],
+};
+
 export const HERO_MODEL_LAYOUT = {
   desk: {
     position: [-0.72, 0.03, 0.3],

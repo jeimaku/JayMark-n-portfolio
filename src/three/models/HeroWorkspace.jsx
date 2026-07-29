@@ -1,10 +1,14 @@
 import { Suspense } from "react";
+import MonitorAssembly from "./MonitorAssembly";
 
 import {
   HERO_MODEL_LAYOUT,
   HERO_MODEL_PATHS,
+  HERO_MONITOR_SCREEN_LAYOUT,
   HERO_WORKSPACE_TRANSFORM,
 } from "../config/heroSceneConfig";
+
+import MonitorScreenOverlay from "./MonitorScreenOverlay";
 
 import { HERO_MATERIAL_STYLERS } from "../materials/heroMaterialStyles";
 
@@ -52,12 +56,21 @@ export default function HeroWorkspace() {
         materialStyler={HERO_MATERIAL_STYLERS.desk}
       />
 
-      <WorkspaceAsset
-        url={HERO_MODEL_PATHS.monitor}
-        layout={HERO_MODEL_LAYOUT.monitor}
-        placeholderSize={[0.9, 0.65, 0.15]}
-        materialStyler={HERO_MATERIAL_STYLERS.monitor}
-      />
+      <Suspense
+        fallback={
+          <AssetPlaceholder
+            position={HERO_MODEL_LAYOUT.monitor.position}
+            size={[0.9, 0.65, 0.15]}
+          />
+        }
+      >
+        <MonitorAssembly
+          url={HERO_MODEL_PATHS.monitor}
+          layout={HERO_MODEL_LAYOUT.monitor}
+          screen={HERO_MONITOR_SCREEN_LAYOUT}
+          materialStyler={HERO_MATERIAL_STYLERS.monitor}
+        />
+      </Suspense>
 
       <WorkspaceAsset
         url={HERO_MODEL_PATHS.microphone}
