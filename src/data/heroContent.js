@@ -14,13 +14,10 @@ export const heroContent = {
   availability:
     "Open to opportunities in software development, systems support, and IT operations.",
 
+  statusLabel: "Available for opportunities",
+
   primaryAction: {
     label: "Explore My Work",
-
-    /*
-     * Temporary bridge to the existing portfolio's Projects section.
-     * This will become #work after the Version 2 sections are rebuilt.
-     */
     href: "/#projects",
   },
 
@@ -31,16 +28,30 @@ export const heroContent = {
 
   contactAction: {
     label: "Contact Me",
-
-    /*
-     * Temporary bridge to the existing portfolio's Contact section.
-     */
     href: "/#contact",
   },
 
-  specialties: [
-    "Full-Stack Development",
-    "AI-Assisted Systems",
-    "IT Infrastructure",
+  proofPoints: [
+    {
+      label: "Development",
+      value: "Full-stack systems",
+    },
+    {
+      label: "Intelligence",
+      value: "AI-assisted platforms",
+    },
+    {
+      label: "Operations",
+      value: "IT support and infrastructure",
+    },
   ],
+
+  scene: {
+    eyebrow: "Interactive Systems Workspace",
+
+    caption:
+      "A 3D representation of how software, AI, networking, and infrastructure connect across my work.",
+
+    status: "Systems online",
+  },
 };

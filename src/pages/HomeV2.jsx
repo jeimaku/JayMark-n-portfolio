@@ -72,6 +72,20 @@ function ContactIcon() {
   );
 }
 
+function ProofPoint({ label, value }) {
+  return (
+    <li className="min-w-0">
+      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
+        {label}
+      </p>
+
+      <p className="mt-1 text-sm font-medium leading-6 text-slate-200">
+        {value}
+      </p>
+    </li>
+  );
+}
+
 export default function HomeV2() {
   return (
     <main
@@ -82,31 +96,33 @@ export default function HomeV2() {
       <section
         id="home"
         aria-labelledby="hero-title"
-        className="relative min-h-screen overflow-hidden pt-20 sm:pt-24"
+        className="relative isolate min-h-screen overflow-hidden pt-20 sm:pt-24"
       >
         {/* Background atmosphere */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 -z-10"
         >
-          <div className="absolute left-[8%] top-[20%] h-80 w-80 rounded-full bg-cyan-400/[0.045] blur-3xl" />
+          <div className="absolute left-[4%] top-[18%] h-96 w-96 rounded-full bg-cyan-400/[0.045] blur-3xl" />
 
-          <div className="absolute right-[7%] top-[16%] h-96 w-96 rounded-full bg-indigo-400/[0.04] blur-3xl" />
+          <div className="absolute right-[3%] top-[12%] h-[28rem] w-[28rem] rounded-full bg-indigo-400/[0.04] blur-3xl" />
 
-          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-300/20 to-transparent" />
+          <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(148,163,184,0.45)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.45)_1px,transparent_1px)] [background-size:72px_72px]" />
+
+          <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-300/25 to-transparent" />
         </div>
 
-        <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] w-full max-w-7xl items-center gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[0.88fr_1.12fr] lg:gap-12 lg:px-8 lg:py-12">
-          {/* Professional hero content */}
-          <div className="relative z-10 min-w-0">
-            <div className="flex flex-wrap items-center gap-3">
+        <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] w-full max-w-[90rem] items-center gap-12 px-4 py-12 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14 lg:px-10 lg:py-14 xl:gap-20">
+          {/* Hero copy */}
+          <div className="relative z-10 min-w-0 lg:pb-4">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200 sm:text-sm">
                 {heroContent.eyebrow}
               </p>
 
               <span
                 aria-hidden="true"
-                className="hidden h-1 w-1 rounded-full bg-slate-600 sm:block"
+                className="hidden h-4 w-px bg-white/15 sm:block"
               />
 
               <div
@@ -114,41 +130,37 @@ export default function HomeV2() {
                 className="inline-flex items-center gap-2 text-xs font-medium text-slate-400"
               >
                 <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-50 motion-reduce:animate-none" />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40 motion-reduce:animate-none" />
 
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
                 </span>
 
-                Available for opportunities
+                {heroContent.statusLabel}
               </div>
             </div>
 
             <h1
               id="hero-title"
-              className="mt-6 max-w-2xl tracking-[-0.055em]"
+              className="mt-7 max-w-3xl tracking-[-0.06em]"
             >
-              <span className="block text-4xl font-semibold text-white sm:text-5xl lg:text-6xl lg:leading-[0.98]">
+              <span className="block text-5xl font-semibold leading-[0.95] text-white sm:text-6xl lg:text-[4.25rem] xl:text-[4.75rem]">
                 {heroContent.name}
               </span>
 
-              <span className="mt-4 block max-w-xl text-xl font-medium leading-tight text-cyan-100 sm:text-2xl lg:text-3xl">
+              <span className="mt-5 block max-w-2xl bg-gradient-to-r from-cyan-100 via-cyan-200 to-slate-300 bg-clip-text text-xl font-medium leading-tight text-transparent sm:text-2xl lg:text-[1.85rem]">
                 {heroContent.role}
               </span>
             </h1>
 
-            <p className="mt-6 max-w-xl text-base leading-8 text-slate-300 sm:text-lg">
+            <p className="mt-7 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
               {heroContent.summary}
             </p>
 
-            <p className="mt-4 max-w-xl text-sm leading-7 text-slate-500">
-              {heroContent.availability}
-            </p>
-
-            {/* Calls to action */}
-            <div className="mt-8 flex flex-wrap gap-3">
+            {/* Main actions */}
+            <div className="mt-9 flex flex-wrap items-center gap-3">
               <a
                 href={heroContent.primaryAction.href}
-                className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-950/20 transition duration-300 hover:bg-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
+                className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-cyan-300 px-6 py-3 text-sm font-semibold text-slate-950 shadow-[0_12px_36px_rgba(8,145,178,0.18)] transition duration-300 hover:-translate-y-0.5 hover:bg-cyan-200 hover:shadow-[0_16px_42px_rgba(8,145,178,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
               >
                 {heroContent.primaryAction.label}
 
@@ -161,79 +173,112 @@ export default function HomeV2() {
                 href={heroContent.resumeAction.href}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-5 py-3 text-sm font-semibold text-white transition duration-300 hover:border-cyan-200/40 hover:bg-cyan-300/[0.07] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.035] px-6 py-3 text-sm font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200/40 hover:bg-cyan-300/[0.07] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
               >
                 <DocumentIcon />
 
                 {heroContent.resumeAction.label}
               </a>
+            </div>
+
+            {/* Secondary availability/contact row */}
+            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <p className="max-w-lg text-sm leading-6 text-slate-500">
+                {heroContent.availability}
+              </p>
 
               <a
                 href={heroContent.contactAction.href}
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/10 px-5 py-3 text-sm font-semibold text-slate-300 transition duration-300 hover:border-white/25 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
+                className="group inline-flex items-center gap-2 text-sm font-semibold text-cyan-200 transition hover:text-cyan-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
               >
                 <ContactIcon />
 
                 {heroContent.contactAction.label}
+
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-300 group-hover:translate-x-0.5"
+                >
+                  →
+                </span>
               </a>
             </div>
 
-            {/* Professional focus areas */}
+            {/* Recruiter-readable proof strip */}
             <ul
               aria-label="Professional focus areas"
-              className="mt-8 flex flex-wrap gap-2.5"
+              className="mt-10 grid max-w-2xl grid-cols-1 gap-5 border-t border-white/10 pt-6 sm:grid-cols-3 sm:gap-6"
             >
-              {heroContent.specialties.map((specialty, index) => (
-                <li
-                  key={specialty}
-                  className={[
-                    "rounded-full border px-4 py-2",
-                    "text-[0.68rem] font-semibold uppercase",
-                    "tracking-[0.18em]",
-                    index === 0
-                      ? "border-cyan-300/25 bg-cyan-300/[0.07] text-cyan-100"
-                      : "border-white/10 bg-white/[0.025] text-slate-300",
-                  ].join(" ")}
-                >
-                  {specialty}
-                </li>
+              {heroContent.proofPoints.map((point) => (
+                <ProofPoint
+                  key={point.label}
+                  label={point.label}
+                  value={point.value}
+                />
               ))}
             </ul>
           </div>
 
-          {/* Interactive workspace */}
-          <div className="relative min-w-0">
-            <div className="mb-3 flex items-center justify-between px-1">
+          {/* 3D experience */}
+          <div className="relative min-w-0 lg:translate-y-2">
+            <div className="mb-4 flex items-end justify-between gap-6 px-1">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                  Interactive Systems Workspace
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-300">
+                  {heroContent.scene.eyebrow}
                 </p>
 
-                <p className="mt-1 text-xs text-slate-600">
-                  Software • AI • Infrastructure
+                <p className="mt-1 max-w-md text-xs leading-5 text-slate-600">
+                  {heroContent.scene.caption}
                 </p>
               </div>
 
-              <div className="hidden items-center gap-2 text-xs text-emerald-300/80 sm:flex">
+              <div className="hidden shrink-0 items-center gap-2 rounded-full border border-emerald-300/15 bg-emerald-300/[0.04] px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-emerald-300/80 sm:flex">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                Systems online
+
+                {heroContent.scene.status}
               </div>
             </div>
 
             <div
-              aria-label="Interactive 3D workspace representing software development, AI systems, and IT infrastructure"
-              className="relative h-[30rem] overflow-hidden rounded-[2rem] border border-cyan-300/15 bg-slate-900/30 shadow-2xl shadow-black/40 sm:h-[36rem] lg:h-[42rem]"
+              aria-label="Interactive 3D workspace representing software development, artificial intelligence, networking, and IT infrastructure"
+              className="group relative h-[29rem] overflow-hidden rounded-[2rem] border border-cyan-300/15 bg-slate-900/25 shadow-[0_28px_90px_rgba(0,0,0,0.42)] sm:h-[36rem] lg:h-[clamp(38rem,72vh,46rem)]"
             >
+              {/* Decorative frame */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_60%_38%,rgba(34,211,238,0.07),transparent_24rem)]"
+                className="pointer-events-none absolute inset-0 z-10 rounded-[inherit] ring-1 ring-inset ring-white/[0.025]"
+              />
+
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute left-5 top-5 z-10 h-8 w-8 border-l border-t border-cyan-200/25"
+              />
+
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute bottom-5 right-5 z-10 h-8 w-8 border-b border-r border-cyan-200/25"
+              />
+
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_58%_35%,rgba(34,211,238,0.08),transparent_25rem)]"
               />
 
               <HeroExperience />
+
+              <div className="pointer-events-none absolute inset-x-5 bottom-5 z-20 flex justify-center">
+                <div className="rounded-full border border-white/10 bg-slate-950/75 px-4 py-2 text-center text-[0.7rem] font-medium text-slate-400 shadow-lg backdrop-blur">
+                  Drag to explore
+                </div>
+              </div>
             </div>
 
-            <div className="pointer-events-none absolute bottom-4 left-1/2 z-10 -translate-x-1/2 rounded-full border border-white/10 bg-slate-950/75 px-4 py-2 text-center text-xs text-slate-400 backdrop-blur">
-              Drag to explore
+            <div className="mt-4 flex items-center justify-between gap-5 px-1 text-xs text-slate-600">
+              <p>Optimized for desktop and mobile devices</p>
+
+              <p className="hidden sm:block">
+                Motion preferences respected
+              </p>
             </div>
           </div>
         </div>

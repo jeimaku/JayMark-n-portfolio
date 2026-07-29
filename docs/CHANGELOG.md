@@ -98,3 +98,14 @@
 - Added professional focus-area indicators.
 - Reframed the 3D scene as an interactive systems workspace.
 - Completed Phase 5 Task 1.
+
+### Phase 5 — Hero Visual Hierarchy
+
+- Strengthened the hero name and professional-role hierarchy.
+- Reduced competition between primary, résumé, and contact actions.
+- Added a recruiter-readable professional proof strip.
+- Improved spacing across the hero content and 3D scene.
+- Added a refined frame and supporting context around the 3D workspace.
+- Added subtle technical background structure.
+- Improved the scene's relationship to the professional content.
+- Completed Phase 5 Task 2.
