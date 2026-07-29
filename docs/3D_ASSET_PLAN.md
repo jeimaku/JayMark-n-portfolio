@@ -334,3 +334,22 @@ Reasons:
 - Materials can be adjusted through React Three Fiber
 
 The Jeremy Eyring server rack remains a backup candidate only.
+
+
+### Selected Microphone Asset
+
+The hlibkarman Microphone was selected as the primary TalkReady and
+AI-speech asset.
+
+Reasons:
+
+- Valid CC BY 4.0 license
+- No validation errors or warnings
+- Recognizable professional microphone design
+- Dark materials match the portfolio direction
+- Strong visual representation of speech and pronunciation assessment
+- No visible commercial branding
+
+The model contains 26,034 triangles and will therefore be treated as a
+featured desktop asset. Mobile inclusion will depend on performance
+testing.

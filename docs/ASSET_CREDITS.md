@@ -48,3 +48,17 @@
 - **Status:** Approved — technically and visually validated
 - **Attribution required:** Yes
 - **Planned modifications:** Material color and door appearance may be adjusted through React Three Fiber
+
+## Microphone
+
+- **Title:** Microphone
+- **Creator:** hlibkarman
+- **Source:** Sketchfab
+- **License:** CC BY 4.0
+- **Format:** GLB
+- **Local path:** `public/old-portfolio-assets/3d/hero/talkready/microphone/hlibkarman-microphone.glb`
+- **File size:** Add result here
+- **Portfolio use:** TalkReady, speech assessment, and AI voice representation
+- **Status:** Approved pending file-size recording
+- **Attribution required:** Yes
+- **Planned modifications:** Control-ring color and materials may be adjusted through React Three Fiber
