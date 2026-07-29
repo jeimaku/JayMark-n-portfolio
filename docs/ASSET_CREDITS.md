@@ -22,3 +22,15 @@
 - **Portfolio use:** Hero networking and IT-support representation
 - **Status:** Approved — technically validated
 - **Attribution required:** No under the stated CC0 license; creator and source retained internally
+
+## Server Rack — Backup Candidate
+
+- **Creator:** Jeremy Eyring
+- **Source:** Poly Pizza
+- **License:** Creative Commons Attribution
+- **Format:** GLB
+- **Local path:** `public/old-portfolio-assets/3d/hero/infrastructure/server-rack/server rack by Jeremy Eyring - 6ijQclm8jxw.glb`
+- **File size:** 1.74 MB
+- **Status:** Technically validated, visually rejected as primary asset
+- **Reason:** Realistic textures, visible branding, and inconsistent style
+- **Attribution required:** Yes if ultimately used
