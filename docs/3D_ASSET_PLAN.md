@@ -2,7 +2,10 @@
 
 ## Phase Status
 
-Planning in progress.
+Required asset selection complete.
+
+The selected HDRI remains pending final lighting and performance testing
+inside the Phase 4 React Three Fiber scene.
 
 ## Approved Creative Direction
 
@@ -392,3 +395,21 @@ React Three Fiber test scene.
 
 The HDRI will primarily provide lighting and reflections. It will not
 necessarily be displayed as the visible scene background.
+
+## Phase 3 Completion Status
+
+- [x] Main monitor selected and validated
+- [x] Router selected and validated
+- [x] Server rack selected and validated
+- [x] Microphone selected and validated
+- [x] Desk selected and validated
+- [x] Floating platform confirmed as code-generated
+- [x] HDRI downloaded and file-validated
+- [x] Licenses and creators documented
+- [x] Desktop asset list finalized
+- [x] Mobile simplification strategy established
+
+Phase 3 is complete.
+
+Final scene-level validation of the HDRI and combined models will occur
+during Phase 4.

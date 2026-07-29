@@ -6,6 +6,7 @@ import SiteBackground from "./components/effects/SiteBackground";
 import ScrollToTop from "./components/effects/ScrollToTop";
 import SkipLink from "./components/ui/SkipLink";
 import Home from "./pages/Home";
+import HomeV2 from "./pages/HomeV2";
 import ProjectCaseStudy from "./pages/ProjectCaseStudy";
 
 export default function App() {
@@ -19,7 +20,11 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/projects/:projectId" element={<ProjectCaseStudy />} />
+        <Route path="/preview-v2" element={<HomeV2 />} />
+        <Route
+          path="/projects/:projectId"
+          element={<ProjectCaseStudy />}
+        />
       </Routes>
 
       <Footer />

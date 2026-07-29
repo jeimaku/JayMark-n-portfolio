@@ -136,3 +136,48 @@ properly documented.
 
 The initial desktop hero asset target is below 8 MB, while the simplified
 mobile asset target is below 4 MB.
+
+## Decision 004 — Initial Hero Asset Set
+
+**Date:** 2026-07-29  
+**Status:** Approved
+
+The initial hero-scene asset set is finalized.
+
+### Downloaded Assets
+
+- Kenney computer monitor
+- MasterTux wireless router
+- Anaïs3Dcraft server rack
+- hlibkarman microphone
+- Quaternius desk
+- Studio Small 08 HDRI by Sergej Majboroda
+
+### Code-Generated Elements
+
+- Floating platform
+- Database objects
+- Network nodes
+- Connection lines
+- Data particles
+- Status indicators
+- Floating interface panels
+
+Optional decorative props will not be selected until the main scene
+composition has been tested.
+
+## Decision 005 — Initial 3D Foundation
+
+**Date:** 2026-07-29  
+**Status:** Approved
+
+The initial React Three Fiber test scene successfully renders the approved
+monitor model with the selected HDRI environment.
+
+OrbitControls and automatic Bounds framing are temporary development
+tools. The final hero will use a fixed composed camera and deliberately
+positioned models.
+
+The `THREE.Clock` deprecation notice is treated as a non-blocking upstream
+dependency warning because the application does not directly use
+`THREE.Clock`.

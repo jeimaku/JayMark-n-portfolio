@@ -93,7 +93,7 @@
 - **License:** CC0 1.0 / Public Domain
 - **Format:** 1K HDR
 - **Local path:** `public/old-portfolio-assets/3d/hero/environment/studio-small-08/studio_small_08_1k.hdr`
-- **File size:** Add result here
+- **File size:** 1,473.51 KB / 1.44 MB
 - **Portfolio use:** Hero environment lighting and material reflections
-- **Status:** Selected pending Phase 4 scene testing
+- **Status:** Selected — pending Phase 4 scene testing
 - **Attribution required:** No
