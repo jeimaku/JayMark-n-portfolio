@@ -6,6 +6,10 @@ import {
 import WebGL from "three/addons/capabilities/WebGL.js";
 
 import {
+  defaultHeroSceneContextId,
+} from "../../data/heroSceneContext";
+
+import {
   useElementInView,
   useMediaQuery,
   usePageVisibility,
@@ -14,6 +18,7 @@ import {
 import ThreeCanvas from "../../three/canvas/ThreeCanvas";
 import HeroWorkspaceScene from "../../three/scenes/HeroWorkspaceScene";
 
+import HeroSceneContextOverlay from "./HeroSceneContextOverlay";
 import HeroStaticFallback from "./HeroStaticFallback";
 import ThreeErrorBoundary from "./ThreeErrorBoundary";
 
@@ -37,6 +42,9 @@ export default function HeroExperience() {
   const [quality, setQuality] = useState(
     isMobile ? "balanced" : "high"
   );
+
+  const [activeContextId, setActiveContextId] =
+    useState(defaultHeroSceneContextId);
 
   useEffect(() => {
     setQuality(isMobile ? "balanced" : "high");
@@ -69,16 +77,12 @@ export default function HeroExperience() {
     />
   );
 
-  if (!webGLAvailable || forceStaticFallback) {
-    return (
-      <div ref={elementRef} className="h-full w-full">
-        {fallback}
-      </div>
-    );
-  }
+  let experience;
 
-  return (
-    <div ref={elementRef} className="h-full w-full">
+  if (!webGLAvailable || forceStaticFallback) {
+    experience = fallback;
+  } else {
+    experience = (
       <ThreeErrorBoundary fallback={fallback}>
         <ThreeCanvas
           isMobile={isMobile}
@@ -92,9 +96,25 @@ export default function HeroExperience() {
             isMobile={isMobile}
             reducedMotion={reducedMotion}
             active={active}
+            activeContextId={activeContextId}
+            onContextChange={setActiveContextId}
           />
         </ThreeCanvas>
       </ThreeErrorBoundary>
+    );
+  }
+
+  return (
+    <div
+      ref={elementRef}
+      className="relative h-full w-full"
+    >
+      {experience}
+
+      <HeroSceneContextOverlay
+        activeContextId={activeContextId}
+        onContextChange={setActiveContextId}
+      />
     </div>
   );
 }

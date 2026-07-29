@@ -15,7 +15,7 @@ export default function HeroStaticFallback({
         <img
           src={FALLBACK_IMAGE}
           alt="Static preview of Jay Mark Apelado's interactive systems workspace"
-          className="h-full w-full object-contain p-4 sm:p-6"
+          className="h-full w-full object-contain p-2 sm:p-4 lg:p-6"
           loading="eager"
           decoding="async"
           onError={() => setImageFailed(true)}
@@ -27,8 +27,12 @@ export default function HeroStaticFallback({
         />
       )}
 
-      <div className="pointer-events-none absolute inset-x-4 bottom-4 flex justify-center">
-        <p className="max-w-md rounded-full border border-white/10 bg-slate-950/80 px-4 py-2 text-center text-xs leading-5 text-slate-300 backdrop-blur">
+      <p role="status" className="sr-only">
+        {message}
+      </p>
+
+      <div className="pointer-events-none absolute bottom-4 right-4 hidden lg:flex">
+        <p className="max-w-xs rounded-full border border-white/10 bg-slate-950/80 px-4 py-2 text-center text-xs leading-5 text-slate-300 backdrop-blur">
           {message}
         </p>
       </div>

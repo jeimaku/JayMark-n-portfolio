@@ -112,9 +112,8 @@ export default function HomeV2() {
           <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-300/25 to-transparent" />
         </div>
 
-        <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] w-full max-w-[90rem] items-center gap-12 px-4 py-12 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14 lg:px-10 lg:py-14 xl:gap-20">
-          {/* Hero copy */}
-          <div className="relative z-10 min-w-0 lg:pb-4">
+        <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] w-full max-w-[90rem] items-start gap-12 px-4 py-10 sm:px-6 sm:py-12 xl:grid-cols-[0.9fr_1.1fr] xl:items-center xl:gap-16 xl:px-10 xl:py-14 2xl:gap-20">          {/* Hero copy */}
+          <div className="relative z-10 min-w-0 xl:pb-4">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200 sm:text-sm">
                 {heroContent.eyebrow}
@@ -143,11 +142,11 @@ export default function HomeV2() {
               id="hero-title"
               className="mt-7 max-w-3xl tracking-[-0.06em]"
             >
-              <span className="block text-5xl font-semibold leading-[0.95] text-white sm:text-6xl lg:text-[4.25rem] xl:text-[4.75rem]">
+              <span className="block text-4xl font-semibold leading-[0.97] text-white sm:text-5xl md:text-6xl xl:text-[4.25rem] 2xl:text-[4.75rem]">
                 {heroContent.name}
               </span>
 
-              <span className="mt-5 block max-w-2xl bg-gradient-to-r from-cyan-100 via-cyan-200 to-slate-300 bg-clip-text text-xl font-medium leading-tight text-transparent sm:text-2xl lg:text-[1.85rem]">
+              <span className="mt-5 block max-w-2xl bg-gradient-to-r from-cyan-100 via-cyan-200 to-slate-300 bg-clip-text text-lg font-medium leading-tight text-transparent sm:text-2xl xl:text-[1.85rem]">
                 {heroContent.role}
               </span>
             </h1>
@@ -157,7 +156,7 @@ export default function HomeV2() {
             </p>
 
             {/* Main actions */}
-            <div className="mt-9 flex flex-wrap items-center gap-3">
+            <div className="mt-9 grid w-full grid-cols-1 gap-3 sm:flex sm:w-auto sm:flex-wrap sm:items-center">
               <a
                 href={heroContent.primaryAction.href}
                 className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-cyan-300 px-6 py-3 text-sm font-semibold text-slate-950 shadow-[0_12px_36px_rgba(8,145,178,0.18)] transition duration-300 hover:-translate-y-0.5 hover:bg-cyan-200 hover:shadow-[0_16px_42px_rgba(8,145,178,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
@@ -220,14 +219,14 @@ export default function HomeV2() {
           </div>
 
           {/* 3D experience */}
-          <div className="relative min-w-0 lg:translate-y-2">
+          <div className="relative mx-auto w-full min-w-0 max-w-4xl xl:max-w-none xl:translate-y-2">
             <div className="mb-4 flex items-end justify-between gap-6 px-1">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-300">
                   {heroContent.scene.eyebrow}
                 </p>
 
-                <p className="mt-1 max-w-md text-xs leading-5 text-slate-600">
+                <p className="mt-1 hidden max-w-md text-xs leading-5 text-slate-600 sm:block">
                   {heroContent.scene.caption}
                 </p>
               </div>
@@ -241,7 +240,7 @@ export default function HomeV2() {
 
             <div
               aria-label="Interactive 3D workspace representing software development, artificial intelligence, networking, and IT infrastructure"
-              className="group relative h-[29rem] overflow-hidden rounded-[2rem] border border-cyan-300/15 bg-slate-900/25 shadow-[0_28px_90px_rgba(0,0,0,0.42)] sm:h-[36rem] lg:h-[clamp(38rem,72vh,46rem)]"
+              className="group relative h-[26rem] overflow-hidden rounded-[1.5rem] border border-cyan-300/15 bg-slate-900/25 shadow-[0_28px_90px_rgba(0,0,0,0.42)] sm:h-[34rem] sm:rounded-[2rem] md:h-[38rem] xl:h-[clamp(32rem,66vh,42rem)]"
             >
               {/* Decorative frame */}
               <div
@@ -266,14 +265,14 @@ export default function HomeV2() {
 
               <HeroExperience />
 
-              <div className="pointer-events-none absolute inset-x-5 bottom-5 z-20 flex justify-center">
+              <div className="pointer-events-none absolute inset-x-5 bottom-5 z-20 hidden justify-center sm:flex">
                 <div className="rounded-full border border-white/10 bg-slate-950/75 px-4 py-2 text-center text-[0.7rem] font-medium text-slate-400 shadow-lg backdrop-blur">
                   Drag to explore
                 </div>
               </div>
             </div>
 
-            <div className="mt-4 flex items-center justify-between gap-5 px-1 text-xs text-slate-600">
+            <div className="mt-4 flex flex-col gap-2 px-1 text-xs text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
               <p>Optimized for desktop and mobile devices</p>
 
               <p className="hidden sm:block">

@@ -13,6 +13,7 @@ import AssetPlaceholder from "./AssetPlaceholder";
 import FloatingPlatform from "./FloatingPlatform";
 import MonitorAssembly from "./MonitorAssembly";
 import NormalizedModel from "./NormalizedModel";
+import ProfessionalHotspots from "./ProfessionalHotspots";
 import WorkspaceMotionRig from "./WorkspaceMotionRig";
 
 function WorkspaceAsset({
@@ -41,6 +42,9 @@ function WorkspaceAsset({
 
 export default function HeroWorkspace({
   motionEnabled = true,
+  activeContextId,
+  onContextChange,
+  showHotspots = true,
 }) {
   return (
     <group
@@ -70,7 +74,9 @@ export default function HeroWorkspace({
             url={HERO_MODEL_PATHS.monitor}
             layout={HERO_MODEL_LAYOUT.monitor}
             screen={HERO_MONITOR_SCREEN_LAYOUT}
-            materialStyler={HERO_MATERIAL_STYLERS.monitor}
+            materialStyler={
+              HERO_MATERIAL_STYLERS.monitor
+            }
           />
         </Suspense>
 
@@ -78,7 +84,9 @@ export default function HeroWorkspace({
           url={HERO_MODEL_PATHS.microphone}
           layout={HERO_MODEL_LAYOUT.microphone}
           placeholderSize={[0.25, 0.6, 0.25]}
-          materialStyler={HERO_MATERIAL_STYLERS.microphone}
+          materialStyler={
+            HERO_MATERIAL_STYLERS.microphone
+          }
         />
 
         <WorkspaceAsset
@@ -94,6 +102,13 @@ export default function HeroWorkspace({
           placeholderSize={[0.65, 1.5, 0.6]}
           materialStyler={HERO_MATERIAL_STYLERS.server}
         />
+
+        {showHotspots ? (
+          <ProfessionalHotspots
+            activeContextId={activeContextId}
+            onContextChange={onContextChange}
+          />
+        ) : null}
       </WorkspaceMotionRig>
     </group>
   );

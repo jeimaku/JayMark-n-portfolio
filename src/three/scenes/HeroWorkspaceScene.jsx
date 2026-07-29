@@ -13,6 +13,8 @@ export default function HeroWorkspaceScene({
   isMobile = false,
   reducedMotion = false,
   active = true,
+  activeContextId,
+  onContextChange,
 }) {
   const useEnvironment = quality !== "low";
 
@@ -24,6 +26,8 @@ export default function HeroWorkspaceScene({
     !isMobile &&
     !reducedMotion &&
     quality !== "low";
+
+  const showHotspots = !isMobile;
 
   return (
     <>
@@ -77,8 +81,13 @@ export default function HeroWorkspaceScene({
         </>
       ) : null}
 
-      <HeroWorkspace motionEnabled={motionEnabled} />
-
+      <HeroWorkspace
+        motionEnabled={motionEnabled}
+        activeContextId={activeContextId}
+        onContextChange={onContextChange}
+        showHotspots={showHotspots}
+      />
+      
       {useContactShadows ? (
         <ContactShadows
           position={[0, 0.025, 0]}
@@ -92,20 +101,21 @@ export default function HeroWorkspaceScene({
         />
       ) : null}
 
-      <OrbitControls
-        makeDefault
-        enabled={!reducedMotion}
-        enablePan={false}
-        enableZoom={false}
-        enableDamping
-        dampingFactor={0.07}
-        rotateSpeed={isMobile ? 0.32 : 0.42}
-        minAzimuthAngle={-0.32}
-        maxAzimuthAngle={0.32}
-        minPolarAngle={Math.PI / 3.25}
-        maxPolarAngle={Math.PI / 2.3}
-        target={[-0.35, 0.72, 0]}
-      />
+      {!isMobile && !reducedMotion ? (
+        <OrbitControls
+          makeDefault
+          enablePan={false}
+          enableZoom={false}
+          enableDamping
+          dampingFactor={0.07}
+          rotateSpeed={0.42}
+          minAzimuthAngle={-0.32}
+          maxAzimuthAngle={0.32}
+          minPolarAngle={Math.PI / 3.25}
+          maxPolarAngle={Math.PI / 2.3}
+          target={[-0.35, 0.72, 0]}
+        />
+      ) : null}
     </>
   );
 }

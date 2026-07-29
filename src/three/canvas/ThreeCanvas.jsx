@@ -53,6 +53,9 @@ export default function ThreeCanvas({
     <div className={`relative h-full w-full ${className}`}>
       <Canvas
         fallback={fallback}
+        style={{
+          touchAction: isMobile ? "pan-y" : "none",
+        }}
         frameloop={frameloop}
         shadows={isMobile ? false : "basic"}
         dpr={dpr}
