@@ -1,0 +1,37 @@
+import { useState } from "react";
+
+const FALLBACK_IMAGE =
+  "/old-portfolio-assets/3d/hero/fallback/hero-workspace-fallback.jpg";
+
+export default function HeroStaticFallback({
+  message = "Interactive 3D is unavailable. A static preview is shown instead.",
+}) {
+  const [imageFailed, setImageFailed] =
+    useState(false);
+
+  return (
+    <div className="relative h-full w-full overflow-hidden bg-slate-950">
+      {!imageFailed ? (
+        <img
+          src={FALLBACK_IMAGE}
+          alt="Static preview of Jay Mark Apelado's interactive systems workspace"
+          className="h-full w-full object-contain p-4 sm:p-6"
+          loading="eager"
+          decoding="async"
+          onError={() => setImageFailed(true)}
+        />
+      ) : (
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_55%_45%,rgba(34,211,238,0.14),transparent_26rem)]"
+        />
+      )}
+
+      <div className="pointer-events-none absolute inset-x-4 bottom-4 flex justify-center">
+        <p className="max-w-md rounded-full border border-white/10 bg-slate-950/80 px-4 py-2 text-center text-xs leading-5 text-slate-300 backdrop-blur">
+          {message}
+        </p>
+      </div>
+    </div>
+  );
+}

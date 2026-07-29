@@ -39,14 +39,16 @@ function WorkspaceAsset({
   );
 }
 
-export default function HeroWorkspace() {
+export default function HeroWorkspace({
+  motionEnabled = true,
+}) {
   return (
     <group
       position={HERO_WORKSPACE_TRANSFORM.position}
       rotation={HERO_WORKSPACE_TRANSFORM.rotation}
       scale={HERO_WORKSPACE_TRANSFORM.scale}
     >
-      <WorkspaceMotionRig>
+      <WorkspaceMotionRig enabled={motionEnabled}>
         <FloatingPlatform />
 
         <WorkspaceAsset
