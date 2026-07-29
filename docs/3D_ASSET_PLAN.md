@@ -353,3 +353,21 @@ Reasons:
 The model contains 26,034 triangles and will therefore be treated as a
 featured desktop asset. Mobile inclusion will depend on performance
 testing.
+
+| Desk | Approved pending size recording | Quaternius — Desk, CC0 |
+| Floating platform | Code-generated | React Three Fiber geometry |
+### Selected Desk Asset
+
+The simpler Quaternius Desk was selected as the primary desk model.
+
+Reasons:
+
+- Best match for the approved low-poly direction
+- Only 352 triangles
+- Only 544 vertices
+- Four draw calls
+- No validator errors or warnings
+- Clean silhouette
+- Better compatibility with the modular workstation strategy
+
+The larger Quaternius desk with drawers remains a backup candidate only.

@@ -62,3 +62,25 @@
 - **Status:** Approved pending file-size recording
 - **Attribution required:** Yes
 - **Planned modifications:** Control-ring color and materials may be adjusted through React Three Fiber
+
+## Desk
+
+- **Title:** Desk
+- **Creator:** Quaternius
+- **Source:** Poly Pizza
+- **License:** CC0 1.0 / Public Domain
+- **Format:** GLB
+- **Local path:** `public/old-portfolio-assets/3d/hero/workstation/desk/quaternius-desk.glb`
+- **File size:** Add result here
+- **Portfolio use:** Main hero workstation desk
+- **Status:** Approved pending file-size recording
+- **Attribution required:** No
+- **Planned modifications:** Materials, color, and scale may be adjusted through React Three Fiber
+## Desk — Backup Candidate
+
+- **Title:** Desk with drawers
+- **Creator:** Quaternius
+- **Source:** Poly Pizza
+- **License:** CC0 1.0 / Public Domain
+- **Status:** Technically validated backup candidate
+- **Reason not selected:** Bulkier and less consistent with the preferred minimal low-poly direction
