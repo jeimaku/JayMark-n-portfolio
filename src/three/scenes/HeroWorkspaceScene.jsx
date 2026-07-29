@@ -71,11 +71,14 @@ export default function HeroWorkspaceScene() {
       <OrbitControls
         makeDefault
         enablePan={false}
-        enableZoom
-        minDistance={6.2}
-        maxDistance={10.5}
-        minPolarAngle={Math.PI / 4}
-        maxPolarAngle={Math.PI / 2.1}
+        enableZoom={false}
+        enableDamping
+        dampingFactor={0.07}
+        rotateSpeed={0.42}
+        minAzimuthAngle={-0.32}
+        maxAzimuthAngle={0.32}
+        minPolarAngle={Math.PI / 3.25}
+        maxPolarAngle={Math.PI / 2.3}
         target={[-0.35, 0.72, 0]}
       />
     </>

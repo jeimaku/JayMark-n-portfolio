@@ -64,3 +64,12 @@
 - Enabled anisotropic texture filtering for sharper angled viewing.
 - Attached the monitor glow to the same assembly.
 - Completed Phase 4 Task 3C.
+
+### Phase 4 — Camera and Interaction
+
+- Added restrained pointer-responsive workspace movement.
+- Added subtle automatic idle drift.
+- Limited manual horizontal and vertical rotation.
+- Added smooth damping to drag interaction.
+- Disabled canvas mouse-wheel zoom to preserve normal page scrolling.
+- Completed Phase 4 Task 4.

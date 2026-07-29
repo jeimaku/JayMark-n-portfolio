@@ -41,9 +41,8 @@ export default function HomeV2() {
 
             <div className="mt-8 max-w-xl rounded-2xl border border-white/10 bg-white/[0.025] p-5 shadow-xl shadow-black/10 sm:p-6">
               <p className="text-sm leading-7 text-slate-300">
-                Drag to inspect the workspace. Use the mouse wheel to test
-                the camera limits. These controls are temporary development
-                tools.
+                Move your pointer for a subtle perspective response, or drag the
+                workspace to inspect it from a limited angle.
               </p>
             </div>
 
@@ -76,7 +75,7 @@ export default function HomeV2() {
             </div>
 
             <div className="pointer-events-none absolute bottom-4 left-1/2 z-10 -translate-x-1/2 rounded-full border border-white/10 bg-slate-950/70 px-4 py-2 text-center text-xs text-slate-400 backdrop-blur">
-              Interactive development preview
+              Drag to explore
             </div>
           </div>
         </div>
