@@ -100,4 +100,4 @@ public/old-portfolio-assets/3d/
 
 ## Status
 
-Draft for approval.
+Approved on July 29, 2026.

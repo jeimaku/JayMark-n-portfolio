@@ -98,6 +98,21 @@ New 3D resources will be placed under:
 
 public/old-portfolio-assets/3d/
 
-## Status
+## Decision 002 — Creative Direction
 
-Draft for approval.
+**Date:** 2026-07-29  
+**Status:** Approved
+
+The rebuilt portfolio will use an Interactive Systems Workspace concept
+with a dark, modern, low-poly visual direction.
+
+The following creative decisions are approved:
+
+1. Use a consistent stylized low-poly 3D asset style.
+2. Preserve a dark interface with cyan as the primary accent.
+3. Build the hero around a floating systems workspace.
+4. Use the hero as the primary 3D experience.
+5. Move the main personal photograph treatment to the About section.
+
+Supporting sections will remain primarily HTML and CSS to preserve
+readability, accessibility, responsiveness, and performance.
