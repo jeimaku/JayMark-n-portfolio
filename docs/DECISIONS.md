@@ -116,3 +116,23 @@ The following creative decisions are approved:
 
 Supporting sections will remain primarily HTML and CSS to preserve
 readability, accessibility, responsiveness, and performance.
+
+## Decision 003 — 3D Asset Strategy
+
+**Date:** 2026-07-29  
+**Status:** Approved
+
+The portfolio will use a hybrid asset strategy.
+
+Downloaded free GLB or glTF models will be used for recognizable objects
+such as the computer, server, microphone, desk, and workstation props.
+
+Three.js and React Three Fiber geometry will be used for interface
+panels, database objects, network nodes, connection lines, particles,
+status indicators, and other abstract technical elements.
+
+CC0 assets are preferred. CC BY assets may be used when attribution is
+properly documented.
+
+The initial desktop hero asset target is below 8 MB, while the simplified
+mobile asset target is below 4 MB.
