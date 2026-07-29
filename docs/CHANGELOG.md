@@ -26,7 +26,7 @@
 - Confirmed that the floating platform and abstract technical elements
   will be generated through code.
 
-  ### Phase 4 — 3D Foundation
+### Phase 4 — 3D Foundation
 
 - Added Three.js, React Three Fiber, and Drei.
 - Created the Version 2 preview route.
@@ -35,3 +35,13 @@
 - Confirmed orbit rotation and mouse-wheel zoom.
 - Confirmed responsive canvas resizing.
 - Recorded the non-blocking upstream `THREE.Clock` deprecation warning.
+
+### Phase 4 — Workspace Composition
+
+- Completed the initial 3D workspace composition.
+- Positioned and normalized the desk, monitor, microphone, router, and
+  server rack.
+- Added a code-generated floating platform.
+- Added a parent workspace transform for whole-scene positioning.
+- Confirmed that all GLB assets and the HDRI load correctly.
+- Confirmed the production build succeeds.
