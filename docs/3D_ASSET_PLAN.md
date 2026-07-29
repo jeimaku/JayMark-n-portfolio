@@ -315,3 +315,9 @@ Phase 3 will be complete when:
 Draft prepared for asset research and approval.
 
 | Main computer or monitor | Approved | Kenney — Computer Screen, CC0 |
+
+| Server or server rack | Candidate selected | MasterTux — Router, Network, Server |
+| Router or network device | Candidate selected | Same combined MasterTux asset |
+
+| Server or server rack | Not selected | |
+| Router or network device | Approved | MasterTux — Wireless Router, CC0 |
