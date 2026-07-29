@@ -371,3 +371,24 @@ Reasons:
 - Better compatibility with the modular workstation strategy
 
 The larger Quaternius desk with drawers remains a backup candidate only.
+
+| Environment lighting | Selected pending scene testing | Poly Haven — Studio Small 08, 1K HDR, CC0 |
+
+### Selected Environment Lighting
+
+Studio Small 08 by Sergej Majboroda was selected as the initial HDRI.
+
+Reasons:
+
+- CC0 license
+- Soft and low-contrast studio lighting
+- Neutral tone
+- Even illumination for dark materials
+- Suitable reflections for the microphone and server equipment
+- Available in a lightweight 1K HDR version
+
+Final approval will occur in Phase 4 after the HDRI is loaded into the
+React Three Fiber test scene.
+
+The HDRI will primarily provide lighting and reflections. It will not
+necessarily be displayed as the visible scene background.

@@ -84,3 +84,16 @@
 - **License:** CC0 1.0 / Public Domain
 - **Status:** Technically validated backup candidate
 - **Reason not selected:** Bulkier and less consistent with the preferred minimal low-poly direction
+
+## Studio Small 08 HDRI
+
+- **Title:** Studio Small 08
+- **Creator:** Sergej Majboroda
+- **Source:** Poly Haven
+- **License:** CC0 1.0 / Public Domain
+- **Format:** 1K HDR
+- **Local path:** `public/old-portfolio-assets/3d/hero/environment/studio-small-08/studio_small_08_1k.hdr`
+- **File size:** Add result here
+- **Portfolio use:** Hero environment lighting and material reflections
+- **Status:** Selected pending Phase 4 scene testing
+- **Attribution required:** No
