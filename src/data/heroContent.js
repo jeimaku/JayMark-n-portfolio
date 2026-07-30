@@ -18,7 +18,7 @@ export const heroContent = {
 
   primaryAction: {
     label: "Explore My Work",
-    href: "/#projects",
+    href: "#projects",
   },
 
   resumeAction: {
@@ -28,7 +28,7 @@ export const heroContent = {
 
   contactAction: {
     label: "Contact Me",
-    href: "/#contact",
+    href: "#contact",
   },
 
   proofPoints: [

@@ -162,3 +162,36 @@
 - Corrected the outdated college completion status.
 - Preserved the existing `#experience` anchor.
 - Completed Phase 6 Task 5.
+
+### Phase 6 — Contact and Footer
+
+- Added a production Contact section with the stable `#contact` anchor.
+- Added direct email, résumé, GitHub, and LinkedIn actions.
+- Added an accessible copy-email control with status feedback.
+- Added availability, location, and preferred-contact details.
+- Avoided adding a nonfunctional contact form.
+- Added a responsive semantic footer outside the main landmark.
+- Added compact homepage-section navigation and a back-to-top action.
+- Added a dynamic copyright year.
+- Added responsive, keyboard, and reduced-motion behavior.
+- Completed Phase 6 Task 6.
+
+### Phase 6 — Section Integration and Final Audit
+
+- Connected hero and professional-context links to the rebuilt homepage
+  sections.
+- Removed temporary links that redirected to the legacy homepage.
+- Verified the final Home, About, Skills, Projects, Experience,
+  Education, Contact, and Footer order.
+- Verified unique section IDs and heading hierarchy.
+- Added motion-aware smooth anchor scrolling.
+- Verified keyboard navigation and focus visibility.
+- Verified responsive behavior across phone, tablet, laptop, and desktop
+  layouts.
+- Verified reduced-motion and static 3D fallback behavior.
+- Verified project media, portrait, résumé, and university logo assets.
+- Preserved the National University Dasmariñas and University of
+  Perpetual Help logos.
+- Verified production Vite build and preview.
+- Audited the completed homepage with Lighthouse.
+- Completed Phase 6 Task 7.
