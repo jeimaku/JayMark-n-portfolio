@@ -133,3 +133,15 @@
 - Added responsive skill cards and semantic technology lists.
 - Preserved the existing `#skills` anchor.
 - Completed Phase 6 Task 3.
+
+## Phase 6 — Rebuild the Homepage Sections
+
+- [x] Task 1 — Shared section architecture
+- [x] Task 2 — About section
+- [x] Task 3 — Skills and capabilities
+- [x] Task 4 — Featured projects
+- [ ] Task 5 — Experience and education
+- [ ] Task 6 — Contact and footer
+- [ ] Task 7 — Section integration and final audit
+
+**Status: In progress**
