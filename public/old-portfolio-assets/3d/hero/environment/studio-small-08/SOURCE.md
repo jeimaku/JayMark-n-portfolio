@@ -46,7 +46,7 @@ directional, ambient, and hemisphere lights without loading the HDRI.
 - **File downloaded successfully:** Yes
 - **Correct format:** HDR
 - **Correct resolution:** 1K
-- **File size:** Add result here
+- **File size:** 1,473.51 KB / 1.44 MB
 - **Loads in React Three Fiber:** Pending Phase 4
 - **Lighting quality:** Pending Phase 4
 - **Material reflections:** Pending Phase 4
@@ -54,4 +54,5 @@ directional, ambient, and hemisphere lights without loading the HDRI.
 
 ## Approval Status
 
-Selected pending technical and visual scene testing in Phase 4.
+Selected — file validated, pending technical and visual scene testing in
+Phase 4.
