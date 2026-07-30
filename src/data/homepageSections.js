@@ -20,6 +20,11 @@ export const homepageSections = [
     eyebrow: "Professional Journey",
   },
   {
+    id: "education",
+    label: "Education",
+    eyebrow: "Academic Background",
+  },
+  {
     id: "contact",
     label: "Contact",
     eyebrow: "Let’s Connect",

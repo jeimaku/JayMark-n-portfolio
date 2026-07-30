@@ -145,3 +145,20 @@
 - [ ] Task 7 — Section integration and final audit
 
 **Status: In progress**
+
+### Phase 6 — Experience and Education
+
+- Added a production Experience section using centralized professional
+  experience data.
+- Featured the Launchpad and Paysera internship, TalkReady leadership,
+  and IEEE APWiMob research experience.
+- Added links connecting experience entries to their related case studies.
+- Added a separate Education section with stable `#education` navigation.
+- Preserved and prominently displayed the National University
+  Dasmariñas and University of Perpetual Help Molino Campus logos.
+- Added responsive university-logo presentation with accessible
+  initials fallbacks.
+- Added degree, specialization, achievements, and academic foundations.
+- Corrected the outdated college completion status.
+- Preserved the existing `#experience` anchor.
+- Completed Phase 6 Task 5.

@@ -2,6 +2,7 @@ import HeroExperience from "../components/v2/HeroExperience";
 import { heroContent } from "../data/heroContent";
 import {
   AboutSection,
+  ExperienceEducationSection,
   ProjectsSection,
   SkillsSection,
 } from "../components/v2/sections";
@@ -303,6 +304,7 @@ export default function HomeV2() {
       <AboutSection />
       <SkillsSection />
       <ProjectsSection />
+      <ExperienceEducationSection />
     </main>
   );
 }

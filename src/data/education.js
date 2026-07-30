@@ -29,13 +29,13 @@ export const education = [
   },
   {
     id: "college",
-    level: "College - Current",
+    level: "College",
     degree: "BS in Information Technology",
     specialization: "Mobile and Web Applications",
     school: "National University Dasmariñas",
     logo: assetPaths.logos.nuDasma,
-    year: "2022 - 2026 (Expected)",
-    status: "In Progress - 4th Year",
+    year: "2022 - 2026",
+    status: "Completed",
     achievements: [
       "2nd Honors (2nd Year, 3rd Semester)",
       "GWA: 3.40",
@@ -57,6 +57,6 @@ export const education = [
       "RESTful APIs",
     ],
     description:
-      "Specializing in modern mobile and web application development, with hands-on experience leading AI-powered projects and contributing to academic research.",
+      "Completed a Bachelor of Science in Information Technology with a specialization in Mobile and Web Applications, with hands-on experience leading AI-powered projects and contributing to academic research.",
   },
 ];
