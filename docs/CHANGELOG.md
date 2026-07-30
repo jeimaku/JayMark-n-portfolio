@@ -109,3 +109,14 @@
 - Added subtle technical background structure.
 - Improved the scene's relationship to the professional content.
 - Completed Phase 5 Task 2.
+
+### Phase 6 — Homepage Section Architecture
+
+- Added a central registry for the rebuilt homepage sections.
+- Preserved stable About, Skills, Projects, Experience, and Contact
+  anchor IDs.
+- Added a reusable semantic page-section component.
+- Added a consistent section-heading system.
+- Added reusable content panels and section dividers.
+- Established shared spacing, width, and anchor-scroll behavior.
+- Started Phase 6 homepage reconstruction.

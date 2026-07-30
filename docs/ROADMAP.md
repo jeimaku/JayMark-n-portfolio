@@ -13,3 +13,15 @@
 - [ ] Task 3 — Professional 3D context
 - [ ] Task 4 — Responsive production layout
 - [ ] Task 5 — Final hero audit
+
+## Phase 6 — Rebuild the Homepage Sections
+
+- [x] Task 1 — Shared section architecture
+- [ ] Task 2 — About section
+- [ ] Task 3 — Skills and capabilities
+- [ ] Task 4 — Featured projects
+- [ ] Task 5 — Experience and education
+- [ ] Task 6 — Contact and footer
+- [ ] Task 7 — Section integration and final audit
+
+**Status: In progress**

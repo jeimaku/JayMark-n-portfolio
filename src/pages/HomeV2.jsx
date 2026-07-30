@@ -1,6 +1,12 @@
 import HeroExperience from "../components/v2/HeroExperience";
 import { heroContent } from "../data/heroContent";
 
+import {
+  PageSection,
+  SectionHeading,
+  SectionPanel,
+} from "../components/v2/sections";
+
 function ArrowIcon() {
   return (
     <svg
