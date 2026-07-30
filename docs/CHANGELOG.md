@@ -120,3 +120,16 @@
 - Added reusable content panels and section dividers.
 - Established shared spacing, width, and anchor-scroll behavior.
 - Started Phase 6 homepage reconstruction.
+
+### Phase 6 — Skills and Capabilities
+
+- Added a recruiter-readable Skills and Capabilities section.
+- Organized skills by development, systems and data, artificial
+  intelligence, technical operations, and project delivery.
+- Connected technologies to practical system-building outcomes.
+- Added capability summaries for building, connecting, and supporting
+  technical systems.
+- Avoided arbitrary proficiency percentages and skill-rating bars.
+- Added responsive skill cards and semantic technology lists.
+- Preserved the existing `#skills` anchor.
+- Completed Phase 6 Task 3.
