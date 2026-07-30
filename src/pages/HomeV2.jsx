@@ -171,7 +171,7 @@ export default function HomeV2() {
               <a
                 href={heroContent.resumeAction.href}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.035] px-6 py-3 text-sm font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200/40 hover:bg-cyan-300/[0.07] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
               >
                 <DocumentIcon />
@@ -222,11 +222,17 @@ export default function HomeV2() {
           <div className="relative mx-auto w-full min-w-0 max-w-4xl xl:max-w-none xl:translate-y-2">
             <div className="mb-4 flex items-end justify-between gap-6 px-1">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-300">
+                <p
+                  id="hero-workspace-title"
+                  className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-300"
+                >
                   {heroContent.scene.eyebrow}
                 </p>
 
-                <p className="mt-1 hidden max-w-md text-xs leading-5 text-slate-600 sm:block">
+                <p
+                  id="hero-workspace-description"
+                  className="mt-1 hidden max-w-md text-xs leading-5 text-slate-600 sm:block"
+                >
                   {heroContent.scene.caption}
                 </p>
               </div>
