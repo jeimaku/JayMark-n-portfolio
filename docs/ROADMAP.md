@@ -85,3 +85,13 @@
 - [x] Task 7 — Section integration and final audit
 
 **Status: Complete**
+
+## Phase 7 — Rebuild the Project Case Studies
+
+- [x] Task 1 — Shared case-study architecture
+- [x] Task 2 — TalkReady case study
+- [x] Task 3 — Internship Systems case study
+- [ ] Task 4 — Case-study navigation and media polish
+- [ ] Task 5 — Integration and final audit
+
+**Status: In progress**

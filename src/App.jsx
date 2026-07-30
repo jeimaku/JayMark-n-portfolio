@@ -15,6 +15,7 @@ import Home from "./pages/Home";
 import HomeV2 from "./pages/HomeV2";
 import ProjectCaseStudy from "./pages/ProjectCaseStudy";
 import TalkReadyCaseStudyV2 from "./pages/TalkReadyCaseStudyV2";
+import InternshipSystemsCaseStudyV2 from "./pages/InternshipSystemsCaseStudyV2";
 
 export default function App() {
   const { pathname } = useLocation();
@@ -26,18 +27,19 @@ export default function App() {
    */
   const isHomeV2 = pathname === "/preview-v2";
 
-  const isTalkReadyCaseStudyV2 =
-    pathname === "/projects/talkready";
+  const isRebuiltCaseStudy =
+    pathname === "/projects/talkready" ||
+    pathname === "/projects/internship-systems";
 
   const showGlobalHeader =
-    !isTalkReadyCaseStudyV2;
+    !isRebuiltCaseStudy;
 
   const showGlobalFooter =
     !isHomeV2 &&
-    !isTalkReadyCaseStudyV2;
+    !isRebuiltCaseStudy;
 
   const showGlobalSkipLink =
-    !isTalkReadyCaseStudyV2;
+    !isRebuiltCaseStudy;
 
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-slate-950 text-slate-50">
@@ -66,6 +68,11 @@ export default function App() {
         <Route
           path="/projects/talkready"
           element={<TalkReadyCaseStudyV2 />}
+        />
+
+        <Route
+          path="/projects/internship-systems"
+          element={<InternshipSystemsCaseStudyV2 />}
         />
 
         {/*
