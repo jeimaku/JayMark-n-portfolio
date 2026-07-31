@@ -9,6 +9,10 @@ import {
   SkillsSection,
 } from "../components/v2/sections";
 
+import {
+  ScrollMotionShell,
+} from "../components/v2/motion";
+
 import { heroContent } from "../data/heroContent";
 
 function ArrowIcon() {
@@ -97,8 +101,8 @@ function ProofPoint({ label, value }) {
 }
 
 export default function HomeV2() {
-  return (
-    <>
+return (
+  <ScrollMotionShell>
       <main
         id="main-content"
         tabIndex={-1}
@@ -311,6 +315,6 @@ export default function HomeV2() {
       </main>
 
       <Footer />
-    </>
+    </ScrollMotionShell>
   );
 }

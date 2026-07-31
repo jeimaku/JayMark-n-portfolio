@@ -1,6 +1,9 @@
 export { default as CaseStudyHero } from "./CaseStudyHero";
 export { default as CaseStudyLayout } from "./CaseStudyLayout";
 export { default as CaseStudyMediaFrame } from "./CaseStudyMediaFrame";
+export { default as CaseStudyMediaLightbox } from "./CaseStudyMediaLightbox";
 export { default as CaseStudyMetrics } from "./CaseStudyMetrics";
+export { default as CaseStudyPager } from "./CaseStudyPager";
 export { default as CaseStudySection } from "./CaseStudySection";
+export { default as CaseStudySectionNav } from "./CaseStudySectionNav";
 export { default as CaseStudyTechList } from "./CaseStudyTechList";

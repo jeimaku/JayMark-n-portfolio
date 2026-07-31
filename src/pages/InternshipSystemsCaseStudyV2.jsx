@@ -1,27 +1,58 @@
 import {
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
+import { internshipSystems } from "../data";
 import {
-  internshipSystems,
-} from "../data";
+  getCaseStudyNeighbors,
+} from "../data/caseStudyNavigation";
 
 import LazyVideo from "../components/ui/LazyVideo";
-
 import {
   CaseStudyHero,
   CaseStudyLayout,
   CaseStudyMediaFrame,
+  CaseStudyMediaLightbox,
   CaseStudyMetrics,
+  CaseStudyPager,
   CaseStudySection,
+  CaseStudySectionNav,
   CaseStudyTechList,
 } from "../components/v2/case-studies";
 
 import {
   useMediaQuery,
 } from "../hooks/useHeroRuntime";
+
+const INTERNSHIP_SECTIONS = [
+  {
+    id: "overview",
+    label: "Overview",
+  },
+  {
+    id: "challenge",
+    label: "Challenge",
+  },
+  {
+    id: "system-explorer",
+    label: "Systems",
+  },
+  {
+    id: "implementation",
+    label: "Implementation",
+  },
+  {
+    id: "system-gallery",
+    label: "Gallery",
+  },
+  {
+    id: "outcomes",
+    label: "Outcomes",
+  },
+];
 
 const OPERATIONAL_CHALLENGES = [
   {
@@ -150,6 +181,7 @@ function SystemVideoFrame({
   system,
   reducedMotion,
   eager = false,
+  onOpen,
 }) {
   const videoSource =
     system.media?.video ??
@@ -163,13 +195,25 @@ function SystemVideoFrame({
 
   if (!videoSource) {
     return (
-      <CaseStudyMediaFrame
-        src={posterSource}
-        alt={`${system.name} interface preview`}
-        caption={`${system.name} operational interface preview.`}
-        eager={eager}
-        imageClassName="aspect-video"
-      />
+      <div className="relative">
+        <CaseStudyMediaFrame
+          src={posterSource}
+          alt={`${system.name} interface preview`}
+          caption={`${system.name} operational interface preview.`}
+          eager={eager}
+          imageClassName="aspect-video"
+        />
+
+        {onOpen && posterSource ? (
+          <button
+            type="button"
+            onClick={() => onOpen(system)}
+            className="absolute bottom-12 right-4 rounded-full border border-white/15 bg-slate-950/85 px-4 py-2 text-xs font-semibold text-white backdrop-blur transition hover:border-cyan-300/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+          >
+            Open preview
+          </button>
+        ) : null}
+      </div>
     );
   }
 
@@ -192,6 +236,16 @@ function SystemVideoFrame({
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/[0.035]"
         />
+
+        {onOpen ? (
+          <button
+            type="button"
+            onClick={() => onOpen(system)}
+            className="absolute bottom-4 right-4 rounded-full border border-white/15 bg-slate-950/85 px-4 py-2 text-xs font-semibold text-white backdrop-blur transition hover:border-cyan-300/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+          >
+            Open demo
+          </button>
+        ) : null}
       </div>
 
       <figcaption className="border-t border-white/10 px-4 py-3 text-xs leading-5 text-slate-500 sm:px-5">
@@ -206,10 +260,61 @@ function SystemSelector({
   selectedSystemId,
   onSelect,
 }) {
+  const tabRefs = useRef([]);
+
+  const handleKeyDown = (
+    event,
+    currentIndex
+  ) => {
+    const lastIndex = systems.length - 1;
+
+    let nextIndex = currentIndex;
+
+    switch (event.key) {
+      case "ArrowRight":
+      case "ArrowDown":
+        nextIndex =
+          currentIndex === lastIndex
+            ? 0
+            : currentIndex + 1;
+        break;
+
+      case "ArrowLeft":
+      case "ArrowUp":
+        nextIndex =
+          currentIndex === 0
+            ? lastIndex
+            : currentIndex - 1;
+        break;
+
+      case "Home":
+        nextIndex = 0;
+        break;
+
+      case "End":
+        nextIndex = lastIndex;
+        break;
+
+      default:
+        return;
+    }
+
+    event.preventDefault();
+
+    const nextSystem = systems[nextIndex];
+
+    onSelect(nextSystem.id);
+
+    window.requestAnimationFrame(() => {
+      tabRefs.current[nextIndex]?.focus();
+    });
+  };
+
   return (
     <div
       role="tablist"
       aria-label="Internship system selector"
+      aria-orientation="horizontal"
       className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4"
     >
       {systems.map((system, index) => {
@@ -219,12 +324,19 @@ function SystemSelector({
         return (
           <button
             key={system.id}
+            ref={(element) => {
+              tabRefs.current[index] = element;
+            }}
             type="button"
             role="tab"
+            tabIndex={selected ? 0 : -1}
             aria-selected={selected}
             aria-controls={`system-panel-${system.id}`}
             id={`system-tab-${system.id}`}
             onClick={() => onSelect(system.id)}
+            onKeyDown={(event) =>
+              handleKeyDown(event, index)
+            }
             className={[
               "min-h-20 rounded-2xl border p-4",
               "text-left transition",
@@ -244,7 +356,10 @@ function SystemSelector({
                   : "text-slate-600",
               ].join(" ")}
             >
-              {String(index + 1).padStart(2, "0")}
+              {String(index + 1).padStart(
+                2,
+                "0"
+              )}
             </p>
 
             <p className="mt-2 text-sm font-semibold leading-6 text-white">
@@ -260,6 +375,7 @@ function SystemSelector({
 function SelectedSystemPanel({
   system,
   reducedMotion,
+  onOpen,
 }) {
   const technologies =
     system.tech ??
@@ -275,14 +391,16 @@ function SelectedSystemPanel({
     <article
       id={`system-panel-${system.id}`}
       role="tabpanel"
+      tabIndex={0}
       aria-labelledby={`system-tab-${system.id}`}
-      className="mt-5"
+      className="mt-5 focus:outline-none"
     >
       <div className="grid gap-6 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
         <SystemVideoFrame
           system={system}
           reducedMotion={reducedMotion}
           eager
+          onOpen={onOpen}
         />
 
         <div className="rounded-3xl border border-white/10 bg-white/[0.025] p-5 sm:p-6">
@@ -352,6 +470,7 @@ function SystemSummaryCard({
   index,
   reducedMotion,
   onExplore,
+  onOpen,
 }) {
   const technologies =
     system.tech ??
@@ -363,6 +482,7 @@ function SystemSummaryCard({
       <SystemVideoFrame
         system={system}
         reducedMotion={reducedMotion}
+        onOpen={onOpen}
       />
 
       <div className="p-5 sm:p-6">
@@ -459,6 +579,16 @@ export default function InternshipSystemsCaseStudyV2() {
   const [selectedSystemId, setSelectedSystemId] =
     useState(systems[0]?.id ?? "");
 
+  const [activeMedia, setActiveMedia] =
+    useState(null);
+
+  const {
+    previousProject,
+    nextProject,
+  } = getCaseStudyNeighbors(
+    "internship-systems"
+  );
+
   useEffect(() => {
     const previousTitle = document.title;
 
@@ -520,6 +650,35 @@ export default function InternshipSystemsCaseStudyV2() {
   const overviewDescription =
     internshipSystems.description ??
     "A group of internal applications developed to support customer management, virtual-office operations, technical support, and inventory workflows.";
+
+  const openSystemMedia = (system) => {
+    const videoSource =
+      system.media?.video ??
+      system.media?.src ??
+      null;
+
+    const posterSource =
+      system.media?.cover ??
+      system.media?.poster ??
+      null;
+
+    const mediaSource =
+      videoSource ?? posterSource;
+
+    if (!mediaSource) {
+      return;
+    }
+
+    setActiveMedia({
+      type: videoSource ? "video" : "image",
+      src: mediaSource,
+      poster: posterSource,
+      title: system.name,
+      alt: `${system.name} interface preview`,
+      caption:
+        `${system.name} workflow and interface demonstration.`,
+    });
+  };
 
   const handleExploreSystem = (systemId) => {
     setSelectedSystemId(systemId);
@@ -608,8 +767,13 @@ export default function InternshipSystemsCaseStudyV2() {
             system={systems[0]}
             reducedMotion={reducedMotion}
             eager
+            onOpen={openSystemMedia}
           />
         }
+      />
+
+      <CaseStudySectionNav
+        sections={INTERNSHIP_SECTIONS}
       />
 
       <CaseStudySection
@@ -686,6 +850,7 @@ export default function InternshipSystemsCaseStudyV2() {
           key={selectedSystem.id}
           system={selectedSystem}
           reducedMotion={reducedMotion}
+          onOpen={openSystemMedia}
         />
       </CaseStudySection>
 
@@ -748,6 +913,7 @@ export default function InternshipSystemsCaseStudyV2() {
               index={index}
               reducedMotion={reducedMotion}
               onExplore={handleExploreSystem}
+              onOpen={openSystemMedia}
             />
           ))}
         </div>
@@ -807,18 +973,12 @@ export default function InternshipSystemsCaseStudyV2() {
         description="TalkReady demonstrates a different side of my work through role-based learning workflows, AI-assisted assessment, platform administration, evaluation, and academic research."
         tone="subtle"
       >
-        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <a
-            href="/projects/talkready"
-            className="group inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-cyan-300 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950 sm:w-auto"
-          >
-            View TalkReady
+        <CaseStudyPager
+          previousProject={previousProject}
+          nextProject={nextProject}
+        />
 
-            <span className="transition-transform group-hover:translate-x-0.5">
-              <ArrowIcon />
-            </span>
-          </a>
-
+        <div className="mt-6">
           <a
             href="/preview-v2#contact"
             className="inline-flex min-h-12 w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.035] px-6 py-3 text-sm font-semibold text-white transition hover:border-cyan-200/40 hover:bg-cyan-300/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950 sm:w-auto"
@@ -827,6 +987,12 @@ export default function InternshipSystemsCaseStudyV2() {
           </a>
         </div>
       </CaseStudySection>
+
+      <CaseStudyMediaLightbox
+        media={activeMedia}
+        reducedMotion={reducedMotion}
+        onClose={() => setActiveMedia(null)}
+      />
     </CaseStudyLayout>
   );
 }

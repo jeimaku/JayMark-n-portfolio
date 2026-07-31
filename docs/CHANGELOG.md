@@ -211,3 +211,18 @@
 - Added navigation to TalkReady and the homepage contact section.
 - Preserved the `/projects/internship-systems` route.
 - Completed Phase 7 Task 3.
+
+### Phase 8 — Scroll-Motion Foundation
+
+- Added a centralized configuration for the cinematic scroll system.
+- Added a shared Motion configuration shell scoped to Preview V2.
+- Added global scroll-progress indicators for desktop and mobile.
+- Added reusable scroll-triggered section animation support.
+- Added reusable section scroll-progress mapping.
+- Added reusable staggered reveal components.
+- Added scroll-direction detection.
+- Added runtime handling for reduced motion, viewport size, pointer type,
+  and page visibility.
+- Preserved native browser scrolling and existing section anchors.
+- Kept the legacy homepage and project case studies unaffected.
+- Started Phase 8 cinematic scroll implementation.

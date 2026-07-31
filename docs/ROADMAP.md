@@ -95,3 +95,16 @@
 - [ ] Task 5 — Integration and final audit
 
 **Status: In progress**
+
+## Phase 8 — Cinematic Scroll Experience
+
+- [x] Task 1 — Scroll-motion foundation
+- [ ] Task 2 — Hero-to-About transition
+- [ ] Task 3 — Skills and capabilities motion
+- [ ] Task 4 — Featured Projects scroll sequence
+- [ ] Task 5 — Experience and Education timeline motion
+- [ ] Task 6 — Contact, footer, and global effects
+- [ ] Task 7 — Mobile, reduced-motion, and performance fallbacks
+- [ ] Task 8 — Integration and final audit
+
+**Status: In progress**

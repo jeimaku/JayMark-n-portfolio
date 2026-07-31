@@ -5,15 +5,48 @@ import {
 } from "react";
 
 import { featuredProjects } from "../data";
+import {
+  getCaseStudyNeighbors,
+} from "../data/caseStudyNavigation";
 
 import {
   CaseStudyHero,
   CaseStudyLayout,
   CaseStudyMediaFrame,
+  CaseStudyMediaLightbox,
   CaseStudyMetrics,
+  CaseStudyPager,
   CaseStudySection,
+  CaseStudySectionNav,
   CaseStudyTechList,
 } from "../components/v2/case-studies";
+
+const TALKREADY_SECTIONS = [
+  {
+    id: "overview",
+    label: "Overview",
+  },
+  {
+    id: "challenge",
+    label: "Challenge",
+  },
+  {
+    id: "solution",
+    label: "Solution",
+  },
+  {
+    id: "implementation",
+    label: "Implementation",
+  },
+  {
+    id: "outcomes",
+    label: "Outcomes",
+  },
+  {
+    id: "interface-gallery",
+    label: "Interface",
+  },
+];
 
 const PRODUCT_CHALLENGES = [
   {
@@ -107,25 +140,6 @@ const IMPLEMENTATION_AREAS = [
       "Reusable components and responsive layouts provide a consistent experience across student, trainer, and administrator dashboards.",
   },
 ];
-
-function ArrowIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 20 20"
-      fill="none"
-      className="h-4 w-4"
-    >
-      <path
-        d="M4.5 10h11m-4.25-4.25L15.5 10l-4.25 4.25"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 function InformationCard({
   number,
@@ -244,6 +258,7 @@ function TalkReadyGallery({
   title,
   cover,
   gallery = [],
+  onOpen,
 }) {
   const mediaItems = useMemo(() => {
     const items = [];
@@ -315,13 +330,29 @@ function TalkReadyGallery({
 
   return (
     <div>
-      <CaseStudyMediaFrame
-        src={selectedItem.src}
-        alt={selectedItem.alt}
-        caption={selectedItem.caption}
-        eager
-        imageClassName="aspect-[16/10]"
-      />
+      <button
+        type="button"
+        onClick={() =>
+          onOpen?.({
+            ...selectedItem,
+            type: "image",
+            title: selectedItem.alt,
+          })
+        }
+        aria-label={`Open ${selectedItem.alt} in a larger viewer`}
+        className="block w-full rounded-3xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+      >
+        <CaseStudyMediaFrame
+          src={selectedItem.src}
+          alt={selectedItem.alt}
+          caption={
+            selectedItem.caption ??
+            "Select the preview to inspect the interface."
+          }
+          eager
+          imageClassName="aspect-[16/10]"
+        />
+      </button>
 
       {mediaItems.length > 1 ? (
         <div
@@ -414,6 +445,14 @@ function MissingTalkReadyProject() {
 }
 
 export default function TalkReadyCaseStudyV2() {
+  const [activeMedia, setActiveMedia] =
+    useState(null);
+
+  const {
+    previousProject,
+    nextProject,
+  } = getCaseStudyNeighbors("talkready");
+
   const project =
     featuredProjects.find(
       (item) => item.id === "talkready"
@@ -507,14 +546,42 @@ export default function TalkReadyCaseStudyV2() {
         metadata={metadata}
         actions={heroActions}
         media={
-          <CaseStudyMediaFrame
-            src={heroMediaSource}
-            alt={`${project.title} platform preview`}
-            caption="TalkReady’s production platform and role-based learning environment."
-            eager
-            imageClassName="aspect-[16/10]"
-          />
+          heroMediaSource ? (
+            <button
+              type="button"
+              onClick={() =>
+                setActiveMedia({
+                  type: "image",
+                  src: heroMediaSource,
+                  title: `${project.title} platform preview`,
+                  alt: `${project.title} platform preview`,
+                  caption:
+                    "TalkReady’s production platform and role-based learning environment.",
+                })
+              }
+              aria-label={`Open ${project.title} platform preview`}
+              className="block w-full rounded-3xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+            >
+              <CaseStudyMediaFrame
+                src={heroMediaSource}
+                alt={`${project.title} platform preview`}
+                caption="Select the preview to inspect the interface."
+                eager
+                imageClassName="aspect-[16/10]"
+              />
+            </button>
+          ) : (
+            <CaseStudyMediaFrame
+              src={null}
+              alt={`${project.title} preview unavailable`}
+              caption="Project preview unavailable."
+            />
+          )
         }
+      />
+
+      <CaseStudySectionNav
+        sections={TALKREADY_SECTIONS}
       />
 
       <CaseStudySection
@@ -530,9 +597,7 @@ export default function TalkReadyCaseStudyV2() {
             number="01"
             eyebrow="The Product"
             title="An AI-assisted language and speaking platform."
-            description={
-              project.description
-            }
+            description={project.description}
           />
 
           <InformationCard
@@ -700,6 +765,7 @@ export default function TalkReadyCaseStudyV2() {
           title={project.title}
           cover={project.media?.cover}
           gallery={gallery}
+          onOpen={setActiveMedia}
         />
       </CaseStudySection>
 
@@ -711,18 +777,12 @@ export default function TalkReadyCaseStudyV2() {
         description="The Internship Systems Suite focuses on CRM, virtual-office, support-ticket, and inventory workflows developed for internal company use."
         tone="subtle"
       >
-        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-          <a
-            href="/projects/internship-systems"
-            className="group inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-cyan-300 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950 sm:w-auto"
-          >
-            View Internship Systems
+        <CaseStudyPager
+          previousProject={previousProject}
+          nextProject={nextProject}
+        />
 
-            <span className="transition-transform group-hover:translate-x-0.5">
-              <ArrowIcon />
-            </span>
-          </a>
-
+        <div className="mt-6">
           <a
             href="/preview-v2#contact"
             className="inline-flex min-h-12 w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.035] px-6 py-3 text-sm font-semibold text-white transition hover:border-cyan-200/40 hover:bg-cyan-300/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950 sm:w-auto"
@@ -731,6 +791,11 @@ export default function TalkReadyCaseStudyV2() {
           </a>
         </div>
       </CaseStudySection>
+
+      <CaseStudyMediaLightbox
+        media={activeMedia}
+        onClose={() => setActiveMedia(null)}
+      />
     </CaseStudyLayout>
   );
 }

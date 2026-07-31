@@ -23,7 +23,7 @@ export default function CaseStudySection({
       id={id}
       aria-labelledby={headingId}
       className={[
-        "relative isolate scroll-mt-24",
+        "relative isolate scroll-mt-32 sm:scroll-mt-36",
         "overflow-hidden border-t border-white/10",
         toneClass,
         className,
