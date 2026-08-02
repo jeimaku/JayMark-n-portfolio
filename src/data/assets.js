@@ -94,25 +94,33 @@ export const assetPaths = {
 
     internshipSystems: {
       crmPipeline: {
-        cover: `${oldAssetsBase}/projects/talkready_web/talkready_admindb.png`,
+        cover:
+          "https://res.cloudinary.com/dmucxva6s/video/upload/so_2,q_auto,f_auto/v1780468188/crm_naaz5y.jpg",
+
         video:
           "https://res.cloudinary.com/dmucxva6s/video/upload/q_auto/f_auto/v1780468188/crm_naaz5y.mp4",
       },
 
       virtualOffice: {
-        cover: `${oldAssetsBase}/projects/talkready_web/talkready_homepage.png`,
+        cover:
+          "https://res.cloudinary.com/dmucxva6s/video/upload/so_2,q_auto,f_auto/v1780468197/virtoff_sdayhi.jpg",
+
         video:
           "https://res.cloudinary.com/dmucxva6s/video/upload/q_auto/f_auto/v1780468197/virtoff_sdayhi.mp4",
       },
 
       ticketSupport: {
-        cover: `${oldAssetsBase}/projects/talkready_web/talkready_trainerdb.png`,
+        cover:
+          "https://res.cloudinary.com/dmucxva6s/video/upload/so_2,q_auto,f_auto/v1780468194/ticketingsys_woifcp.jpg",
+
         video:
           "https://res.cloudinary.com/dmucxva6s/video/upload/q_auto/f_auto/v1780468194/ticketingsys_woifcp.mp4",
       },
 
       payseraInventory: {
-        cover: `${oldAssetsBase}/projects/talkready_web/talkready_my-reports.png`,
+        cover:
+          "https://res.cloudinary.com/dmucxva6s/video/upload/so_2,q_auto,f_auto/v1780468200/payseraIMS_wm1pqn.jpg",
+
         video:
           "https://res.cloudinary.com/dmucxva6s/video/upload/q_auto/f_auto/v1780468200/payseraIMS_wm1pqn.mp4",
       },
