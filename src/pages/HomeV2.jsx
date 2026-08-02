@@ -1,8 +1,15 @@
 import Footer from "../components/v2/Footer";
 import HeroExperience from "../components/v2/HeroExperience";
 
+import { motion } from "motion/react";
+
+import {
+  useEffect,
+} from "react";
+
 import {
   AboutSection,
+  CertificationsSection,
   ContactSection,
   ExperienceEducationSection,
   ProjectsSection,
@@ -10,8 +17,11 @@ import {
 } from "../components/v2/sections";
 
 import {
+  MotionSection,
   ScrollMotionShell,
 } from "../components/v2/motion";
+
+import useHeroAboutTransition from "../hooks/useHeroAboutTransition";
 
 import { heroContent } from "../data/heroContent";
 
@@ -101,22 +111,108 @@ function ProofPoint({ label, value }) {
 }
 
 export default function HomeV2() {
-return (
+  const {
+    heroSceneRef,
+    heroCopyStyle,
+    heroWorkspaceStyle,
+    heroBackgroundStyle,
+    transitionVeilStyle,
+    transitionGlowStyle,
+    transitionLineStyle,
+  } = useHeroAboutTransition();
+
+  useEffect(() => {
+    const previousTitle =
+      document.title;
+
+    document.title =
+      "Jay Mark Apelado | Full-Stack Developer Portfolio";
+
+    let description =
+      document.querySelector(
+        'meta[name="description"]'
+      );
+
+    const createdDescription =
+      !description;
+
+    if (!description) {
+      description =
+        document.createElement(
+          "meta"
+        );
+
+      description.setAttribute(
+        "name",
+        "description"
+      );
+
+      document.head.appendChild(
+        description
+      );
+    }
+
+    const previousDescription =
+      description.getAttribute(
+        "content"
+      );
+
+    description.setAttribute(
+      "content",
+      "Portfolio of Jay Mark Apelado, showcasing full-stack applications, operational systems, AI-assisted platforms, technical experience, and professional certifications."
+    );
+
+    return () => {
+      document.title =
+        previousTitle;
+
+      if (createdDescription) {
+        description.remove();
+        return;
+      }
+
+      if (
+        previousDescription !== null
+      ) {
+        description.setAttribute(
+          "content",
+          previousDescription
+        );
+      } else {
+        description.removeAttribute(
+          "content"
+        );
+      }
+    };
+  }, []);
+
+  return (
   <ScrollMotionShell>
       <main
         id="main-content"
         tabIndex={-1}
         className="min-h-screen bg-slate-950 text-slate-50 focus:outline-none"
       >
-        <section
-          id="home"
-          aria-labelledby="hero-title"
-          className="relative isolate min-h-screen overflow-hidden pt-20 sm:pt-24"
+        <div
+          ref={heroSceneRef}
+          data-hero-scroll-scene=""
+          className={[
+            "relative",
+            "min-h-[125vh]",
+            "sm:min-h-[135vh]",
+            "xl:min-h-[150vh]",
+          ].join(" ")}
         >
+          <section
+            id="home"
+            aria-labelledby="hero-title"
+            className="sticky top-0 isolate min-h-screen overflow-hidden bg-slate-950 pt-20 sm:pt-24"
+          >
           {/* Background atmosphere */}
-          <div
+          <motion.div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 -z-10"
+            style={heroBackgroundStyle}
+            className="pointer-events-none absolute inset-0 -z-10 origin-center will-change-transform"
           >
             <div className="absolute left-[4%] top-[18%] h-96 w-96 rounded-full bg-cyan-400/[0.045] blur-3xl" />
 
@@ -125,11 +221,14 @@ return (
             <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(148,163,184,0.45)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.45)_1px,transparent_1px)] [background-size:72px_72px]" />
 
             <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-300/25 to-transparent" />
-          </div>
+          </motion.div>
 
           <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] w-full max-w-[90rem] items-start gap-12 px-4 py-10 sm:px-6 sm:py-12 xl:grid-cols-[0.9fr_1.1fr] xl:items-center xl:gap-16 xl:px-10 xl:py-14 2xl:gap-20">
             {/* Hero copy */}
-            <div className="relative z-10 min-w-0 xl:pb-4">
+            <motion.div
+                style={heroCopyStyle}
+                className="relative z-10 min-w-0 will-change-transform xl:pb-4"
+              >
               <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200 sm:text-sm">
                   {heroContent.eyebrow}
@@ -232,10 +331,13 @@ return (
                   />
                 ))}
               </ul>
-            </div>
-
+            </motion.div>
+            
             {/* Interactive 3D workspace */}
-            <div className="relative mx-auto w-full min-w-0 max-w-4xl xl:max-w-none xl:translate-y-2">
+            <motion.div
+                style={heroWorkspaceStyle}
+                className="relative mx-auto w-full min-w-0 max-w-4xl will-change-transform xl:max-w-none xl:translate-y-2"
+              >
               <div className="mb-4 flex items-end justify-between gap-6 px-1">
                 <div>
                   <p
@@ -303,14 +405,67 @@ return (
                   Motion preferences respected
                 </p>
               </div>
-            </div>
+            </motion.div>
           </div>
-        </section>
+          {/* Hero-to-About transition graphics */}
+          <motion.div
+            aria-hidden="true"
+            style={transitionVeilStyle}
+            className={[
+              "pointer-events-none absolute",
+              "inset-x-0 bottom-0 z-30",
+              "h-[38vh]",
+              "bg-gradient-to-t",
+              "from-slate-950",
+              "via-slate-950/75",
+              "to-transparent",
+            ].join(" ")}
+          />
 
-        <AboutSection />
+          <motion.div
+            aria-hidden="true"
+            style={transitionGlowStyle}
+            className={[
+              "pointer-events-none absolute",
+              "bottom-[-8rem] left-1/2 z-30",
+              "h-64 w-[min(80rem,92vw)]",
+              "-translate-x-1/2 rounded-full",
+              "bg-cyan-300/[0.11]",
+              "blur-3xl",
+            ].join(" ")}
+          />
+
+          <motion.div
+            aria-hidden="true"
+            style={transitionLineStyle}
+            className={[
+              "pointer-events-none absolute",
+              "inset-x-4 bottom-0 z-40",
+              "mx-auto h-px max-w-[90rem]",
+              "origin-center",
+              "bg-gradient-to-r",
+              "from-transparent",
+              "via-cyan-200/70",
+              "to-transparent",
+              "shadow-[0_0_22px_rgba(34,211,238,0.45)]",
+            ].join(" ")}
+          />
+          </section>
+        </div>
+
+        <MotionSection
+          effect="rise"
+          distance={40}
+          amount={0.05}
+          duration={0.8}
+          className="relative z-20"
+        >
+          <AboutSection />
+        </MotionSection>
         <SkillsSection />
         <ProjectsSection />
         <ExperienceEducationSection />
+        <CertificationsSection />
         <ContactSection />
       </main>
 

@@ -7,3 +7,6 @@ export { default as SectionDivider } from "./SectionDivider";
 export { default as SectionHeading } from "./SectionHeading";
 export { default as SectionPanel } from "./SectionPanel";
 export { default as SkillsSection } from "./SkillsSection";
+export {
+  default as CertificationsSection,
+} from "./CertificationsSection";

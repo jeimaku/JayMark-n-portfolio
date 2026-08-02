@@ -3,6 +3,7 @@ import {
 } from "motion/react";
 
 import ScrollProgress from "./ScrollProgress";
+import SectionProgressNav from "./SectionProgressNav";
 
 import {
   scrollMotionConfig,
@@ -16,10 +17,12 @@ export default function ScrollMotionShell({
       reducedMotion="user"
       transition={{
         duration:
-          scrollMotionConfig.entrance.duration,
+          scrollMotionConfig.entrance
+            .duration,
 
         ease:
-          scrollMotionConfig.entrance.ease,
+          scrollMotionConfig.entrance
+            .ease,
       }}
     >
       <div
@@ -27,6 +30,8 @@ export default function ScrollMotionShell({
         className="relative isolate min-h-screen"
       >
         <ScrollProgress />
+
+        <SectionProgressNav />
 
         {children}
       </div>

@@ -1,548 +1,1274 @@
-import { useState } from "react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Code2,
+  ExternalLink,
+  Layers,
+  Play,
+} from "lucide-react";
+
+import {
+  motion,
+} from "motion/react";
+
+import Container from "../../layout/Container";
+import SectionHeading from "../../ui/SectionHeading";
+import LazyVideo from "../../ui/LazyVideo";
+
+import {
+  MotionSection,
+} from "../motion";
 
 import {
   featuredProjects,
-  homepageContent,
   internshipSystems,
 } from "../../../data";
 
-import { useMediaQuery } from "../../../hooks/useHeroRuntime";
+import useProjectsWheelCarousel from "../../../hooks/useProjectsWheelCarousel";
 
-import LazyVideo from "../../ui/LazyVideo";
+const PROJECT_ROUTES = {
+  talkready: "/projects/talkready",
+  "internship-systems": "/projects/internship-systems",
+};
 
-import PageSection from "./PageSection";
-import SectionHeading from "./SectionHeading";
-import SectionPanel from "./SectionPanel";
+function createProjectSlides() {
+  const featuredSlides = featuredProjects
+    .filter(Boolean)
+    .map((project) => ({
+      ...project,
+      slideKind: "featured",
+      suiteLabel:
+        project.category ??
+        "Featured Project",
+      links: {
+        ...project.links,
+        caseStudy:
+          project.id === "talkready"
+            ? PROJECT_ROUTES.talkready
+            : project.links?.caseStudy,
+      },
+    }));
 
-function ArrowIcon() {
+  const internshipSlides = (
+    internshipSystems?.systems ?? []
+  )
+    .filter(Boolean)
+    .map((system) => ({
+      id: `internship-${system.id}`,
+      sourceId: system.id,
+      title:
+        system.name ??
+        "Internship System",
+      subtitle:
+        system.tagline ??
+        internshipSystems.subtitle,
+      description:
+        system.description ??
+        internshipSystems.description,
+      role:
+        "Full-Stack Developer & IT Intern",
+      year: "2026",
+      category:
+        system.category ??
+        "Operational System",
+      type:
+        system.type ??
+        "Internship Project",
+      tech:
+        system.tech ??
+        system.technologies ??
+        [],
+      highlights:
+        system.keyFeatures ??
+        [],
+      media:
+        system.media ??
+        {},
+      slideKind: "internship",
+      suiteLabel:
+        internshipSystems.title ??
+        "Internship Systems Suite",
+      links: {
+        caseStudy:
+          PROJECT_ROUTES["internship-systems"],
+      },
+    }));
+
+  return [
+    ...featuredSlides,
+    ...internshipSlides,
+  ];
+}
+
+function getProjectTechnologies(project) {
+  const technologies =
+    project.tech ??
+    project.technologies ??
+    project.techStack ??
+    [];
+
+  return Array.isArray(technologies)
+    ? technologies
+    : [];
+}
+
+function getProjectDescription(project) {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 20 20"
-      fill="none"
-      className="h-4 w-4"
-    >
-      <path
-        d="M4.5 10h11m-4.25-4.25L15.5 10l-4.25 4.25"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    project.summary ??
+    project.description ??
+    project.subtitle ??
+    "A selected project from my software development portfolio."
   );
 }
 
-function ExternalLinkIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 20 20"
-      fill="none"
-      className="h-4 w-4"
-    >
-      <path
-        d="M11 4h5v5M9 11l7-7"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+function getProjectImage(project) {
+  const gallery =
+    project.media?.gallery ?? [];
 
-      <path
-        d="M16 11.5v3A1.5 1.5 0 0 1 14.5 16h-10A1.5 1.5 0 0 1 3 14.5v-10A1.5 1.5 0 0 1 4.5 3h3"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
+  const firstGalleryItem =
+    gallery[0] ?? null;
 
-function GithubIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      className="h-4 w-4"
-    >
-      <path
-        d="M12 2.75a9.25 9.25 0 0 0-2.93 18.03c.46.09.63-.2.63-.45v-1.77c-2.57.56-3.11-1.09-3.11-1.09-.42-1.07-1.03-1.35-1.03-1.35-.84-.57.06-.56.06-.56.93.07 1.42.95 1.42.95.83 1.42 2.17 1.01 2.7.77.08-.6.32-1.01.59-1.24-2.05-.23-4.21-1.03-4.21-4.57 0-1.01.36-1.84.95-2.49-.1-.23-.41-1.18.09-2.46 0 0 .78-.25 2.54.95A8.85 8.85 0 0 1 12 7.11a8.8 8.8 0 0 1 2.31.31c1.76-1.2 2.53-.95 2.53-.95.51 1.28.19 2.23.1 2.46.59.65.95 1.48.95 2.49 0 3.55-2.16 4.33-4.22 4.56.33.29.63.85.63 1.72v2.63c0 .25.17.55.64.45A9.25 9.25 0 0 0 12 2.75Z"
-        stroke="currentColor"
-        strokeWidth="1.35"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
+  const gallerySource =
+    typeof firstGalleryItem === "string"
+      ? firstGalleryItem
+      : firstGalleryItem?.src;
 
-function ProjectImage({
-  src,
-  alt,
-  className = "",
-  eager = false,
-}) {
-  const [imageFailed, setImageFailed] = useState(false);
+  const directSource =
+    project.media?.src ??
+    project.image ??
+    project.cover ??
+    null;
 
-  if (!src || imageFailed) {
-    return (
-      <div
-        aria-label={alt}
-        className={[
-          "flex items-center justify-center",
-          "bg-slate-900",
-          className,
-        ].join(" ")}
-      >
-        <div className="text-center">
-          <p className="text-3xl font-semibold tracking-[-0.05em] text-cyan-100">
-            JM
-          </p>
-
-          <p className="mt-2 text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-slate-600">
-            Project Preview
-          </p>
-        </div>
-      </div>
+  const directSourceIsVideo =
+    typeof directSource === "string" &&
+    /\.(mp4|webm|ogg)(\?.*)?$/i.test(
+      directSource
     );
+
+  return (
+    project.media?.cover ??
+    project.media?.poster ??
+    project.poster ??
+    gallerySource ??
+    (!directSourceIsVideo
+      ? directSource
+      : null)
+  );
+}
+
+function getProjectVideo(project) {
+  const directSource =
+    project.media?.src ??
+    project.video ??
+    null;
+
+  const directSourceIsVideo =
+    typeof directSource === "string" &&
+    /\.(mp4|webm|ogg)(\?.*)?$/i.test(
+      directSource
+    );
+
+  return (
+    project.media?.video ??
+    (directSourceIsVideo
+      ? directSource
+      : null)
+  );
+}
+
+function getCaseStudyRoute(project) {
+  return (
+    project.links?.caseStudy ??
+    project.caseStudyUrl ??
+    PROJECT_ROUTES[project.id] ??
+    `/projects/${project.id}`
+  );
+}
+
+function ProjectTechnologyList({
+  project,
+  limit,
+}) {
+  const technologies =
+    getProjectTechnologies(project);
+
+  const visibleTechnologies =
+    typeof limit === "number"
+      ? technologies.slice(0, limit)
+      : technologies;
+
+  if (visibleTechnologies.length === 0) {
+    return null;
   }
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      loading={eager ? "eager" : "lazy"}
-      decoding="async"
-      onError={() => setImageFailed(true)}
-      className={className}
-    />
+    <ul
+      aria-label={`${project.title} technology stack`}
+      className="flex flex-wrap gap-2"
+    >
+      {visibleTechnologies.map(
+        (technology) => (
+          <li
+            key={technology}
+            className={[
+              "rounded-full border",
+              "border-white/10",
+              "bg-white/[0.035]",
+              "px-3 py-1.5",
+              "text-xs font-semibold",
+              "text-slate-300",
+              "transition duration-300",
+              "hover:border-cyan-300/30",
+              "hover:bg-cyan-300/[0.07]",
+              "hover:text-cyan-50",
+            ].join(" ")}
+          >
+            {technology}
+          </li>
+        )
+      )}
+    </ul>
   );
 }
 
-function TechTag({ children }) {
-  return (
-    <li className="rounded-full border border-white/10 bg-white/[0.025] px-3 py-1.5 text-[0.68rem] font-medium text-slate-300">
-      {children}
-    </li>
-  );
-}
+function ProjectPreview({
+  project,
+  active = false,
+  allowPlayback = false,
+  eager = false,
+}) {
+  const videoSource =
+    getProjectVideo(project);
 
-function ProjectResult({ label, value }) {
-  return (
-    <li className="rounded-2xl border border-white/10 bg-slate-950/35 p-4">
-      <p className="text-lg font-semibold text-white">
-        {value}
-      </p>
-
-      <p className="mt-1 text-[0.62rem] font-semibold uppercase tracking-[0.17em] text-slate-500">
-        {label}
-      </p>
-    </li>
-  );
-}
-
-function TalkReadyFeature({ project }) {
-  const projectGallery = [
-    {
-      src: project.media?.cover,
-      alt: `${project.title} landing page`,
-    },
-    ...(project.media?.gallery ?? []),
-  ].filter((item) => item.src);
-
-  const [selectedMedia, setSelectedMedia] = useState(
-    projectGallery[0] ?? null
-  );
+  const imageSource =
+    getProjectImage(project);
 
   return (
-    <SectionPanel
-      as="article"
-      className="mt-12 border-cyan-300/15"
+    <div
+      className={[
+        "group/media relative",
+        "overflow-hidden",
+        "rounded-[1.5rem]",
+        "border border-cyan-300/15",
+        "bg-slate-950/70",
+        "shadow-[0_30px_100px_rgba(0,0,0,0.5)]",
+        "sm:rounded-[2rem]",
+      ].join(" ")}
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(34,211,238,0.1),transparent_30rem)]"
+        className={[
+          "pointer-events-none",
+          "absolute inset-0 z-20",
+          "rounded-[inherit]",
+          "ring-1 ring-inset",
+          "ring-white/[0.035]",
+        ].join(" ")}
       />
 
-      <div className="relative grid min-w-0 gap-8 p-5 sm:p-6 lg:grid-cols-[0.88fr_1.12fr] lg:gap-10 lg:p-8">
-        {/* Project content */}
-        <div className="flex min-w-0 flex-col">
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-cyan-300/20 bg-cyan-300/[0.07] px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.17em] text-cyan-100">
-                Featured Project
-              </span>
+      <div
+        aria-hidden="true"
+        className={[
+          "pointer-events-none",
+          "absolute left-5 top-5 z-30",
+          "h-8 w-8",
+          "border-l border-t",
+          "border-cyan-200/30",
+        ].join(" ")}
+      />
 
-              <span className="rounded-full border border-white/10 bg-white/[0.025] px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.17em] text-slate-400">
-                {project.type}
-              </span>
-            </div>
+      <div
+        aria-hidden="true"
+        className={[
+          "pointer-events-none",
+          "absolute bottom-5 right-5 z-30",
+          "h-8 w-8",
+          "border-b border-r",
+          "border-cyan-200/30",
+        ].join(" ")}
+      />
 
-            <p className="mt-6 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200">
-              {project.year} · {project.role}
-            </p>
+      {videoSource ? (
+        <LazyVideo
+          src={videoSource}
+          poster={imageSource}
+          className={[
+            "aspect-[16/10]",
+            "w-full object-cover object-top",
+            "transition duration-700",
+            active
+              ? "scale-100 opacity-100"
+              : "scale-[1.025] opacity-70",
+          ].join(" ")}
+          autoPlay={
+            active &&
+            allowPlayback
+          }
+          muted
+          loop
+          playsInline
+          preload={
+            eager
+              ? "metadata"
+              : "none"
+          }
+          lazy={!eager}
+          draggable={false}
+        />
+      ) : imageSource ? (
+        <img
+          src={imageSource}
+          alt={`${project.title} project preview`}
+          loading={
+            eager
+              ? "eager"
+              : "lazy"
+          }
+          decoding="async"
+          draggable={false}
+          className={[
+            "aspect-[16/10]",
+            "w-full object-cover object-top",
+            "transition duration-700",
+            active
+              ? "scale-100 opacity-100"
+              : "scale-[1.025] opacity-75",
+          ].join(" ")}
+        />
+      ) : (
+        <div
+          role="img"
+          aria-label={`${project.title} preview unavailable`}
+          className={[
+            "flex aspect-[16/10]",
+            "items-center justify-center",
+            "bg-[radial-gradient(",
+            "circle_at_center,",
+            "rgba(34,211,238,0.11),",
+            "transparent_24rem)]",
+            "text-slate-600",
+          ].join("")}
+        >
+          <Play
+            aria-hidden="true"
+            size={48}
+          />
+        </div>
+      )}
 
-            <h3 className="mt-4 text-3xl font-semibold tracking-[-0.045em] text-white sm:text-4xl lg:text-5xl">
-              {project.title}
-            </h3>
+      <div
+        aria-hidden="true"
+        className={[
+          "pointer-events-none",
+          "absolute inset-0 z-10",
+          "bg-gradient-to-t",
+          "from-slate-950/55",
+          "via-transparent",
+          "to-cyan-300/[0.025]",
+        ].join(" ")}
+      />
 
-            <p className="mt-3 text-lg font-medium leading-7 text-cyan-100 sm:text-xl">
-              {project.subtitle}
-            </p>
+      <div className="absolute inset-x-5 bottom-5 z-30 flex items-center justify-between gap-4">
+        <span
+          className={[
+            "rounded-full border",
+            "border-white/10",
+            "bg-slate-950/75",
+            "px-3 py-1.5",
+            "text-[0.62rem]",
+            "font-semibold uppercase",
+            "tracking-[0.16em]",
+            "text-slate-300",
+            "backdrop-blur",
+          ].join(" ")}
+        >
+          {project.slideKind ===
+          "internship"
+            ? "System demo"
+            : "Project preview"}
+        </span>
 
-            <p className="mt-6 text-sm leading-7 text-slate-400 sm:text-base sm:leading-8">
-              {project.description}
-            </p>
-          </div>
-
-          {project.highlights?.length > 0 ? (
-            <ul
-              aria-label={`${project.title} highlights`}
-              className="mt-7 grid gap-3"
-            >
-              {project.highlights.map((highlight) => (
-                <li
-                  key={highlight}
-                  className="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.02] p-4 text-sm leading-6 text-slate-300"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300"
-                  />
-
-                  {highlight}
-                </li>
-              ))}
-            </ul>
-          ) : null}
-
-          {project.results?.length > 0 ? (
-            <ul
-              aria-label={`${project.title} results`}
-              className="mt-7 grid gap-3 sm:grid-cols-3"
-            >
-              {project.results.map((result) => (
-                <ProjectResult
-                  key={result.label}
-                  label={result.label}
-                  value={result.value}
-                />
-              ))}
-            </ul>
-          ) : null}
-
-          <ul
-            aria-label={`${project.title} technologies`}
-            className="mt-7 flex flex-wrap gap-2"
+        {videoSource ? (
+          <span
+            className={[
+              "inline-flex items-center",
+              "gap-2 rounded-full",
+              "border border-cyan-300/15",
+              "bg-cyan-300/[0.07]",
+              "px-3 py-1.5",
+              "text-[0.62rem]",
+              "font-semibold uppercase",
+              "tracking-[0.15em]",
+              "text-cyan-100",
+              "backdrop-blur",
+            ].join(" ")}
           >
-            {project.tech?.map((technology) => (
-              <TechTag key={technology}>
-                {technology}
-              </TechTag>
-            ))}
-          </ul>
+            <span
+              className={[
+                "h-1.5 w-1.5",
+                "rounded-full",
+                active &&
+                allowPlayback
+                  ? "animate-pulse bg-emerald-400 motion-reduce:animate-none"
+                  : "bg-slate-500",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            />
 
-          <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:flex-wrap">
-            <a
-              href="/projects/talkready"
-              className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
-            >
-              View Case Study
-
-              <span className="transition-transform group-hover:translate-x-0.5">
-                <ArrowIcon />
-              </span>
-            </a>
-
-            {project.links?.live ? (
-              <a
-                href={project.links.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.035] px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-200/40 hover:bg-cyan-300/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
-              >
-                Live Platform
-                <ExternalLinkIcon />
-              </a>
-            ) : null}
-
-            {project.links?.github ? (
-              <a
-                href={project.links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-white/10 px-5 py-3 text-sm font-semibold text-slate-300 transition hover:border-white/25 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
-              >
-                <GithubIcon />
-                Source Code
-              </a>
-            ) : null}
-          </div>
-        </div>
-
-        {/* Project media */}
-        <div className="min-w-0">
-          <div className="overflow-hidden rounded-3xl border border-white/10 bg-slate-950/50">
-            {selectedMedia ? (
-              <ProjectImage
-                src={selectedMedia.src}
-                alt={selectedMedia.alt}
-                eager
-                className="aspect-[16/10] w-full object-cover object-top"
-              />
-            ) : null}
-          </div>
-
-          {projectGallery.length > 1 ? (
-            <div
-              role="group"
-              aria-label={`${project.title} screenshot selector`}
-              className="mt-3 grid grid-cols-4 gap-2"
-            >
-              {projectGallery.slice(0, 4).map((item) => {
-                const selected =
-                  selectedMedia?.src === item.src;
-
-                return (
-                  <button
-                    key={item.src}
-                    type="button"
-                    aria-pressed={selected}
-                    aria-label={`Show ${item.alt}`}
-                    onClick={() => setSelectedMedia(item)}
-                    className={[
-                      "overflow-hidden rounded-xl border",
-                      "transition",
-                      "focus-visible:outline-none",
-                      "focus-visible:ring-2",
-                      "focus-visible:ring-cyan-200",
-                      selected
-                        ? "border-cyan-300/60"
-                        : "border-white/10 hover:border-white/25",
-                    ].join(" ")}
-                  >
-                    <ProjectImage
-                      src={item.src}
-                      alt=""
-                      className="aspect-[4/3] w-full object-cover object-top"
-                    />
-                  </button>
-                );
-              })}
-            </div>
-          ) : null}
-
-          <p className="mt-4 text-xs leading-5 text-slate-600">
-            Select a preview to inspect different parts of the
-            student, trainer, and administrator experience.
-          </p>
-        </div>
+            {active &&
+            allowPlayback
+              ? "Playing"
+              : "Preview"}
+          </span>
+        ) : null}
       </div>
-    </SectionPanel>
+    </div>
   );
 }
 
-function InternshipSystemCard({
-  system,
-  reducedMotion,
+function ProjectActions({
+  project,
 }) {
+  const caseStudyRoute =
+    getCaseStudyRoute(project);
+
+  const liveUrl =
+    project.links?.live ??
+    project.liveUrl ??
+    null;
+
+  const repositoryUrl =
+    project.links?.github ??
+    project.links?.repository ??
+    project.githubUrl ??
+    null;
+
   return (
-    <SectionPanel
-      as="article"
-      className="h-full"
-    >
-      <div className="relative overflow-hidden border-b border-white/10 bg-slate-950">
-        {system.media?.video ? (
-          <LazyVideo
-            src={system.media.video}
-            poster={system.media?.cover}
-            className="aspect-video w-full object-cover"
-            autoPlay={!reducedMotion}
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            lazy
-          />
-        ) : (
-          <ProjectImage
-            src={system.media?.cover}
-            alt={`${system.name} interface preview`}
-            className="aspect-video w-full object-cover object-top"
-          />
-        )}
+    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+      <a
+        href={caseStudyRoute}
+        className={[
+          "group inline-flex min-h-12",
+          "w-full items-center",
+          "justify-center gap-2",
+          "rounded-full",
+          "bg-cyan-300",
+          "px-6 py-3",
+          "text-sm font-semibold",
+          "text-slate-950",
+          "shadow-[0_14px_38px_rgba(8,145,178,0.2)]",
+          "transition duration-300",
+          "hover:-translate-y-0.5",
+          "hover:bg-cyan-200",
+          "focus-visible:outline-none",
+          "focus-visible:ring-2",
+          "focus-visible:ring-cyan-200",
+          "focus-visible:ring-offset-4",
+          "focus-visible:ring-offset-slate-950",
+          "sm:w-auto",
+        ].join(" ")}
+      >
+        View Case Study
 
-        <div
+        <ArrowRight
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"
+          size={16}
+          className="transition-transform duration-300 group-hover:translate-x-0.5"
         />
+      </a>
 
-        <div className="absolute inset-x-4 bottom-4 flex items-center justify-between gap-3">
-          <span className="rounded-full border border-white/10 bg-slate-950/75 px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-slate-300 backdrop-blur">
-            Internal Workflow System
-          </span>
+      {liveUrl ? (
+        <a
+          href={liveUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={[
+            "inline-flex min-h-12",
+            "w-full items-center",
+            "justify-center gap-2",
+            "rounded-full border",
+            "border-white/15",
+            "bg-white/[0.035]",
+            "px-6 py-3",
+            "text-sm font-semibold",
+            "text-white",
+            "transition duration-300",
+            "hover:-translate-y-0.5",
+            "hover:border-cyan-200/40",
+            "hover:bg-cyan-300/[0.06]",
+            "focus-visible:outline-none",
+            "focus-visible:ring-2",
+            "focus-visible:ring-cyan-200",
+            "focus-visible:ring-offset-4",
+            "focus-visible:ring-offset-slate-950",
+            "sm:w-auto",
+          ].join(" ")}
+        >
+          Live Platform
 
-          <span className="rounded-full border border-cyan-300/15 bg-slate-950/75 px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-cyan-200 backdrop-blur">
-            {system.category}
-          </span>
+          <ExternalLink
+            aria-hidden="true"
+            size={15}
+          />
+        </a>
+      ) : null}
+
+      {repositoryUrl ? (
+        <a
+          href={repositoryUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open ${project.title} source repository`}
+          className={[
+            "inline-flex h-12 w-12",
+            "shrink-0 items-center",
+            "justify-center",
+            "self-center rounded-full",
+            "border border-white/15",
+            "bg-white/[0.035]",
+            "text-slate-300",
+            "transition duration-300",
+            "hover:-translate-y-0.5",
+            "hover:border-cyan-200/40",
+            "hover:bg-cyan-300/[0.06]",
+            "hover:text-white",
+            "focus-visible:outline-none",
+            "focus-visible:ring-2",
+            "focus-visible:ring-cyan-200",
+          ].join(" ")}
+        >
+          <Code2
+            aria-hidden="true"
+            size={18}
+          />
+        </a>
+      ) : null}
+    </div>
+  );
+}
+
+function DesktopProjectPanel({
+  project,
+  index,
+  active,
+  allowPlayback,
+}) {
+  const description =
+    getProjectDescription(project);
+
+  const highlights =
+    Array.isArray(project.highlights)
+      ? project.highlights.slice(0, 4)
+      : [];
+
+  return (
+    <motion.article
+      aria-labelledby={`project-title-${project.id}`}
+      animate={{
+        opacity: active ? 1 : 0.42,
+        scale: active ? 1 : 0.965,
+        x: active ? 0 : 14,
+      }}
+      transition={{
+        duration: 0.65,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="flex h-full shrink-0 items-center"
+    >
+      <div className="mx-auto w-full max-w-[90rem] px-4 pb-16 pt-28 sm:px-6 lg:px-10 xl:pb-20 xl:pt-32">
+        <div className="grid items-center gap-8 lg:grid-cols-[0.82fr_1.18fr] xl:gap-14">
+          <div className="relative z-10 min-w-0">
+            <div className="flex flex-wrap items-center gap-3">
+              <span
+                className={[
+                  "inline-flex items-center",
+                  "gap-2 rounded-full",
+                  "border border-cyan-300/20",
+                  "bg-cyan-300/[0.065]",
+                  "px-3 py-1.5",
+                  "text-[0.65rem]",
+                  "font-semibold uppercase",
+                  "tracking-[0.18em]",
+                  "text-cyan-100",
+                ].join(" ")}
+              >
+                <Layers
+                  aria-hidden="true"
+                  size={13}
+                />
+
+                {project.slideKind ===
+                "internship"
+                  ? project.suiteLabel
+                  : "Featured Project"}
+              </span>
+
+              <span className="font-mono text-xs text-slate-600">
+                {String(index + 1).padStart(
+                  2,
+                  "0"
+                )}
+              </span>
+            </div>
+
+            <h3
+              id={`project-title-${project.id}`}
+              className="mt-6 break-safe text-4xl font-semibold leading-[0.98] tracking-[-0.055em] text-white xl:text-5xl 2xl:text-6xl"
+            >
+              {project.title}
+            </h3>
+
+            {project.subtitle ? (
+              <p className="mt-4 max-w-xl text-base font-medium leading-7 text-cyan-100/85 sm:text-lg">
+                {project.subtitle}
+              </p>
+            ) : null}
+
+            <p className="mt-5 max-w-xl text-sm leading-7 text-slate-400 sm:text-base">
+              {description}
+            </p>
+
+            <dl className="mt-7 grid max-w-xl grid-cols-2 gap-4 border-y border-white/10 py-5 sm:grid-cols-3">
+              <div>
+                <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-slate-600">
+                  Role
+                </dt>
+
+                <dd className="mt-2 text-sm font-medium leading-6 text-slate-200">
+                  {project.role ??
+                    (project.slideKind ===
+                    "internship"
+                      ? "Full-Stack Developer & IT Intern"
+                      : "Full-Stack Developer")}
+                </dd>
+              </div>
+
+              <div>
+                <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-slate-600">
+                  Year
+                </dt>
+
+                <dd className="mt-2 text-sm font-medium leading-6 text-slate-200">
+                  {project.year ??
+                    "Selected Work"}
+                </dd>
+              </div>
+
+              <div className="col-span-2 sm:col-span-1">
+                <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-slate-600">
+                  Focus
+                </dt>
+
+                <dd className="mt-2 text-sm font-medium leading-6 text-slate-200">
+                  {project.type ??
+                    project.category ??
+                    "Software Systems"}
+                </dd>
+              </div>
+            </dl>
+
+            {highlights.length > 0 ? (
+              <ul
+                aria-label={`${project.title} highlights`}
+                className="mt-6 grid gap-2 sm:grid-cols-2"
+              >
+                {highlights.map(
+                  (highlight) => (
+                    <li
+                      key={highlight}
+                      className="flex gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-3 text-sm leading-6 text-slate-400"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300"
+                      />
+
+                      <span>
+                        {highlight}
+                      </span>
+                    </li>
+                  )
+                )}
+              </ul>
+            ) : null}
+
+            <div className="mt-7">
+              <ProjectTechnologyList
+                project={project}
+                limit={6}
+              />
+            </div>
+
+            <div className="mt-8">
+              <ProjectActions
+                project={project}
+              />
+            </div>
+          </div>
+
+          <div className="relative min-w-0">
+            <div
+              aria-hidden="true"
+              className={[
+                "pointer-events-none",
+                "absolute -inset-8 -z-10",
+                "rounded-[3rem]",
+                "bg-cyan-300/[0.055]",
+                "blur-3xl",
+                "transition-opacity duration-500",
+                active
+                  ? "opacity-100"
+                  : "opacity-35",
+              ].join(" ")}
+            />
+
+            <ProjectPreview
+              project={project}
+              active={active}
+              allowPlayback={allowPlayback}
+              eager={index === 0}
+            />
+          </div>
         </div>
       </div>
+    </motion.article>
+  );
+}
 
-      <div className="p-5 sm:p-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200">
-          {system.tagline}
-        </p>
+function MobileProjectCard({
+  project,
+  index,
+}) {
+  const description =
+    getProjectDescription(project);
 
-        <h4 className="mt-4 text-xl font-semibold tracking-[-0.03em] text-white sm:text-2xl">
-          {system.name}
-        </h4>
+  return (
+    <MotionSection
+      effect={
+        index % 2 === 0
+          ? "left"
+          : "right"
+      }
+      distance={24}
+      amount={0.08}
+      duration={0.7}
+    >
+      <article
+        aria-labelledby={`mobile-project-title-${project.id}`}
+        className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.025] p-4 sm:p-5"
+      >
+        <ProjectPreview
+          project={project}
+          active
+          allowPlayback={false}
+          eager={index === 0}
+        />
 
-        <p className="mt-4 text-sm leading-7 text-slate-400">
-          {system.description}
-        </p>
+        <div className="px-1 pb-2 pt-6 sm:px-2">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-cyan-200">
+              {project.slideKind ===
+              "internship"
+                ? project.suiteLabel
+                : "Featured Project"}
+            </p>
 
-        {system.keyFeatures?.length > 0 ? (
-          <ul
-            aria-label={`${system.name} key features`}
-            className="mt-5 grid gap-2 sm:grid-cols-2"
+            <span className="font-mono text-xs text-slate-600">
+              {String(index + 1).padStart(
+                2,
+                "0"
+              )}
+            </span>
+          </div>
+
+          <h3
+            id={`mobile-project-title-${project.id}`}
+            className="mt-4 break-safe text-3xl font-semibold tracking-[-0.045em] text-white"
           >
-            {system.keyFeatures.slice(0, 4).map((feature) => (
-              <li
-                key={feature}
-                className="rounded-xl border border-white/10 bg-white/[0.02] p-3 text-xs leading-5 text-slate-300"
-              >
-                {feature}
-              </li>
-            ))}
-          </ul>
-        ) : null}
+            {project.title}
+          </h3>
 
-        <ul
-          aria-label={`${system.name} technologies`}
-          className="mt-5 flex flex-wrap gap-2"
+          {project.subtitle ? (
+            <p className="mt-3 text-sm font-medium leading-7 text-cyan-100/85">
+              {project.subtitle}
+            </p>
+          ) : null}
+
+          <p className="mt-4 text-sm leading-7 text-slate-400">
+            {description}
+          </p>
+
+          {Array.isArray(
+            project.highlights
+          ) &&
+          project.highlights.length >
+            0 ? (
+            <ul className="mt-5 grid gap-2">
+              {project.highlights
+                .slice(0, 4)
+                .map((highlight) => (
+                  <li
+                    key={highlight}
+                    className="flex gap-3 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-3 text-sm leading-6 text-slate-400"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300"
+                    />
+
+                    <span>
+                      {highlight}
+                    </span>
+                  </li>
+                ))}
+            </ul>
+          ) : null}
+
+          <div className="mt-6">
+            <ProjectTechnologyList
+              project={project}
+              limit={6}
+            />
+          </div>
+
+          <div className="mt-7">
+            <ProjectActions
+              project={project}
+            />
+          </div>
+        </div>
+      </article>
+    </MotionSection>
+  );
+}
+
+function ProjectsVerticalLayout({
+  projects,
+  sectionRef,
+}) {
+  return (
+    <section
+      ref={sectionRef}
+      id="projects"
+      aria-labelledby="projects-heading"
+      className="relative isolate scroll-mt-24 overflow-hidden py-20 sm:py-24"
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-[-12rem] top-[15%] -z-10 h-[30rem] w-[30rem] rounded-full bg-cyan-400/[0.055] blur-3xl"
+      />
+
+      <Container>
+        <MotionSection
+          effect="rise"
+          amount={0.08}
+          className="max-w-3xl"
         >
-          {system.tech?.slice(0, 5).map((technology) => (
-            <TechTag key={technology}>
-              {technology}
-            </TechTag>
-          ))}
-        </ul>
-      </div>
-    </SectionPanel>
+          <SectionHeading
+            eyebrow="Featured Projects"
+            title="Selected systems built for learning and operations."
+            description="Explore TalkReady and four internal systems developed during my internship: CRM Pipeline, Virtual Office Management, Ticket Support, and Paysera Inventory."
+          />
+        </MotionSection>
+
+        <div className="mt-10 grid gap-7">
+          {projects.map(
+            (project, index) => (
+              <MobileProjectCard
+                key={project.id}
+                project={project}
+                index={index}
+              />
+            )
+          )}
+        </div>
+      </Container>
+    </section>
   );
 }
 
 export default function ProjectsSection() {
-  const reducedMotion = useMediaQuery(
-    "(prefers-reduced-motion: reduce)"
-  );
+  const projects =
+    createProjectSlides();
 
-  const featuredProject =
-    featuredProjects.find((project) =>
-      homepageContent.featuredProjectIds.includes(
-        project.id
-      )
-    ) ?? featuredProjects[0];
+  const {
+    sectionRef,
+    stageRef,
 
-  const internshipSystemPreviews =
-    homepageContent.internshipSystemPreviewIds
-      .map((systemId) =>
-        internshipSystems.systems.find(
-          (system) => system.id === systemId
-        )
-      )
-      .filter(Boolean);
+    activeProjectIndex,
+    trackOffset,
+    progress,
+
+    isWheelLocked,
+    isDragging,
+    allowWheelCarousel,
+
+    canGoPrevious,
+    canGoNext,
+
+    goToProject,
+    goPrevious,
+    goNext,
+
+    handlePointerDown,
+    handlePointerMove,
+    handlePointerUp,
+    handlePointerCancel,
+    handleClickCapture,
+  } = useProjectsWheelCarousel({
+    projectCount: projects.length,
+    headerOffset: 64,
+  });
+
+  if (
+    !allowWheelCarousel ||
+    projects.length < 2
+  ) {
+    return (
+      <ProjectsVerticalLayout
+        projects={projects}
+        sectionRef={sectionRef}
+      />
+    );
+  }
 
   return (
-    <PageSection
+    <section
+      ref={sectionRef}
       id="projects"
-      labelledBy="projects-heading"
-      tone="subtle"
+      aria-labelledby="projects-heading"
+      data-projects-wheel-scene=""
+      className="relative isolate scroll-mt-24 bg-slate-950"
     >
-      <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-        <SectionHeading
-          id="projects-heading"
-          eyebrow="Selected Work"
-          title="Systems built for learning, operations, and real workflows."
-          description="A focused selection of full-stack platforms and internal systems that demonstrate product thinking, workflow design, technical implementation, and practical problem-solving."
+      <div
+        ref={stageRef}
+        data-projects-wheel-stage=""
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Featured projects carousel"
+        tabIndex={-1}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+        onClickCapture={handleClickCapture}
+        style={{
+          touchAction: "pan-y",
+        }}
+        className={[
+          "relative h-[calc(100dvh-4rem)]",
+          "overflow-hidden select-none",
+          isDragging
+            ? "cursor-grabbing"
+            : "cursor-grab",
+        ].join(" ")}
+      >
+        <p
+          className="sr-only"
+          aria-live="polite"
+        >
+          Showing project{" "}
+          {activeProjectIndex + 1} of{" "}
+          {projects.length}:{" "}
+          {
+            projects[
+              activeProjectIndex
+            ]?.title
+          }
+        </p>
+
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-30 opacity-[0.035] [background-image:linear-gradient(rgba(148,163,184,0.45)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.45)_1px,transparent_1px)] [background-size:72px_72px]"
         />
 
-        <a
-          href="#contact"
-          className="group inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-200/40 hover:bg-cyan-300/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950 sm:w-fit"
-        >
-          Discuss a Project
+        <motion.div
+          aria-hidden="true"
+          animate={{
+            x: `${activeProjectIndex * 10}%`,
+            opacity:
+              isWheelLocked || isDragging
+                ? 0.72
+                : 0.4,
+          }}
+          transition={{
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="pointer-events-none absolute -left-48 top-[8%] -z-20 h-[34rem] w-[34rem] rounded-full bg-cyan-400/[0.095] blur-3xl"
+        />
 
-          <span className="transition-transform group-hover:translate-x-0.5">
-            <ArrowIcon />
-          </span>
-        </a>
-      </div>
+        <motion.div
+          aria-hidden="true"
+          animate={{
+            x: `${-activeProjectIndex * 8}%`,
+            opacity:
+              isWheelLocked || isDragging
+                ? 0.62
+                : 0.32,
+          }}
+          transition={{
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="pointer-events-none absolute -right-48 bottom-[4%] -z-20 h-[32rem] w-[32rem] rounded-full bg-indigo-400/[0.08] blur-3xl"
+        />
 
-      {featuredProject ? (
-        <TalkReadyFeature project={featuredProject} />
-      ) : null}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 z-20 h-28 bg-gradient-to-b from-slate-950 via-slate-950/80 to-transparent"
+        />
 
-      <div className="mt-16">
-        <div className="grid items-end gap-7 lg:grid-cols-[1fr_auto]">
-          <div className="max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">
-              Internship Systems Suite
-            </p>
-
-            <h3 className="mt-4 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
-              Real company systems for day-to-day operations.
-            </h3>
-
-            <p className="mt-5 text-base leading-8 text-slate-400">
-              {internshipSystems.description}
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-            <div className="rounded-2xl border border-white/10 bg-white/[0.025] px-5 py-4">
-              <p className="text-2xl font-semibold text-white">
-                {internshipSystemPreviews.length}
+        <div className="absolute inset-x-0 top-0 z-30 border-b border-white/[0.06] bg-slate-950/65 backdrop-blur-xl">
+          <div className="mx-auto flex w-full max-w-[90rem] items-end justify-between gap-6 px-4 py-4 sm:px-6 lg:px-10">
+            <div className="min-w-0">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-cyan-200">
+                Featured Projects
               </p>
 
-              <p className="mt-1 text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                Operational Systems
-              </p>
+              <h2
+                id="projects-heading"
+                className="mt-2 truncate text-xl font-semibold tracking-[-0.035em] text-white sm:text-2xl"
+              >
+                TalkReady and four internship systems.
+              </h2>
             </div>
 
-            <a
-              href="/projects/internship-systems"
-              className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/[0.06] px-5 py-3 text-sm font-semibold text-cyan-100 transition hover:border-cyan-200/40 hover:bg-cyan-300/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
-            >
-              View Case Study
+            <div className="hidden shrink-0 items-center gap-3 md:flex">
+              <button
+                type="button"
+                data-no-project-drag=""
+                onClick={goPrevious}
+                disabled={!canGoPrevious}
+                aria-label="Show previous project"
+                className={[
+                  "inline-flex h-10 w-10",
+                  "items-center justify-center",
+                  "rounded-full border",
+                  "transition duration-300",
+                  "focus-visible:outline-none",
+                  "focus-visible:ring-2",
+                  "focus-visible:ring-cyan-200",
+                  canGoPrevious
+                    ? [
+                        "border-white/15",
+                        "bg-white/[0.04]",
+                        "text-slate-200",
+                        "hover:border-cyan-200/40",
+                        "hover:bg-cyan-300/[0.08]",
+                        "hover:text-white",
+                      ].join(" ")
+                    : [
+                        "cursor-not-allowed",
+                        "border-white/[0.06]",
+                        "bg-white/[0.015]",
+                        "text-slate-700",
+                      ].join(" "),
+                ].join(" ")}
+              >
+                <ArrowLeft
+                  aria-hidden="true"
+                  size={17}
+                />
+              </button>
 
-              <span className="transition-transform group-hover:translate-x-0.5">
-                <ArrowIcon />
-              </span>
-            </a>
+              <div className="min-w-[9rem] text-center">
+                <p
+                  aria-live="polite"
+                  className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500"
+                >
+                  Project{" "}
+                  <span className="text-cyan-200">
+                    {String(
+                      activeProjectIndex + 1
+                    ).padStart(2, "0")}
+                  </span>
+                  {" / "}
+                  {String(
+                    projects.length
+                  ).padStart(2, "0")}
+                </p>
+
+                <p className="mt-1 text-[0.68rem] text-slate-600">
+                  {isDragging
+                    ? "Release to snap"
+                    : "Scroll, drag, or use arrows"}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                data-no-project-drag=""
+                onClick={goNext}
+                aria-label={
+                  canGoNext
+                    ? "Show next project"
+                    : "Continue to experience"
+                }
+                className={[
+                  "inline-flex h-10",
+                  "items-center justify-center",
+                  "gap-2 rounded-full border",
+                  "border-white/15",
+                  "bg-white/[0.04]",
+                  "px-3.5",
+                  "text-sm font-semibold",
+                  "text-slate-200",
+                  "transition duration-300",
+                  "hover:border-cyan-200/40",
+                  "hover:bg-cyan-300/[0.08]",
+                  "hover:text-white",
+                  "focus-visible:outline-none",
+                  "focus-visible:ring-2",
+                  "focus-visible:ring-cyan-200",
+                ].join(" ")}
+              >
+                {canGoNext
+                  ? null
+                  : (
+                    <span className="text-xs">
+                      Continue
+                    </span>
+                  )}
+
+                <ArrowRight
+                  aria-hidden="true"
+                  size={17}
+                  className={
+                    canGoNext
+                      ? ""
+                      : "rotate-90"
+                  }
+                />
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="mt-8 grid gap-5 lg:grid-cols-2">
-          {internshipSystemPreviews.map((system) => (
-            <InternshipSystemCard
-              key={system.id}
-              system={system}
-              reducedMotion={reducedMotion}
-            />
-          ))}
+        <div
+          style={{
+            width: `${
+              projects.length * 100
+            }%`,
+            transform: `translate3d(${trackOffset}px, 0, 0)`,
+            transition: isDragging
+              ? "none"
+              : "transform 680ms cubic-bezier(0.22, 1, 0.36, 1)",
+          }}
+          className="absolute inset-0 flex h-full will-change-transform"
+        >
+          {projects.map(
+            (project, index) => (
+              <div
+                key={project.id}
+                style={{
+                  width: `${
+                    100 /
+                    projects.length
+                  }%`,
+                }}
+                className="h-full shrink-0"
+              >
+                <DesktopProjectPanel
+                  project={project}
+                  index={index}
+                  active={
+                    index ===
+                    activeProjectIndex
+                  }
+                  allowPlayback={
+                    index ===
+                    activeProjectIndex &&
+                    !isDragging
+                  }
+                />
+              </div>
+            )
+          )}
         </div>
 
-        <p className="mt-6 max-w-3xl text-xs leading-6 text-slate-600">
-          These applications supported internal company workflows.
-          Public source access may be limited because they were built
-          for operational use during professional work and internship
-          activities.
-        </p>
+        <div className="absolute inset-x-0 bottom-0 z-40">
+          <div className="mx-auto w-full max-w-[90rem] px-4 pb-5 sm:px-6 lg:px-10">
+            <div className="relative h-px overflow-hidden bg-white/[0.08]">
+              <motion.div
+                animate={{
+                  scaleX: progress,
+                }}
+                transition={{
+                  duration: 0.5,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className="absolute inset-0 origin-left bg-gradient-to-r from-cyan-400 via-cyan-200 to-indigo-300 shadow-[0_0_18px_rgba(34,211,238,0.55)]"
+              />
+            </div>
+
+            <div
+              role="tablist"
+              aria-label="Featured projects"
+              className="mt-3 grid grid-cols-5 gap-3"
+            >
+              {projects.map(
+                (project, index) => {
+                  const active =
+                    activeProjectIndex ===
+                    index;
+
+                  return (
+                    <button
+                      key={project.id}
+                      type="button"
+                      role="tab"
+                      data-no-project-drag=""
+                      aria-selected={active}
+                      aria-label={`Show ${project.title}`}
+                      onClick={() =>
+                        goToProject(index)
+                      }
+                      className={[
+                        "flex min-w-0",
+                        "items-center gap-2",
+                        "text-left text-[0.58rem]",
+                        "font-semibold uppercase",
+                        "tracking-[0.12em]",
+                        "transition duration-300",
+                        "focus-visible:outline-none",
+                        "focus-visible:ring-2",
+                        "focus-visible:ring-cyan-200",
+                        active
+                          ? "text-cyan-100"
+                          : "text-slate-700 hover:text-slate-400",
+                      ].join(" ")}
+                    >
+                      <span
+                        className={[
+                          "h-1.5 w-1.5",
+                          "shrink-0 rounded-full",
+                          "transition duration-300",
+                          active
+                            ? "bg-cyan-300 shadow-[0_0_12px_rgba(34,211,238,0.7)]"
+                            : "bg-slate-700",
+                        ].join(" ")}
+                      />
+
+                      <span className="min-w-0 truncate">
+                        {String(
+                          index + 1
+                        ).padStart(
+                          2,
+                          "0"
+                        )}
+                        {" "}
+                        {project.title}
+                      </span>
+                    </button>
+                  );
+                }
+              )}
+            </div>
+          </div>
+        </div>
       </div>
-    </PageSection>
+    </section>
   );
 }

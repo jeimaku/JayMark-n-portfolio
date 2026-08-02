@@ -6,88 +6,76 @@ import {
 } from "react-router";
 
 import Header from "./components/layout/Header";
-import Footer from "./components/layout/Footer";
 import SiteBackground from "./components/effects/SiteBackground";
 import ScrollToTop from "./components/effects/ScrollToTop";
 import SkipLink from "./components/ui/SkipLink";
 
-import Home from "./pages/Home";
 import HomeV2 from "./pages/HomeV2";
-import ProjectCaseStudy from "./pages/ProjectCaseStudy";
 import TalkReadyCaseStudyV2 from "./pages/TalkReadyCaseStudyV2";
 import InternshipSystemsCaseStudyV2 from "./pages/InternshipSystemsCaseStudyV2";
 
 export default function App() {
   const { pathname } = useLocation();
 
-  /*
-   * HomeV2 already renders its own Version 2 footer.
-   * TalkReadyCaseStudyV2 uses CaseStudyLayout, which provides
-   * its own header, skip link, main landmark, and footer.
-   */
-  const isHomeV2 = pathname === "/preview-v2";
-
   const isRebuiltCaseStudy =
     pathname === "/projects/talkready" ||
-    pathname === "/projects/internship-systems";
+    pathname ===
+      "/projects/internship-systems";
 
+  /*
+   * Rebuilt case-study pages provide their own
+   * header, skip link, main landmark, and footer
+   * through CaseStudyLayout.
+   */
   const showGlobalHeader =
-    !isRebuiltCaseStudy;
-
-  const showGlobalFooter =
-    !isHomeV2 &&
     !isRebuiltCaseStudy;
 
   const showGlobalSkipLink =
     !isRebuiltCaseStudy;
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-slate-950 text-slate-50">
+    <div className="relative min-h-screen bg-slate-950 text-slate-50">
       <SiteBackground />
       <ScrollToTop />
 
-      {showGlobalSkipLink ? <SkipLink /> : null}
+      {showGlobalSkipLink ? (
+        <SkipLink />
+      ) : null}
 
-      {showGlobalHeader ? <Header /> : null}
+      {showGlobalHeader ? (
+        <Header />
+      ) : null}
 
       <Routes>
         <Route
           path="/"
-          element={<Home />}
-        />
-
-        <Route
-          path="/preview-v2"
           element={<HomeV2 />}
         />
 
-        {/*
-         * The specific TalkReady route must use the rebuilt page.
-         * Keep this route above the generic project route for clarity.
-         */}
         <Route
           path="/projects/talkready"
-          element={<TalkReadyCaseStudyV2 />}
+          element={
+            <TalkReadyCaseStudyV2 />
+          }
         />
 
         <Route
           path="/projects/internship-systems"
-          element={<InternshipSystemsCaseStudyV2 />}
+          element={
+            <InternshipSystemsCaseStudyV2 />
+          }
         />
 
-        {/*
-         * Keep the generic route for the remaining legacy
-         * project case studies.
-         */}
         <Route
-          path="/projects/:projectId"
-          element={<ProjectCaseStudy />}
+          path="/preview-v2"
+          element={
+            <Navigate
+              to="/"
+              replace
+            />
+          }
         />
 
-        {/*
-         * Temporary development URL now redirects to the
-         * production TalkReady route.
-         */}
         <Route
           path="/talkready-v2"
           element={
@@ -97,9 +85,37 @@ export default function App() {
             />
           }
         />
-      </Routes>
 
-      {showGlobalFooter ? <Footer /> : null}
+        <Route
+          path="/projects"
+          element={
+            <Navigate
+              to="/#projects"
+              replace
+            />
+          }
+        />
+
+        <Route
+          path="/projects/:projectId"
+          element={
+            <Navigate
+              to="/#projects"
+              replace
+            />
+          }
+        />
+
+        <Route
+          path="*"
+          element={
+            <Navigate
+              to="/"
+              replace
+            />
+          }
+        />
+      </Routes>
     </div>
   );
 }

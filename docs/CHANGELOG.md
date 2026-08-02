@@ -226,3 +226,72 @@
 - Preserved native browser scrolling and existing section anchors.
 - Kept the legacy homepage and project case studies unaffected.
 - Started Phase 8 cinematic scroll implementation.
+
+### Phase 8 — Hero-to-About Transition
+
+- Added a native sticky hero scroll scene to Preview V2.
+- Added scroll-linked motion to the hero copy and 3D workspace container.
+- Added subtle depth movement to the atmospheric hero background.
+- Added workspace scale, position, opacity, and perspective transitions.
+- Added cinematic gradient, glow, and line graphics between Hero and
+  About.
+- Added a scroll-triggered About section entrance.
+- Preserved native scrolling, anchor navigation, and 3D interaction.
+- Added lighter transform ranges for mobile and touch devices.
+- Added a static reduced-motion fallback that removes the extended sticky
+  scene.
+- Kept the legacy homepage and project case studies unaffected.
+- Completed Phase 8 Task 2.
+
+### Phase 8 — Featured Projects Scroll Sequence
+
+- Rebuilt the Preview V2 Featured Projects section as a cinematic
+  scroll-linked sequence.
+- Added a desktop sticky project scene driven by native vertical
+  scrolling.
+- Added horizontal movement between TalkReady and Internship Systems.
+- Added scroll-linked project scale, opacity, content, and media depth.
+- Added active-project status and a scroll-progress timeline.
+- Added moving cyan and indigo ambient lighting.
+- Added active-only muted video playback.
+- Preserved project case-study, live-platform, and repository links.
+- Added a normal vertical layout for mobile, touch devices, reduced
+  motion, and limited project collections.
+- Preserved native scrolling, direct anchors, and keyboard access.
+- Completed Phase 8 Task 4.
+
+### Phase 8 — Experience and Education Timeline Motion
+
+- Rebuilt the Preview V2 Experience and Education area as one connected
+  scroll-driven professional timeline.
+- Preserved the centralized featured-experience configuration.
+- Added alternating desktop experience-card entrances.
+- Added a simplified single-column mobile timeline.
+- Added scroll-linked timeline progress and active checkpoints.
+- Added staggered experience-highlight reveals.
+- Added subtle individual card and icon parallax.
+- Added an animated bridge between Experience and Education.
+- Added animated education cards and school-logo movement.
+- Added safe logo fallbacks for the existing university assets.
+- Preserved direct Experience, Education, and Contact anchors.
+- Added simplified touch-device and reduced-motion behavior.
+- Completed Phase 8 Task 5.
+
+### Phase 8 — Contact, Footer, and Global Effects
+
+- Rebuilt the Preview V2 Contact section around the Phase 8 motion
+  foundation.
+- Removed the legacy Reveal and StaggerContainer wrappers from Contact.
+- Added converging scroll-linked Contact panels.
+- Added staggered contact-card, professional-link, and highlight reveals.
+- Added moving ambient lighting and an end-of-page transition line.
+- Added scroll-linked Footer entrance, brand movement, navigation movement,
+  divider progress, and ambient lighting.
+- Added a desktop global section-progress navigator.
+- Added active-section tracking for Home, About, Skills, Projects,
+  Experience, Education, and Contact.
+- Preserved centralized profile, email, resume, location, navigation, and
+  social-link data.
+- Preserved direct anchors, keyboard focus, native scrolling, and reduced
+  motion behavior.
+- Completed Phase 8 Task 6.

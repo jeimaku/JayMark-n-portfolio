@@ -1,5 +1,4 @@
-const PORTRAIT_URL =
-  "/old-portfolio-assets/images/REPLACE-WITH-YOUR-PORTRAIT-FILE.webp";
+import gradPic from "../assets/images/GradPic.jpg";
 
 export const aboutContent = {
   title:
@@ -9,9 +8,9 @@ export const aboutContent = {
     "I approach technology from both sides: developing software that supports real workflows and solving the technical problems that keep those systems running.",
 
   portrait: {
-    src: PORTRAIT_URL,
-    alt: "Portrait of Jay Mark Apelado",
-    objectPosition: "50% 30%",
+    src: gradPic,
+    alt: "Jay Mark Apelado in graduation attire",
+    objectPosition: "50% 25%",
   },
 
   story: [

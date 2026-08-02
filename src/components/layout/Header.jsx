@@ -1,103 +1,924 @@
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
-import Button from "../ui/Button";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+} from "motion/react";
+
+import {
+  ArrowUpRight,
+  Menu,
+  X,
+} from "lucide-react";
+
 import SocialLink from "../ui/SocialLink";
 import Container from "./Container";
 
-import { mainNavigation, profile } from "../../data";
+import { profile } from "../../data";
+
+const HEADER_NAVIGATION = [
+  {
+    id: "home",
+    label: "Home",
+  },
+  {
+    id: "about",
+    label: "About",
+  },
+  {
+    id: "skills",
+    label: "Skills",
+  },
+  {
+    id: "projects",
+    label: "Projects",
+  },
+  {
+    id: "experience",
+    label: "Experience",
+  },
+  {
+    id: "education",
+    label: "Education",
+  },
+  {
+    id: "certifications",
+    label: "Certifications",
+  },
+  {
+    id: "contact",
+    label: "Contact",
+  },
+];
+
+const HEADER_SCROLL_OFFSET = 96;
+
+function getDocumentScrollProgress() {
+  const scrollableDistance =
+    document.documentElement.scrollHeight -
+    window.innerHeight;
+
+  if (scrollableDistance <= 0) {
+    return 0;
+  }
+
+  return Math.min(
+    1,
+    Math.max(
+      0,
+      window.scrollY /
+        scrollableDistance
+    )
+  );
+}
+
+function getCurrentSection() {
+  const viewportProbe = Math.min(
+    window.innerHeight * 0.32,
+    260
+  );
+
+  const reachedPageEnd =
+    window.scrollY +
+      window.innerHeight >=
+    document.documentElement
+      .scrollHeight -
+      8;
+
+  if (reachedPageEnd) {
+    return "contact";
+  }
+
+  let currentSection =
+    HEADER_NAVIGATION[0].id;
+
+  for (const item of HEADER_NAVIGATION) {
+    const section =
+      document.getElementById(
+        item.id
+      );
+
+    if (!section) {
+      continue;
+    }
+
+    const rectangle =
+      section.getBoundingClientRect();
+
+    const intersectsProbe =
+      rectangle.top <=
+        viewportProbe &&
+      rectangle.bottom >
+        viewportProbe;
+
+    if (intersectsProbe) {
+      currentSection =
+        item.id;
+      break;
+    }
+
+    if (
+      rectangle.top <=
+      viewportProbe
+    ) {
+      currentSection =
+        item.id;
+    }
+  }
+
+  return currentSection;
+}
+
+function BrandMark() {
+  return (
+    <span className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/25 bg-cyan-300/[0.08] text-sm font-bold text-cyan-100 shadow-[0_10px_30px_rgba(8,145,178,0.14)] transition duration-300 group-hover:border-cyan-200/45 group-hover:bg-cyan-300/[0.13]">
+      {profile.initials}
+
+      <span
+        aria-hidden="true"
+        className="absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full border-2 border-slate-950 bg-emerald-400"
+      >
+        <span className="h-1.5 w-1.5 animate-ping rounded-full bg-emerald-300 opacity-60 motion-reduce:animate-none" />
+      </span>
+    </span>
+  );
+}
+
+function DesktopNavigation({
+  activeSection,
+  onNavigate,
+}) {
+  return (
+    <nav
+      aria-label="Primary navigation"
+      className={[
+        "hidden items-center",
+        "rounded-2xl border",
+        "border-white/[0.08]",
+        "bg-white/[0.025]",
+        "p-1 xl:flex",
+      ].join(" ")}
+    >
+      {HEADER_NAVIGATION.map(
+        (item, index) => {
+          const active =
+            activeSection ===
+            item.id;
+
+          return (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              onClick={(event) =>
+                onNavigate(
+                  event,
+                  item.id
+                )
+              }
+              aria-current={
+                active
+                  ? "location"
+                  : undefined
+              }
+              className={[
+                "group relative isolate",
+                "inline-flex h-9",
+                "items-center gap-1.5",
+                "rounded-xl",
+                "px-2.5",
+                "text-[0.72rem]",
+                "font-semibold",
+                "transition-colors",
+                "duration-300",
+                active
+                  ? "text-white"
+                  : [
+                      "text-slate-500",
+                      "hover:text-slate-200",
+                    ].join(" "),
+              ].join(" ")}
+            >
+              {active ? (
+                <motion.span
+                  layoutId="header-active-section"
+                  transition={{
+                    type: "spring",
+                    stiffness: 420,
+                    damping: 34,
+                    mass: 0.7,
+                  }}
+                  className={[
+                    "absolute inset-0",
+                    "-z-10 rounded-xl",
+                    "border",
+                    "border-cyan-300/20",
+                    "bg-cyan-300/[0.085]",
+                    "shadow-[0_8px_24px_rgba(8,145,178,0.1)]",
+                  ].join(" ")}
+                />
+              ) : null}
+
+              <span
+                className={[
+                  "hidden font-mono",
+                  "text-[0.52rem]",
+                  "transition-colors",
+                  "2xl:inline",
+                  active
+                    ? "text-cyan-200"
+                    : [
+                        "text-slate-700",
+                        "group-hover:text-slate-500",
+                      ].join(" "),
+                ].join(" ")}
+              >
+                {String(
+                  index + 1
+                ).padStart(2, "0")}
+              </span>
+
+              <span className="relative">
+                {item.label}
+              </span>
+
+              {active ? (
+                <span
+                  aria-hidden="true"
+                  className="absolute bottom-1 left-1/2 h-0.5 w-3 -translate-x-1/2 rounded-full bg-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.7)]"
+                />
+              ) : null}
+            </a>
+          );
+        }
+      )}
+    </nav>
+  );
+}
+
+function MobileNavigation({
+  activeSection,
+  onNavigate,
+  onClose,
+}) {
+  return (
+    <motion.div
+      id="mobile-navigation"
+      initial={{
+        opacity: 0,
+        y: -12,
+        scale: 0.985,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+        scale: 1,
+      }}
+      exit={{
+        opacity: 0,
+        y: -10,
+        scale: 0.99,
+      }}
+      transition={{
+        duration: 0.25,
+        ease: [
+          0.22,
+          1,
+          0.36,
+          1,
+        ],
+      }}
+      className={[
+        "pointer-events-auto",
+        "mx-auto mt-2",
+        "w-full",
+        "rounded-[1.5rem]",
+        "border border-white/10",
+        "bg-slate-950/95",
+        "p-3",
+        "shadow-[0_30px_90px_rgba(0,0,0,0.5)]",
+        "backdrop-blur-2xl",
+        "xl:hidden",
+      ].join(" ")}
+    >
+      <div className="flex items-center justify-between gap-4 border-b border-white/[0.07] px-2 pb-3">
+        <div>
+          <p className="text-[0.58rem] font-semibold uppercase tracking-[0.2em] text-cyan-200">
+            Navigation
+          </p>
+
+          <p className="mt-1 text-xs text-slate-600">
+            Current section:{" "}
+            <span className="text-slate-300">
+              {
+                HEADER_NAVIGATION.find(
+                  (item) =>
+                    item.id ===
+                    activeSection
+                )?.label
+              }
+            </span>
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close navigation menu"
+          className={[
+            "inline-flex h-9 w-9",
+            "items-center justify-center",
+            "rounded-full border",
+            "border-white/10",
+            "bg-white/[0.025]",
+            "text-slate-400",
+            "transition",
+            "hover:border-cyan-300/35",
+            "hover:text-white",
+            "focus-visible:outline-none",
+            "focus-visible:ring-2",
+            "focus-visible:ring-cyan-200",
+          ].join(" ")}
+        >
+          <X size={18} />
+        </button>
+      </div>
+
+      <nav
+        aria-label="Mobile navigation"
+        className="mt-3 grid grid-cols-2 gap-2"
+      >
+        {HEADER_NAVIGATION.map(
+          (item, index) => {
+            const active =
+              item.id ===
+              activeSection;
+
+            return (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={(event) =>
+                  onNavigate(
+                    event,
+                    item.id
+                  )
+                }
+                aria-current={
+                  active
+                    ? "location"
+                    : undefined
+                }
+                className={[
+                  "group relative",
+                  "min-h-[4.5rem]",
+                  "overflow-hidden",
+                  "rounded-2xl border",
+                  "px-4 py-3",
+                  "transition duration-300",
+                  "focus-visible:outline-none",
+                  "focus-visible:ring-2",
+                  "focus-visible:ring-cyan-200",
+                  active
+                    ? [
+                        "border-cyan-300/30",
+                        "bg-cyan-300/[0.075]",
+                      ].join(" ")
+                    : [
+                        "border-white/[0.07]",
+                        "bg-white/[0.02]",
+                        "hover:border-white/15",
+                        "hover:bg-white/[0.045]",
+                      ].join(" "),
+                ].join(" ")}
+              >
+                <span
+                  className={[
+                    "block font-mono",
+                    "text-[0.56rem]",
+                    active
+                      ? "text-cyan-200"
+                      : "text-slate-700",
+                  ].join(" ")}
+                >
+                  {String(
+                    index + 1
+                  ).padStart(2, "0")}
+                </span>
+
+                <span
+                  className={[
+                    "mt-2 block",
+                    "text-sm font-semibold",
+                    active
+                      ? "text-white"
+                      : [
+                          "text-slate-400",
+                          "group-hover:text-slate-200",
+                        ].join(" "),
+                  ].join(" ")}
+                >
+                  {item.label}
+                </span>
+
+                {active ? (
+                  <span
+                    aria-hidden="true"
+                    className="absolute bottom-0 left-4 right-4 h-px bg-gradient-to-r from-cyan-300 to-transparent"
+                  />
+                ) : null}
+              </a>
+            );
+          }
+        )}
+      </nav>
+
+      <div className="mt-3 rounded-2xl border border-white/[0.07] bg-white/[0.02] p-3">
+        <a
+          href="#contact"
+          onClick={(event) =>
+            onNavigate(
+              event,
+              "contact"
+            )
+          }
+          className={[
+            "group inline-flex",
+            "min-h-12 w-full",
+            "items-center justify-center",
+            "gap-2 rounded-xl",
+            "bg-cyan-300",
+            "px-5 py-3",
+            "text-sm font-semibold",
+            "text-slate-950",
+            "transition duration-300",
+            "hover:bg-cyan-200",
+            "focus-visible:outline-none",
+            "focus-visible:ring-2",
+            "focus-visible:ring-cyan-200",
+          ].join(" ")}
+        >
+          Start a conversation
+
+          <ArrowUpRight
+            size={16}
+            className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+          />
+        </a>
+
+        {profile.contactLinks?.length >
+        0 ? (
+          <div className="mt-3 flex items-center justify-center gap-2">
+            {profile.contactLinks.map(
+              (link) => (
+                <SocialLink
+                  key={link.label}
+                  link={link}
+                />
+              )
+            )}
+          </div>
+        ) : null}
+      </div>
+    </motion.div>
+  );
+}
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
+  const reducedMotion =
+    useReducedMotion();
 
-  const closeMenu = () => setIsOpen(false);
+  const [
+    isOpen,
+    setIsOpen,
+  ] = useState(false);
+
+  const [
+    isScrolled,
+    setIsScrolled,
+  ] = useState(false);
+
+  const [
+    activeSection,
+    setActiveSection,
+  ] = useState("home");
+
+  const [
+    scrollProgress,
+    setScrollProgress,
+  ] = useState(0);
+
+  const menuButtonRef =
+    useRef(null);
+
+  useEffect(() => {
+    let animationFrame = null;
+
+    const updateHeaderState = () => {
+      if (animationFrame) {
+        window.cancelAnimationFrame(
+          animationFrame
+        );
+      }
+
+      animationFrame =
+        window.requestAnimationFrame(
+          () => {
+            setIsScrolled(
+              window.scrollY > 24
+            );
+
+            setScrollProgress(
+              getDocumentScrollProgress()
+            );
+
+            setActiveSection(
+              getCurrentSection()
+            );
+          }
+        );
+    };
+
+    updateHeaderState();
+
+    window.addEventListener(
+      "scroll",
+      updateHeaderState,
+      {
+        passive: true,
+      }
+    );
+
+    window.addEventListener(
+      "resize",
+      updateHeaderState
+    );
+
+    window.addEventListener(
+      "hashchange",
+      updateHeaderState
+    );
+
+    return () => {
+      if (animationFrame) {
+        window.cancelAnimationFrame(
+          animationFrame
+        );
+      }
+
+      window.removeEventListener(
+        "scroll",
+        updateHeaderState
+      );
+
+      window.removeEventListener(
+        "resize",
+        updateHeaderState
+      );
+
+      window.removeEventListener(
+        "hashchange",
+        updateHeaderState
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return undefined;
+    }
+
+    const previousOverflow =
+      document.body.style.overflow;
+
+    document.body.style.overflow =
+      "hidden";
+
+    const handleKeyDown = (
+      event
+    ) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+
+        window.requestAnimationFrame(
+          () => {
+            menuButtonRef.current?.focus();
+          }
+        );
+      }
+    };
+
+    const desktopQuery =
+      window.matchMedia(
+        "(min-width: 1280px)"
+      );
+
+    const handleDesktopChange = (
+      event
+    ) => {
+      if (event.matches) {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+
+    desktopQuery.addEventListener(
+      "change",
+      handleDesktopChange
+    );
+
+    return () => {
+      document.body.style.overflow =
+        previousOverflow;
+
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
+
+      desktopQuery.removeEventListener(
+        "change",
+        handleDesktopChange
+      );
+    };
+  }, [isOpen]);
+
+  const closeMenu = () => {
+    setIsOpen(false);
+  };
+
+  const navigateToSection = (
+    event,
+    sectionId
+  ) => {
+    event.preventDefault();
+
+    const section =
+      document.getElementById(
+        sectionId
+      );
+
+    if (!section) {
+      return;
+    }
+
+    setIsOpen(false);
+    setActiveSection(sectionId);
+
+    const targetTop =
+      section.getBoundingClientRect()
+        .top +
+      window.scrollY -
+      HEADER_SCROLL_OFFSET;
+
+    window.history.pushState(
+      null,
+      "",
+      `#${sectionId}`
+    );
+
+    window.requestAnimationFrame(
+      () => {
+        window.scrollTo({
+          top: Math.max(
+            0,
+            targetTop
+          ),
+          left: 0,
+          behavior:
+            reducedMotion
+              ? "auto"
+              : "smooth",
+        });
+      }
+    );
+  };
 
   return (
-    <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-slate-950/75 backdrop-blur-xl">
+    <header
+      className={[
+        "pointer-events-none",
+        "fixed inset-x-0 top-0",
+        "z-50 py-3",
+      ].join(" ")}
+    >
       <Container>
-        <div className="flex h-18 items-center justify-between sm:h-20">
+        <div
+          className={[
+            "pointer-events-auto",
+            "relative flex",
+            "h-16 items-center",
+            "justify-between gap-3",
+            "overflow-hidden",
+            "rounded-[1.4rem]",
+            "border px-3",
+            "transition-all",
+            "duration-500",
+            "sm:h-[4.5rem]",
+            "sm:px-4",
+            isScrolled
+              ? [
+                  "border-white/12",
+                  "bg-slate-950/90",
+                  "shadow-[0_18px_55px_rgba(0,0,0,0.36)]",
+                  "backdrop-blur-2xl",
+                ].join(" ")
+              : [
+                  "border-white/[0.08]",
+                  "bg-slate-950/65",
+                  "shadow-[0_14px_45px_rgba(0,0,0,0.22)]",
+                  "backdrop-blur-xl",
+                ].join(" "),
+          ].join(" ")}
+        >
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_left,rgba(34,211,238,0.075),transparent_24rem)]"
+          />
+
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(110deg,transparent,rgba(255,255,255,0.018),transparent)]"
+          />
+
           <a
             href="#home"
-            onClick={closeMenu}
-            className="group inline-flex min-w-0 items-center gap-3"
+            onClick={(event) =>
+              navigateToSection(
+                event,
+                "home"
+              )
+            }
+            className={[
+              "group relative z-10",
+              "inline-flex min-w-0",
+              "items-center gap-3",
+              "rounded-xl",
+              "focus-visible:outline-none",
+              "focus-visible:ring-2",
+              "focus-visible:ring-cyan-200",
+            ].join(" ")}
           >
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-sm font-bold text-cyan-200">
-              {profile.initials}
-            </span>
+            <BrandMark />
 
-            <span className="hidden truncate text-sm font-semibold tracking-wide text-white sm:inline">
-              {profile.name}
+            <span className="hidden min-w-0 sm:block">
+              <span className="block truncate text-sm font-semibold tracking-[-0.01em] text-white">
+                {profile.name}
+              </span>
+
+              <span className="mt-0.5 block text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-slate-600">
+                Developer Portfolio
+              </span>
             </span>
           </a>
 
-          <nav className="hidden items-center gap-1 xl:flex">
-            {mainNavigation.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="rounded-full px-3.5 py-2 text-sm font-medium text-slate-400 transition hover:bg-white/[0.06] hover:text-white"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
-
-          <div className="hidden items-center gap-2 xl:flex">
-            {profile.contactLinks.map((link) => (
-              <SocialLink key={link.label} link={link} />
-            ))}
-
-            <Button href="#contact" size="sm">
-              Let&apos;s Talk
-            </Button>
+          <div className="relative z-10 flex min-w-0 flex-1 justify-center">
+            <DesktopNavigation
+              activeSection={
+                activeSection
+              }
+              onNavigate={
+                navigateToSection
+              }
+            />
           </div>
 
-          <button
-            type="button"
-            onClick={() => setIsOpen((current) => !current)}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 text-white transition hover:border-cyan-300/40 hover:bg-white/[0.06] xl:hidden"
-            aria-label="Toggle navigation menu"
-            aria-expanded={isOpen}
+          <div className="relative z-10 flex shrink-0 items-center gap-2">
+            <div className="hidden items-center gap-1.5 2xl:flex">
+              {profile.contactLinks?.map(
+                (link) => (
+                  <SocialLink
+                    key={link.label}
+                    link={link}
+                  />
+                )
+              )}
+            </div>
+
+            <a
+              href="#contact"
+              onClick={(event) =>
+                navigateToSection(
+                  event,
+                  "contact"
+                )
+              }
+              className={[
+                "group hidden",
+                "min-h-10 items-center",
+                "justify-center gap-2",
+                "rounded-full",
+                "bg-cyan-300",
+                "px-4 py-2",
+                "text-xs font-semibold",
+                "text-slate-950",
+                "shadow-[0_10px_30px_rgba(8,145,178,0.18)]",
+                "transition duration-300",
+                "hover:-translate-y-0.5",
+                "hover:bg-cyan-200",
+                "hover:shadow-[0_14px_36px_rgba(8,145,178,0.25)]",
+                "focus-visible:outline-none",
+                "focus-visible:ring-2",
+                "focus-visible:ring-cyan-200",
+                "xl:inline-flex",
+              ].join(" ")}
+            >
+              Let&apos;s Talk
+
+              <ArrowUpRight
+                size={15}
+                className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              />
+            </a>
+
+            <button
+              ref={menuButtonRef}
+              type="button"
+              onClick={() =>
+                setIsOpen(
+                  (current) =>
+                    !current
+                )
+              }
+              aria-label={
+                isOpen
+                  ? "Close navigation menu"
+                  : "Open navigation menu"
+              }
+              aria-expanded={isOpen}
+              aria-controls="mobile-navigation"
+              className={[
+                "inline-flex h-10 w-10",
+                "items-center justify-center",
+                "rounded-full border",
+                "border-white/10",
+                "bg-white/[0.025]",
+                "text-white",
+                "transition duration-300",
+                "hover:border-cyan-300/40",
+                "hover:bg-cyan-300/[0.07]",
+                "focus-visible:outline-none",
+                "focus-visible:ring-2",
+                "focus-visible:ring-cyan-200",
+                "xl:hidden",
+              ].join(" ")}
+            >
+              {isOpen ? (
+                <X size={19} />
+              ) : (
+                <Menu size={19} />
+              )}
+            </button>
+          </div>
+
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-4 bottom-0 h-px overflow-hidden bg-white/[0.05]"
           >
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+            <motion.div
+              animate={{
+                scaleX:
+                  scrollProgress,
+              }}
+              transition={{
+                duration: 0.12,
+                ease: "linear",
+              }}
+              className={[
+                "absolute inset-0",
+                "origin-left",
+                "bg-gradient-to-r",
+                "from-cyan-400",
+                "via-cyan-200",
+                "to-indigo-300",
+                "shadow-[0_0_12px_rgba(34,211,238,0.55)]",
+              ].join(" ")}
+            />
+          </div>
         </div>
+
+        <AnimatePresence>
+          {isOpen ? (
+            <MobileNavigation
+              activeSection={
+                activeSection
+              }
+              onNavigate={
+                navigateToSection
+              }
+              onClose={closeMenu}
+            />
+          ) : null}
+        </AnimatePresence>
       </Container>
-
-      {isOpen && (
-        <div className="max-h-[calc(100vh-4.5rem)] overflow-y-auto border-t border-white/10 bg-slate-950/98 shadow-2xl shadow-black/30 xl:hidden">
-          <Container>
-            <nav className="flex flex-col gap-2 py-5">
-              {mainNavigation.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={closeMenu}
-                  className="rounded-2xl px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/[0.06] hover:text-white"
-                >
-                  {item.label}
-                </a>
-              ))}
-
-              <div className="mt-4 border-t border-white/10 pt-5">
-                <Button
-                  href="#contact"
-                  onClick={closeMenu}
-                  className="w-full"
-                >
-                  Let&apos;s Talk
-                </Button>
-
-                <div className="mt-5 flex items-center gap-2">
-                  {profile.contactLinks.map((link) => (
-                    <SocialLink key={link.label} link={link} />
-                  ))}
-                </div>
-              </div>
-            </nav>
-          </Container>
-        </div>
-      )}
     </header>
   );
 }

@@ -54,7 +54,7 @@ export default function CaseStudyLayout({
       <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/85 backdrop-blur-xl">
         <div className="mx-auto flex min-h-16 w-full max-w-[90rem] items-center justify-between gap-5 px-4 sm:px-6 lg:px-10">
           <a
-            href="/preview-v2#home"
+            href="/#home"
             className="inline-flex items-center gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
           >
             <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-cyan-300/20 bg-cyan-300/[0.07] text-xs font-semibold text-cyan-100">
