@@ -445,9 +445,23 @@ function ProjectActions({
     null;
 
   return (
-    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+      <div
+        data-no-project-drag=""
+        onPointerDown={(event) => {
+          event.stopPropagation();
+        }}
+        className={[
+          "relative z-20",
+          "flex w-full flex-col gap-3",
+          "sm:w-auto",
+          "sm:flex-row",
+          "sm:flex-wrap",
+          "sm:justify-end",
+        ].join(" ")}
+      >
       <a
         href={caseStudyRoute}
+        data-no-project-drag=""
         className={[
           "group inline-flex min-h-12",
           "w-full items-center",
@@ -483,6 +497,7 @@ function ProjectActions({
           href={liveUrl}
           target="_blank"
           rel="noopener noreferrer"
+          data-no-project-drag=""
           className={[
             "inline-flex min-h-12",
             "w-full items-center",
@@ -519,6 +534,7 @@ function ProjectActions({
           href={repositoryUrl}
           target="_blank"
           rel="noopener noreferrer"
+          data-no-project-drag=""
           aria-label={`Open ${project.title} source repository`}
           className={[
             "inline-flex h-12 w-12",
@@ -574,10 +590,17 @@ function DesktopProjectPanel({
         duration: 0.65,
         ease: [0.22, 1, 0.36, 1],
       }}
-      className="flex h-full shrink-0 items-center"
+      className="flex h-full min-h-0 shrink-0 items-start"
     >
-      <div className="mx-auto w-full max-w-[90rem] px-4 pb-16 pt-28 sm:px-6 lg:px-10 xl:pb-20 xl:pt-32">
-        <div className="grid items-center gap-8 lg:grid-cols-[0.82fr_1.18fr] xl:gap-14">
+      <div className={[
+        "mx-auto h-full w-full",
+        "max-w-[90rem]",
+        "px-4 py-5",
+        "sm:px-6 sm:py-6",
+        "lg:px-10 lg:py-7",
+        "xl:py-8",
+      ].join(" ")}>
+        <div className="grid items-start gap-8 lg:grid-cols-[0.82fr_1.18fr] xl:gap-14">
           <div className="relative z-10 min-w-0">
             <div className="flex flex-wrap items-center gap-3">
               <span
@@ -699,12 +722,6 @@ function DesktopProjectPanel({
                 limit={6}
               />
             </div>
-
-            <div className="mt-8">
-              <ProjectActions
-                project={project}
-              />
-            </div>
           </div>
 
           <div className="relative min-w-0">
@@ -729,6 +746,33 @@ function DesktopProjectPanel({
               allowPlayback={allowPlayback}
               eager={index === 0}
             />
+
+            <div
+              data-no-project-drag=""
+              className={[
+                "relative z-30 mt-5",
+                "flex items-center",
+                "justify-between gap-4",
+                "rounded-2xl border",
+                "border-white/[0.08]",
+                "bg-white/[0.025]",
+                "p-3",
+              ].join(" ")}
+            >
+              <div className="hidden min-w-0 sm:block">
+                <p className="text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-slate-600">
+                  Detailed project
+                </p>
+
+                <p className="mt-1 truncate text-sm font-medium text-slate-300">
+                  {project.title}
+                </p>
+              </div>
+
+              <ProjectActions
+                project={project}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -1146,18 +1190,26 @@ export default function ProjectsSection() {
           </div>
         </div>
 
-        <div
-          style={{
-            width: `${
-              projects.length * 100
-            }%`,
-            transform: `translate3d(${trackOffset}px, 0, 0)`,
-            transition: isDragging
-              ? "none"
-              : "transform 680ms cubic-bezier(0.22, 1, 0.36, 1)",
-          }}
-          className="absolute inset-0 flex h-full will-change-transform"
-        >
+          <div
+            style={{
+              width: `${
+                projects.length * 100
+              }%`,
+              transform: `translate3d(${trackOffset}px, 0, 0)`,
+              transition: isDragging
+                ? "none"
+                : "transform 680ms cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+            className={[
+              "absolute inset-x-0",
+              "bottom-[5.25rem]",
+              "top-[5.5rem]",
+              "flex",
+              "will-change-transform",
+              "sm:bottom-[5.5rem]",
+              "sm:top-[5.75rem]",
+            ].join(" ")}
+          >
           {projects.map(
             (project, index) => (
               <div
