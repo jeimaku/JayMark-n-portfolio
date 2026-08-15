@@ -34,10 +34,10 @@ const contactCards = [
     icon: Mail,
   },
   {
-    label: "School Email",
-    value: profile.emails?.school,
-    href: profile.emails?.school
-      ? `mailto:${profile.emails.school}`
+    label: "Secondary Email",
+    value: profile.emails?.secondary,
+    href: profile.emails?.secondary
+      ? `mailto:${profile.emails.secondary}`
       : null,
     icon: Mail,
   },

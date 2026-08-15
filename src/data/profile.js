@@ -29,7 +29,7 @@ export const profile = {
 
   emails: {
     personal: "jaymrkapelado@gmail.com",
-    school: "apeladojd@students.nu-dasma.edu.ph",
+    secondary: "apeladojaymark18@gmail.com",
   },
 
   phone: "+63 956 799 6498",
