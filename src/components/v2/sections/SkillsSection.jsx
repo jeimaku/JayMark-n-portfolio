@@ -1,8 +1,13 @@
 import {
+  useState,
+} from "react";
+
+import {
   Brain,
   Code2,
   Cpu,
   Database,
+  Film,
   HardDrive,
   Layers,
   Network,
@@ -47,6 +52,12 @@ const iconMap = {
 const simpleIconBase =
   "https://cdn.simpleicons.org";
 
+const deviconBase =
+  "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
+
+const theSvgBase =
+  "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons";
+
 const skillIconMap = {
   "React.js":
     `${simpleIconBase}/react/67E8F9`,
@@ -87,14 +98,6 @@ const skillIconMap = {
   Dart:
     `${simpleIconBase}/dart/67E8F9`,
 
-  "OpenAI API":
-    `${simpleIconBase}/openai/67E8F9`,
-
-  "Azure AI":
-    `${simpleIconBase}/microsoftazure/67E8F9`,
-
-  "Windows Server & AD":
-    `${simpleIconBase}/windows/67E8F9`,
 
   Git:
     `${simpleIconBase}/git/67E8F9`,
@@ -102,8 +105,6 @@ const skillIconMap = {
   GitHub:
     `${simpleIconBase}/github/67E8F9`,
 
-  "VS Code":
-    `${simpleIconBase}/visualstudiocode/67E8F9`,
 
   npm:
     `${simpleIconBase}/npm/67E8F9`,
@@ -114,21 +115,38 @@ const skillIconMap = {
   Figma:
     `${simpleIconBase}/figma/67E8F9`,
 
-  "Adobe Photoshop":
-    `${simpleIconBase}/adobephotoshop/67E8F9`,
+  "OpenAI API":
+  `${theSvgBase}/openai/light.svg`,
 
-  "Adobe Premiere Pro":
-    `${simpleIconBase}/adobepremierepro/67E8F9`,
+  "Azure AI":
+    `${deviconBase}/azure/azure-original.svg`,
+
+  "VS Code":
+    `${deviconBase}/vscode/vscode-original.svg`,
+
+  "Adobe Photoshop":
+    `${deviconBase}/photoshop/photoshop-original.svg`,
+
 };
 
 const fallbackSkillIcons = {
+  "OpenAI API": Brain,
+  "Azure AI": Brain,
+
   "Speech Assessment": Cpu,
   "AI Feedback Systems": Brain,
+
+  "Windows Server & AD": Server,
   "Network Troubleshooting": Network,
   "Hardware Troubleshooting": HardDrive,
   "RAID Setup": Server,
   "Technical Support": Wrench,
   "IT Support": Wrench,
+
+  "VS Code": Code2,
+
+  "Adobe Photoshop": Palette,
+  "Adobe Premiere Pro": Film,
   "UI/UX Design": Palette,
   "Graphic Design": Palette,
 };
@@ -137,11 +155,20 @@ function SkillBadge({
   skill,
   featured = false,
 }) {
+  const [
+    iconFailed,
+    setIconFailed,
+  ] = useState(false);
+
   const iconUrl =
     skillIconMap[skill];
 
   const FallbackIcon =
     fallbackSkillIcons[skill];
+
+  const showRemoteIcon =
+    Boolean(iconUrl) &&
+    !iconFailed;
 
   return (
     <span
@@ -168,12 +195,15 @@ function SkillBadge({
             ].join(" "),
       ].join(" ")}
     >
-      {iconUrl ? (
+      {showRemoteIcon ? (
         <img
           src={iconUrl}
           alt=""
           loading="lazy"
           decoding="async"
+          onError={() => {
+            setIconFailed(true);
+          }}
           className={[
             "h-3.5 w-3.5 shrink-0",
             "transition-transform duration-300",
