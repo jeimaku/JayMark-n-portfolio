@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const FALLBACK_IMAGE =
-  "/old-portfolio-assets/3d/hero/fallback/hero-workspace-fallback.jpg";
+  "/old-portfolio-assets/3d/hero/fallback/hero-workspace-fallback.png";
 
 export default function HeroStaticFallback({
   message = "Interactive 3D is unavailable. A static preview is shown instead.",

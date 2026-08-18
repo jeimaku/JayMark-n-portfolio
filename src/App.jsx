@@ -60,14 +60,10 @@ export default function App() {
        * everything behind it.
        */}
       <div
-        inert={
-          showPortfolioLoader
-            ? ""
-            : undefined
-        }
+        inert={showPortfolioLoader}
         aria-hidden={
           showPortfolioLoader
-            ? true
+            ? "true"
             : undefined
         }
       >
