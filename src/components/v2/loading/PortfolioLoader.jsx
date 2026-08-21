@@ -1,17 +1,17 @@
 import {
   useEffect,
-  useRef,
+  useMemo,
   useState,
 } from "react";
 
 import {
   motion,
-  useReducedMotion,
 } from "motion/react";
 
-import {
-  heroContent,
-} from "../../../data/heroContent";
+
+// --------------------------------------------------
+// Motion constants
+// --------------------------------------------------
 
 const MOTION_EASE = [
   0.22,
@@ -19,6 +19,11 @@ const MOTION_EASE = [
   0.36,
   1,
 ];
+
+
+// --------------------------------------------------
+// Timing
+// --------------------------------------------------
 
 const NORMAL_TIMING = {
   readyDelay: 1450,
@@ -30,1273 +35,890 @@ const REDUCED_TIMING = {
   exitDelay: 780,
 };
 
-function getInitials(name = "") {
-  const words = name
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean);
 
-  if (words.length === 0) {
-    return "JM";
+// --------------------------------------------------
+// Performance detection
+// --------------------------------------------------
+
+function getPerformanceMode() {
+  if (
+    typeof navigator === "undefined"
+  ) {
+    return false;
   }
 
-  if (words.length === 1) {
-    return words[0]
-      .slice(0, 2)
-      .toUpperCase();
-  }
 
-  return `${words[0][0]}${
-    words[words.length - 1][0]
-  }`.toUpperCase();
+  const lowCPU =
+    navigator.hardwareConcurrency &&
+    navigator.hardwareConcurrency <= 4;
+
+
+  const lowMemory =
+    navigator.deviceMemory &&
+    navigator.deviceMemory <= 4;
+
+
+  return Boolean(
+    lowCPU ||
+    lowMemory
+  );
 }
+
+
+// --------------------------------------------------
+// Reduced motion detection
+// --------------------------------------------------
+
+function useReducedMotion() {
+  const [
+    reducedMotion,
+    setReducedMotion,
+  ] = useState(false);
+
+
+  useEffect(() => {
+    const media =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
+
+
+    const update = () => {
+      setReducedMotion(
+        media.matches
+      );
+    };
+
+
+    update();
+
+
+    media.addEventListener(
+      "change",
+      update
+    );
+
+
+    return () => {
+      media.removeEventListener(
+        "change",
+        update
+      );
+    };
+  }, []);
+
+
+  return reducedMotion;
+}
+
+
+// --------------------------------------------------
+// Utility
+// --------------------------------------------------
+
+function getInitials(name = "") {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .map(
+      (part) =>
+        part[0]
+    )
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
+
+
+// --------------------------------------------------
+// Corner Marker
+// --------------------------------------------------
 
 function CornerMarker({
   position,
   reducedMotion,
+  lowPerformance,
 }) {
+
   const positions = {
     topLeft:
-      "left-5 top-5 border-l border-t sm:left-8 sm:top-8",
+      "left-0 top-0 border-l border-t",
 
     topRight:
-      "right-5 top-5 border-r border-t sm:right-8 sm:top-8",
+      "right-0 top-0 border-r border-t",
 
     bottomLeft:
-      "bottom-5 left-5 border-b border-l sm:bottom-8 sm:left-8",
+      "left-0 bottom-0 border-l border-b",
 
     bottomRight:
-      "bottom-5 right-5 border-b border-r sm:bottom-8 sm:right-8",
+      "right-0 bottom-0 border-r border-b",
   };
+
 
   return (
     <motion.span
       aria-hidden="true"
-      initial={
-        reducedMotion
-          ? {
-              opacity: 0,
-            }
-          : {
-              opacity: 0,
-              scale: 0.8,
-            }
-      }
-      animate={
-        reducedMotion
-          ? {
-              opacity: 1,
-            }
-          : {
-              opacity: 1,
-              scale: 1,
-            }
-      }
+      className={[
+        "absolute",
+        "h-10",
+        "w-10",
+        "border-cyan-300/60",
+        positions[position],
+      ].join(" ")}
+      initial={{
+        opacity: 0,
+        scale:
+          lowPerformance
+            ? 1
+            : 0.85,
+      }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+      }}
       transition={{
         duration:
-          reducedMotion
+          reducedMotion ||
+          lowPerformance
             ? 0.25
-            : 0.55,
+            : 0.7,
 
         delay:
-          reducedMotion
-            ? 0.05
+          reducedMotion ||
+          lowPerformance
+            ? 0
             : 0.15,
 
         ease: MOTION_EASE,
       }}
-      className={[
-        "pointer-events-none",
-        "absolute h-7 w-7",
-        "border-cyan-200/25",
-        positions[position],
-      ].join(" ")}
     />
   );
 }
+
+
+// --------------------------------------------------
+// Portfolio Mark
+// --------------------------------------------------
 
 function PortfolioMark({
   initials,
   isExiting,
   reducedMotion,
+  lowPerformance,
 }) {
-  const initialState =
-    reducedMotion
-      ? {
-          opacity: 0,
-        }
-      : {
-          opacity: 0,
-          y: 18,
-          scale: 0.9,
-          filter: "blur(5px)",
-        };
-
-  const visibleState =
-    reducedMotion
-      ? {
-          opacity: 1,
-        }
-      : {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          filter: "blur(0px)",
-        };
-
-  const exitState =
-    reducedMotion
-      ? {
-          opacity: 0,
-        }
-      : {
-          opacity: 0,
-          y: -10,
-          scale: 0.96,
-          filter: "blur(4px)",
-        };
 
   return (
     <motion.div
-      initial={initialState}
+      className="
+        relative
+        flex
+        h-24
+        w-24
+        items-center
+        justify-center
+        rounded-2xl
+        border
+        border-cyan-300/30
+        bg-slate-900/70
+      "
+
+      initial={{
+        opacity: 0,
+        y: 20,
+        filter:
+          lowPerformance
+            ? "blur(0px)"
+            : "blur(5px)",
+      }}
+
       animate={
-        isExiting
-          ? exitState
-          : visibleState
-      }
-      transition={
         isExiting
           ? {
-              duration:
-                reducedMotion
-                  ? 0.18
-                  : 0.2,
-
-              ease: MOTION_EASE,
+              opacity: 0,
+              y: -40,
+              filter:
+                lowPerformance
+                  ? "blur(0px)"
+                  : "blur(5px)",
             }
-          : {
-              duration:
-                reducedMotion
-                  ? 0.28
-                  : 0.65,
 
-              delay:
-                reducedMotion
-                  ? 0.05
-                  : 0.12,
-
-              ease: MOTION_EASE,
-            }
-      }
-      className={[
-        "relative mx-auto",
-        "flex h-14 w-14",
-        "items-center justify-center",
-        "rounded-[1.15rem]",
-        "border border-cyan-300/30",
-        "bg-cyan-300/[0.075]",
-        "font-mono text-sm",
-        "font-semibold",
-        "tracking-[0.12em]",
-        "text-cyan-100",
-        "shadow-[0_16px_55px_rgba(8,145,178,0.14)]",
-        "sm:h-16 sm:w-16",
-      ].join(" ")}
-    >
-      <div
-        aria-hidden="true"
-        className={[
-          "pointer-events-none",
-          "absolute inset-0",
-          "rounded-[inherit]",
-          "bg-[radial-gradient(circle_at_top,rgba(103,232,249,0.14),transparent_70%)]",
-        ].join(" ")}
-      />
-
-      <span className="relative">
-        {initials}
-      </span>
-
-      <motion.span
-        aria-hidden="true"
-        initial={
-          reducedMotion
-            ? {
-                opacity: 0,
-              }
-            : {
-                opacity: 0,
-                scale: 0,
-              }
-        }
-        animate={
-          isExiting
-            ? reducedMotion
-              ? {
-                  opacity: 0,
-                }
-              : {
-                  opacity: 0,
-                  scale: 0.5,
-                }
-            : reducedMotion
-              ? {
-                  opacity: 1,
-                }
-              : {
-                  opacity: 1,
-                  scale: 1,
-                }
-        }
-        transition={{
-          duration:
-            reducedMotion
-              ? 0.2
-              : 0.35,
-
-          delay:
-            isExiting
-              ? 0
-              : reducedMotion
-                ? 0.12
-                : 0.65,
-
-          ease: MOTION_EASE,
-        }}
-        className={[
-          "absolute -right-1",
-          "-top-1 h-3 w-3",
-          "rounded-full",
-          "border-2",
-          "border-slate-950",
-          "bg-emerald-400",
-          "shadow-[0_0_14px_rgba(52,211,153,0.55)]",
-        ].join(" ")}
-      />
-    </motion.div>
-  );
-}
-
-function LoadingLine({
-  phase,
-  reducedMotion,
-}) {
-  const isReady =
-    phase === "ready";
-
-  const isExiting =
-    phase === "exit";
-
-  return (
-    <motion.div
-      animate={
-        isExiting
-          ? reducedMotion
-            ? {
-                opacity: 0,
-              }
-            : {
-                opacity: 0,
-                y: -8,
-              }
           : {
               opacity: 1,
               y: 0,
+              filter: "blur(0px)",
             }
       }
+
       transition={{
         duration:
-          reducedMotion
-            ? 0.18
-            : 0.2,
+          reducedMotion ||
+          lowPerformance
+            ? 0.25
+            : 0.8,
 
         ease: MOTION_EASE,
       }}
-      className="mx-auto mt-9 w-full max-w-md"
     >
-      <div className="relative h-px overflow-visible bg-white/[0.08]">
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            initial={
-              reducedMotion
-                ? {
-                    opacity: 0,
-                  }
-                : {
-                    scaleX: 0,
-                  }
-            }
-            animate={
-              reducedMotion
-                ? {
-                    opacity: 1,
-                  }
-                : {
-                    scaleX: 1,
-                  }
-            }
-            transition={{
-              duration:
-                reducedMotion
-                  ? 0.25
-                  : 1.05,
 
-              delay:
-                reducedMotion
-                  ? 0.18
-                  : 0.48,
+      <span
+        className="
+          text-3xl
+          font-semibold
+          tracking-tight
+          text-cyan-100
+        "
+      >
+        {initials}
+      </span>
 
-              ease: MOTION_EASE,
-            }}
-            className={[
-              "absolute inset-0",
-              "origin-left",
-              "bg-gradient-to-r",
-              "from-cyan-400",
-              "via-cyan-200",
-              "to-indigo-300",
-              "shadow-[0_0_18px_rgba(34,211,238,0.55)]",
-            ].join(" ")}
-          />
-        </div>
-
-        {!reducedMotion ? (
-          <motion.span
-            aria-hidden="true"
-            initial={{
-              left: "0%",
-              opacity: 0,
-            }}
-            animate={{
-              left: "100%",
-              opacity: [
-                0,
-                1,
-                1,
-                0,
-              ],
-            }}
-            transition={{
-              duration: 1.05,
-              delay: 0.48,
-              ease: MOTION_EASE,
-            }}
-            className={[
-              "absolute top-1/2",
-              "h-2 w-2",
-              "-translate-x-1/2",
-              "-translate-y-1/2",
-              "rounded-full",
-              "bg-cyan-100",
-              "shadow-[0_0_18px_rgba(103,232,249,0.95)]",
-            ].join(" ")}
-          />
-        ) : null}
-      </div>
-
-      <div className="relative mt-3 flex min-h-5 items-center justify-between gap-4">
-        <motion.p
-          initial={{
-            opacity: 0,
-            x:
-              reducedMotion
-                ? 0
-                : -10,
-          }}
-          animate={{
-            opacity:
-              isReady
-                ? 0
-                : 1,
-
-            x:
-              reducedMotion
-                ? 0
-                : isReady
-                  ? -8
-                  : 0,
-          }}
-          transition={{
-            duration:
-              reducedMotion
-                ? 0.18
-                : 0.3,
-
-            delay:
-              isReady
-                ? 0
-                : reducedMotion
-                  ? 0.2
-                  : 0.68,
-
-            ease: MOTION_EASE,
-          }}
-          className={[
-            "font-mono",
-            "text-[0.55rem]",
-            "font-semibold uppercase",
-            "tracking-[0.2em]",
-            "text-slate-600",
-          ].join(" ")}
-        >
-          Initializing Experience
-        </motion.p>
-
-        <motion.div
-          initial={{
-            opacity: 0,
-            x:
-              reducedMotion
-                ? 0
-                : 10,
-          }}
-          animate={
-            isReady
-              ? {
-                  opacity: 1,
-                  x: 0,
-                }
-              : {
-                  opacity: 0,
-                  x:
-                    reducedMotion
-                      ? 0
-                      : 10,
-                }
-          }
-          transition={{
-            duration:
-              reducedMotion
-                ? 0.18
-                : 0.32,
-
-            ease: MOTION_EASE,
-          }}
-          className={[
-            "absolute right-0",
-            "flex shrink-0",
-            "items-center gap-2",
-            "font-mono",
-            "text-[0.55rem]",
-            "font-semibold uppercase",
-            "tracking-[0.18em]",
-            "text-emerald-300/80",
-          ].join(" ")}
-        >
-          <span className="relative flex h-1.5 w-1.5">
-            {!reducedMotion ? (
-              <span
-                aria-hidden="true"
-                className={[
-                  "absolute inline-flex",
-                  "h-full w-full",
-                  "animate-ping",
-                  "rounded-full",
-                  "bg-emerald-400",
-                  "opacity-40",
-                ].join(" ")}
-              />
-            ) : null}
-
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
-          </span>
-
-          System Ready
-        </motion.div>
-      </div>
     </motion.div>
   );
 }
+
+// --------------------------------------------------
+// Loader Identity
+// --------------------------------------------------
 
 function LoaderIdentity({
   initials,
   phase,
+  isExiting,
   reducedMotion,
+  lowPerformance,
 }) {
-  const isExiting =
-    phase === "exit";
+  const showIdentity =
+    phase !== "idle";
+
 
   return (
     <motion.div
-      animate={
-        isExiting
-          ? reducedMotion
-            ? {
-                opacity: 0,
-              }
-            : {
-                opacity: 0,
-                y: -24,
-                scale: 0.985,
-                filter: "blur(4px)",
-              }
-          : {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              filter: "blur(0px)",
-            }
-      }
+      className="
+        flex
+        flex-col
+        items-center
+        gap-6
+        text-center
+      "
+
+      initial={{
+        opacity: 0,
+      }}
+
+      animate={{
+        opacity:
+          showIdentity
+            ? 1
+            : 0,
+      }}
+
       transition={{
         duration:
-          isExiting
-            ? reducedMotion
-              ? 0.18
-              : 0.24
-            : 0,
+          reducedMotion ||
+          lowPerformance
+            ? 0.25
+            : 0.6,
 
         ease: MOTION_EASE,
       }}
-      className="relative mx-auto w-full max-w-3xl text-center"
     >
+
       <PortfolioMark
         initials={initials}
         isExiting={isExiting}
-        reducedMotion={
-          reducedMotion
-        }
+        reducedMotion={reducedMotion}
+        lowPerformance={lowPerformance}
       />
 
-      <motion.p
-        initial={
-          reducedMotion
-            ? {
-                opacity: 0,
-              }
-            : {
-                opacity: 0,
-                y: 14,
-                filter: "blur(4px)",
-              }
-        }
-        animate={
-          reducedMotion
-            ? {
-                opacity: 1,
-              }
-            : {
-                opacity: 1,
-                y: 0,
-                filter: "blur(0px)",
-              }
-        }
+
+      <motion.div
+        initial={{
+          opacity: 0,
+          y: 18,
+          filter:
+            lowPerformance
+              ? "blur(0px)"
+              : "blur(5px)",
+        }}
+
+        animate={{
+          opacity:
+            phase === "identity" ||
+            phase === "ready"
+              ? 1
+              : 0,
+
+          y: 0,
+
+          filter:
+            "blur(0px)",
+        }}
+
         transition={{
           duration:
-            reducedMotion
+            reducedMotion ||
+            lowPerformance
               ? 0.25
-              : 0.6,
+              : 0.7,
 
           delay:
-            reducedMotion
-              ? 0.08
-              : 0.32,
+            reducedMotion ||
+            lowPerformance
+              ? 0
+              : 0.15,
 
           ease: MOTION_EASE,
         }}
-        className={[
-          "mt-7",
-          "text-[0.62rem]",
-          "font-semibold uppercase",
-          "tracking-[0.32em]",
-          "text-cyan-200",
-          "sm:text-xs",
-          "sm:tracking-[0.4em]",
-        ].join(" ")}
+
+        className="
+          space-y-2
+        "
       >
-        Portfolio Experience
-      </motion.p>
 
-      <div className="mt-4 overflow-hidden py-1">
-        <motion.h1
-          initial={
-            reducedMotion
-              ? {
-                  opacity: 0,
-                }
-              : {
-                  opacity: 0,
-                  y: "110%",
-                  filter: "blur(6px)",
-                }
-          }
-          animate={
-            reducedMotion
-              ? {
-                  opacity: 1,
-                }
-              : {
-                  opacity: 1,
-                  y: "0%",
-                  filter: "blur(0px)",
-                }
-          }
-          transition={{
-            duration:
-              reducedMotion
-                ? 0.28
-                : 0.72,
+      <h1
+        className="
+          text-3xl
+          font-semibold
+          tracking-tight
+          text-white
+        "
+      >
+        JAY MARK APELADO
+      </h1>
 
-            delay:
-              reducedMotion
-                ? 0.1
-                : 0.38,
 
-            ease: MOTION_EASE,
-          }}
-          className={[
-            "text-3xl",
-            "font-semibold",
-            "uppercase",
-            "leading-none",
-            "tracking-[-0.045em]",
-            "text-white",
-            "sm:text-5xl",
-            "md:text-6xl",
-          ].join(" ")}
+      <div
+        className="
+          mt-3
+          flex
+          flex-col
+          items-center
+          gap-1
+          text-sm
+          uppercase
+          tracking-[0.35em]
+          text-cyan-300/80
+        "
+      >
+
+        <span>
+          FULL-STACK DEVELOPER
+        </span>
+
+
+        <span
+          className="
+            text-cyan-200/60
+          "
         >
-          {heroContent.name}
-        </motion.h1>
+          •
+        </span>
+
+
+        <span>
+          IT SUPPORT SPECIALIST
+        </span>
+
       </div>
 
-      <div className="mx-auto mt-5 max-w-2xl overflow-hidden py-1">
-        <motion.p
-          initial={
-            reducedMotion
-              ? {
-                  opacity: 0,
-                }
-              : {
-                  opacity: 0,
-                  y: "100%",
-                  filter: "blur(5px)",
-                }
-          }
-          animate={
-            reducedMotion
-              ? {
-                  opacity: 1,
-                }
-              : {
-                  opacity: 1,
-                  y: "0%",
-                  filter: "blur(0px)",
-                }
-          }
-          transition={{
-            duration:
-              reducedMotion
-                ? 0.28
-                : 0.65,
+      </motion.div>
 
-            delay:
-              reducedMotion
-                ? 0.14
-                : 0.52,
-
-            ease: MOTION_EASE,
-          }}
-          className={[
-            "text-sm",
-            "font-medium",
-            "uppercase",
-            "leading-7",
-            "tracking-[0.12em]",
-            "text-slate-400",
-            "sm:text-base",
-            "sm:tracking-[0.16em]",
-            "md:text-lg",
-          ].join(" ")}
-        >
-          {heroContent.role}
-        </motion.p>
-      </div>
-
-      <LoadingLine
-        phase={phase}
-        reducedMotion={
-          reducedMotion
-        }
-      />
     </motion.div>
   );
 }
 
+
+
+// --------------------------------------------------
+// Loading Line
+// --------------------------------------------------
+
+function LoadingLine({
+  phase,
+  reducedMotion,
+  lowPerformance,
+}) {
+
+  const completed =
+    phase === "ready";
+
+
+  return (
+    <div
+      className="
+        relative
+        mt-10
+        h-px
+        w-64
+        overflow-hidden
+        bg-white/10
+      "
+    >
+
+      <motion.span
+        className="
+          absolute
+          left-0
+          top-0
+          h-full
+          bg-cyan-300
+        "
+
+        initial={{
+          width: "0%",
+        }}
+
+        animate={{
+          width:
+            completed
+              ? "100%"
+              : "65%",
+        }}
+
+        transition={{
+          duration:
+            reducedMotion ||
+            lowPerformance
+              ? 0.4
+              : 1.05,
+
+          ease: MOTION_EASE,
+        }}
+      />
+
+
+      {!reducedMotion &&
+      !lowPerformance ? (
+        <motion.span
+          aria-hidden="true"
+          className="
+            absolute
+            right-0
+            top-1/2
+            h-2
+            w-2
+            -translate-y-1/2
+            rounded-full
+            bg-cyan-300
+          "
+
+          animate={{
+            opacity: [
+              0.3,
+              1,
+              0.3,
+            ],
+          }}
+
+          transition={{
+            duration: 1.2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ) : null}
+
+    </div>
+  );
+}
+
+// --------------------------------------------------
+// Main Portfolio Loader
+// --------------------------------------------------
+
 export default function PortfolioLoader({
   onComplete,
 }) {
-  const reducedMotionPreference =
-    useReducedMotion();
 
   const reducedMotion =
-    Boolean(
-      reducedMotionPreference
+    useReducedMotion();
+
+
+  const lowPerformance =
+    useMemo(
+      () =>
+        getPerformanceMode(),
+      []
     );
+
 
   const [
     phase,
     setPhase,
-  ] = useState("enter");
+  ] = useState(
+    "identity"
+  );
 
-  const completionCalledRef =
-    useRef(false);
+
+  const [
+    isExiting,
+    setIsExiting,
+  ] = useState(false);
+
+
 
   const initials =
-    getInitials(
-      heroContent.name
+    useMemo(
+      () =>
+        getInitials(
+          "Jay Mark Apelado"
+        ),
+      []
     );
 
-    /*
- * Temporarily lock manual page scrolling while
- * the startup experience is visible.
- *
- * Previous inline values are restored exactly
- * when the loader unmounts.
- *
- * We intentionally do not freeze the body using
- * position: fixed because ScrollToTop still needs
- * to resolve direct hash navigation underneath
- * the loader.
- */
-useEffect(() => {
-  const root =
-    document.documentElement;
 
-  const body =
-    document.body;
-
-  const previousRootOverflow =
-    root.style.overflow;
-
-  const previousRootOverscrollBehavior =
-    root.style.overscrollBehavior;
-
-  const previousRootScrollbarGutter =
-    root.style.scrollbarGutter;
-
-  const previousBodyOverflow =
-    body.style.overflow;
-
-  const previousBodyOverscrollBehavior =
-    body.style.overscrollBehavior;
-
-  root.style.overflow =
-    "hidden";
-
-  root.style.overscrollBehavior =
-    "none";
-
-  root.style.scrollbarGutter =
-    "stable";
-
-  body.style.overflow =
-    "hidden";
-
-  body.style.overscrollBehavior =
-    "none";
-
-  return () => {
-    root.style.overflow =
-      previousRootOverflow;
-
-    root.style.overscrollBehavior =
-      previousRootOverscrollBehavior;
-
-    root.style.scrollbarGutter =
-      previousRootScrollbarGutter;
-
-    body.style.overflow =
-      previousBodyOverflow;
-
-    body.style.overscrollBehavior =
-      previousBodyOverscrollBehavior;
-  };
-}, []);
-
-  const isExiting =
-    phase === "exit";
 
   const timing =
     reducedMotion
       ? REDUCED_TIMING
       : NORMAL_TIMING;
 
+
+
+  // ------------------------------------------------
+  // Lifecycle + scroll lock
+  // ------------------------------------------------
+
   useEffect(() => {
+
+    document.body.style.overflow =
+      "hidden";
+
+
     const readyTimer =
-      window.setTimeout(() => {
-        setPhase("ready");
-      }, timing.readyDelay);
+      setTimeout(
+        () => {
+          setPhase(
+            "ready"
+          );
+        },
+        timing.readyDelay
+      );
+
 
     const exitTimer =
-      window.setTimeout(() => {
-        setPhase("exit");
-      }, timing.exitDelay);
+      setTimeout(
+        () => {
+
+          setIsExiting(
+            true
+          );
+
+
+          document.body.style.overflow =
+            "";
+
+
+          setTimeout(
+            () => {
+
+              onComplete?.();
+
+            },
+            reducedMotion
+              ? 100
+              : 650
+          );
+
+
+        },
+        timing.exitDelay
+      );
+
+
 
     return () => {
-      window.clearTimeout(
+
+      clearTimeout(
         readyTimer
       );
 
-      window.clearTimeout(
+      clearTimeout(
         exitTimer
       );
+
+
+      document.body.style.overflow =
+        "";
+
     };
+
   }, [
-    timing.exitDelay,
-    timing.readyDelay,
+    timing,
+    reducedMotion,
+    onComplete,
   ]);
 
-  const handleAnimationComplete =
-    () => {
-      if (
-        phase !== "exit" ||
-        completionCalledRef.current
-      ) {
-        return;
-      }
 
-      completionCalledRef.current =
-        true;
-
-      onComplete?.();
-    };
 
   return (
-    <motion.div
-    role="status"
-    aria-live="polite"
-    aria-busy="true"
-    aria-label="Portfolio introduction"
-    initial={false}
-    animate={
-        isExiting
-        ? reducedMotion
-            ? {
-                opacity: 0,
-                y: "0%",
-            }
-            : {
-                opacity: 1,
-                y: "-100%",
-            }
-        : {
-            opacity: 1,
-            y: "0%",
-            }
-    }
-      transition={
-        isExiting
-          ? reducedMotion
-            ? {
-                duration: 0.24,
-                ease: MOTION_EASE,
-              }
-            : {
-                duration: 0.52,
-                delay: 0.1,
-                ease: MOTION_EASE,
-              }
-          : {
-              duration:
-                reducedMotion
-                  ? 0.18
-                  : 0.25,
 
-              ease: MOTION_EASE,
-            }
-      }
-      onAnimationComplete={
-        handleAnimationComplete
-      }
-        className={[
-        "fixed inset-0",
-        "z-[200]",
-        "isolate",
-        "pointer-events-auto",
-        "flex min-h-[100dvh]",
-        "items-center",
-        "justify-center",
-        "overflow-hidden",
-        "bg-slate-950",
-        "px-5 py-10",
-        "text-slate-50",
-        "sm:px-8",
-        ].join(" ")}
+    <motion.div
+      className="
+        fixed
+        inset-0
+        z-[9999]
+        flex
+        items-center
+        justify-center
+        overflow-hidden
+        bg-[#020617]
+      "
+
+
+      animate={{
+        y:
+          isExiting
+            ? "-100%"
+            : "0%",
+      }}
+
+
+      transition={{
+        duration:
+          reducedMotion
+            ? 0.25
+            : 0.75,
+
+        ease: MOTION_EASE,
+      }}
     >
-      {/* Background grid */}
+
+
+      {/* ------------------------------------------
+          Background atmosphere
+      ------------------------------------------ */}
+
+
       <div
         aria-hidden="true"
-        className={[
-          "pointer-events-none",
-          "absolute inset-0",
-          "-z-30",
-          "opacity-[0.035]",
-          "[background-image:linear-gradient(",
-          "rgba(148,163,184,0.45)_1px,",
-          "transparent_1px),",
-          "linear-gradient(90deg,",
-          "rgba(148,163,184,0.45)_1px,",
-          "transparent_1px)]",
-          "[background-size:72px_72px]",
-        ].join("")}
-      />
+        className="
+          absolute
+          inset-0
+          overflow-hidden
+        "
+      >
 
-      {/* Cyan atmosphere */}
-      <motion.div
-        aria-hidden="true"
-        initial={
-          reducedMotion
-            ? {
-                opacity: 0,
-              }
-            : {
-                opacity: 0,
-                scale: 0.8,
-              }
-        }
-        animate={
-          isExiting
-            ? reducedMotion
-              ? {
-                  opacity: 0,
-                }
-              : {
-                  opacity: 0,
-                  scale: 1.08,
-                }
-            : reducedMotion
-              ? {
-                  opacity: 1,
-                }
-              : {
-                  opacity: 1,
-                  scale: 1,
-                }
-        }
-        transition={{
-          duration:
-            reducedMotion
-              ? 0.25
-              : isExiting
+
+        <motion.div
+
+          className="
+            absolute
+            left-1/2
+            top-1/2
+            h-[30rem]
+            w-[30rem]
+            -translate-x-1/2
+            -translate-y-1/2
+            rounded-full
+            bg-cyan-400/10
+            blur-3xl
+          "
+
+
+          initial={{
+            opacity: 0,
+            scale:
+              lowPerformance
+                ? 1
+                : 0.8,
+          }}
+
+
+          animate={{
+            opacity: 1,
+            scale: 1,
+          }}
+
+
+          transition={{
+            duration:
+              lowPerformance
                 ? 0.35
                 : 1.2,
 
-          ease: MOTION_EASE,
-        }}
-        className={[
-          "pointer-events-none",
-          "absolute left-1/2",
-          "top-1/2 -z-20",
-          "h-[30rem] w-[30rem]",
-          "-translate-x-1/2",
-          "-translate-y-1/2",
-          "rounded-full",
-          "bg-cyan-400/[0.075]",
-          "blur-3xl",
-          "sm:h-[38rem]",
-          "sm:w-[38rem]",
-        ].join(" ")}
-      />
+            ease: MOTION_EASE,
+          }}
 
-      {/* Indigo atmosphere */}
-      <motion.div
-        aria-hidden="true"
-        initial={
-          reducedMotion
-            ? {
-                opacity: 0,
-              }
-            : {
-                opacity: 0,
-                scale: 0.7,
-              }
-        }
-        animate={
-          isExiting
-            ? reducedMotion
-              ? {
-                  opacity: 0,
-                }
-              : {
-                  opacity: 0,
-                  scale: 1.08,
-                }
-            : {
-                opacity: 0.7,
-                scale: 1,
-              }
-        }
-        transition={{
-          duration:
-            reducedMotion
-              ? 0.25
-              : isExiting
-                ? 0.35
-                : 1.15,
+        />
 
-          delay:
-            reducedMotion ||
-            isExiting
-              ? 0
-              : 0.12,
 
-          ease: MOTION_EASE,
-        }}
-        className={[
-          "pointer-events-none",
-          "absolute left-[58%]",
-          "top-[52%] -z-20",
-          "h-[22rem] w-[22rem]",
-          "-translate-x-1/2",
-          "-translate-y-1/2",
-          "rounded-full",
-          "bg-indigo-400/[0.055]",
-          "blur-3xl",
-        ].join(" ")}
-      />
 
-      {/* Top edge */}
-      <div
-        aria-hidden="true"
-        className={[
-          "pointer-events-none",
-          "absolute inset-x-0",
-          "top-0 h-px",
-          "bg-gradient-to-r",
-          "from-transparent",
-          "via-cyan-300/30",
-          "to-transparent",
-        ].join(" ")}
-      />
+        {!lowPerformance ? (
 
-      {/* Bottom reveal edge */}
-      <motion.div
-        aria-hidden="true"
-        animate={{
-          opacity:
-            isExiting
-              ? 1
-              : 0.5,
-        }}
-        transition={{
-          duration:
-            reducedMotion
-              ? 0.15
-              : 0.25,
+          <motion.div
 
-          ease: MOTION_EASE,
-        }}
-        className={[
-          "pointer-events-none",
-          "absolute inset-x-0",
-          "bottom-0 h-px",
-          "bg-gradient-to-r",
-          "from-transparent",
-          "via-cyan-200/70",
-          "to-transparent",
-          isExiting &&
-          !reducedMotion
-            ? "shadow-[0_18px_45px_rgba(34,211,238,0.22)]"
-            : "",
-        ].join(" ")}
-      />
+            className="
+              absolute
+              right-[-10rem]
+              bottom-[-10rem]
+              h-[22rem]
+              w-[22rem]
+              rounded-full
+              bg-blue-400/10
+              blur-3xl
+            "
+
+
+            initial={{
+              opacity: 0,
+              scale: 0.75,
+            }}
+
+
+            animate={{
+              opacity: 1,
+              scale: 1,
+            }}
+
+
+            transition={{
+              duration: 1.2,
+              ease: MOTION_EASE,
+            }}
+
+          />
+
+        ) : null}
+
+
+
+        <div
+          className="
+            absolute
+            inset-0
+            opacity-[0.04]
+            bg-[linear-gradient(to_right,#67e8f9_1px,transparent_1px),linear-gradient(to_bottom,#67e8f9_1px,transparent_1px)]
+            bg-[size:80px_80px]
+          "
+        />
+
+
+      </div>
+
+
+
+      {/* ------------------------------------------
+          Corner markers
+      ------------------------------------------ */}
+
 
       <CornerMarker
         position="topLeft"
-        reducedMotion={
-          reducedMotion
-        }
+        reducedMotion={reducedMotion}
+        lowPerformance={lowPerformance}
       />
+
 
       <CornerMarker
         position="topRight"
-        reducedMotion={
-          reducedMotion
-        }
+        reducedMotion={reducedMotion}
+        lowPerformance={lowPerformance}
       />
+
 
       <CornerMarker
         position="bottomLeft"
-        reducedMotion={
-          reducedMotion
-        }
+        reducedMotion={reducedMotion}
+        lowPerformance={lowPerformance}
       />
+
 
       <CornerMarker
         position="bottomRight"
-        reducedMotion={
-          reducedMotion
-        }
+        reducedMotion={reducedMotion}
+        lowPerformance={lowPerformance}
       />
 
-      {/* Top metadata */}
-      <motion.div
-        initial={
-          reducedMotion
-            ? {
-                opacity: 0,
-              }
-            : {
-                opacity: 0,
-                y: -10,
-              }
-        }
-        animate={
-          isExiting
-            ? reducedMotion
-              ? {
-                  opacity: 0,
-                }
-              : {
-                  opacity: 0,
-                  y: -8,
-                }
-            : reducedMotion
-              ? {
-                  opacity: 1,
-                }
-              : {
-                  opacity: 1,
-                  y: 0,
-                }
-        }
-        transition={
-          isExiting
-            ? {
-                duration: 0.18,
-                ease: MOTION_EASE,
-              }
-            : {
-                duration:
-                  reducedMotion
-                    ? 0.22
-                    : 0.5,
 
-                delay:
-                  reducedMotion
-                    ? 0.04
-                    : 0.15,
 
-                ease: MOTION_EASE,
-              }
-        }
-        className={[
-          "absolute inset-x-5",
-          "top-5 flex",
-          "items-center",
-          "justify-between",
-          "gap-5",
-          "sm:inset-x-8",
-          "sm:top-8",
-        ].join(" ")}
+      {/* ------------------------------------------
+          Main identity
+      ------------------------------------------ */}
+
+
+      <div
+        className="
+          relative
+          z-10
+          flex
+          flex-col
+          items-center
+        "
       >
-        <p
-          className={[
-            "font-mono",
-            "text-[0.52rem]",
-            "font-semibold uppercase",
-            "tracking-[0.22em]",
-            "text-slate-600",
-            "sm:text-[0.58rem]",
-          ].join(" ")}
+
+
+        <LoaderIdentity
+
+          initials={initials}
+
+          phase={phase}
+
+          isExiting={isExiting}
+
+          reducedMotion={reducedMotion}
+
+          lowPerformance={lowPerformance}
+
+        />
+
+
+
+        <LoadingLine
+
+          phase={phase}
+
+          reducedMotion={reducedMotion}
+
+          lowPerformance={lowPerformance}
+
+        />
+
+
+
+        <motion.p
+
+          className="
+            mt-6
+            text-xs
+            uppercase
+            tracking-[0.4em]
+            text-slate-400
+          "
+
+
+          initial={{
+            opacity: 0,
+          }}
+
+
+          animate={{
+            opacity:
+              phase === "ready"
+                ? 1
+                : 0,
+          }}
+
+
+          transition={{
+            duration:
+              reducedMotion ||
+              lowPerformance
+                ? 0.25
+                : 0.5,
+          }}
+
         >
-          Portfolio / 2026
-        </p>
 
-        <div
-          className={[
-            "flex items-center gap-2",
-            "font-mono",
-            "text-[0.52rem]",
-            "font-semibold uppercase",
-            "tracking-[0.18em]",
-            "text-cyan-200/65",
-            "sm:text-[0.58rem]",
-          ].join(" ")}
-        >
-          <span className="h-1 w-1 rounded-full bg-cyan-300 shadow-[0_0_9px_rgba(34,211,238,0.7)]" />
+          SYSTEM READY
 
-          Developer System
-        </div>
-      </motion.div>
+        </motion.p>
 
-      {/* Main identity */}
-      <LoaderIdentity
-        initials={initials}
-        phase={phase}
-        reducedMotion={
-          reducedMotion
-        }
-      />
 
-      {/* Bottom system note */}
-      <motion.p
-        initial={
-          reducedMotion
-            ? {
-                opacity: 0,
-              }
-            : {
-                opacity: 0,
-                y: 8,
-              }
-        }
-        animate={
-          isExiting
-            ? reducedMotion
-              ? {
-                  opacity: 0,
-                }
-              : {
-                  opacity: 0,
-                  y: 8,
-                }
-            : reducedMotion
-              ? {
-                  opacity: 1,
-                }
-              : {
-                  opacity: 1,
-                  y: 0,
-                }
-        }
-        transition={
-          isExiting
-            ? {
-                duration: 0.18,
-                ease: MOTION_EASE,
-              }
-            : {
-                duration:
-                  reducedMotion
-                    ? 0.22
-                    : 0.45,
+      </div>
 
-                delay:
-                  reducedMotion
-                    ? 0.14
-                    : 0.9,
 
-                ease: MOTION_EASE,
-              }
-        }
-        className={[
-          "absolute bottom-5",
-          "left-1/2",
-          "w-full",
-          "max-w-md",
-          "-translate-x-1/2",
-          "px-5 text-center",
-          "font-mono",
-          "text-[0.5rem]",
-          "uppercase",
-          "tracking-[0.18em]",
-          "text-slate-700",
-          "sm:bottom-8",
-          "sm:text-[0.56rem]",
-        ].join(" ")}
-      >
-        Full-Stack Development · IT Systems · Product Engineering
-      </motion.p>
     </motion.div>
+
   );
+
 }
