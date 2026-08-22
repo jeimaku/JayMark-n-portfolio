@@ -2,6 +2,7 @@ export { profile } from "./profile";
 
 export {
   featuredProjects,
+  interactiveProjects,
   mobileProjects,
   internshipSystems,
   designProjects,

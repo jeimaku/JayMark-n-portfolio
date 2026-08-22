@@ -78,6 +78,189 @@ export const featuredProjects = [
   },
 ];
 
+export const interactiveProjects = [
+  {
+    id: "talkready",
+    tabNumber: "01",
+    shortName: "TalkReady",
+    title: "TalkReady",
+    subtitle: "AI-Powered English Proficiency Platform",
+    category: "AI-Assisted Language Platform",
+    role: "Full-Stack Developer & Team Lead",
+    year: "2024 - 2025",
+    problem:
+      "English proficiency learners often lack real-time conversational speaking practice, instant pronunciation evaluation, and trainer guidance in one place. Traditional classroom settings cannot provide automated speech assessment or individualized analytics at scale.",
+    solution:
+      "TalkReady centralizes the learning journey with dedicated Student, Trainer, and Admin portals. It integrates OpenAI GPT-4 and Azure AI speech services to offer automated pronunciation scoring, simulated call-center dialogues, class curriculum tools, and verified certificate issuance.",
+    highlights: [
+      "Multi-role architecture for Student, Trainer, and Admin portals",
+      "OpenAI & Azure AI speech-to-text with pronunciation scoring",
+      "Accepted research paper for IEEE APWiMob 2025 conference",
+      "Comprehensive web ecosystem with mobile companion application",
+    ],
+    tech: [
+      "React.js",
+      "Node.js",
+      "OpenAI API",
+      "Azure AI",
+      "Firebase",
+      "Tailwind CSS",
+    ],
+    media: {
+      type: "gallery",
+      cover: assetPaths.projects.talkready.cover,
+      screens: [
+        {
+          label: "Landing Page",
+          src: assetPaths.projects.talkready.landingPage,
+          alt: "TalkReady landing page interface",
+        },
+        {
+          label: "Student Portal",
+          src: assetPaths.projects.talkready.homepage,
+          alt: "TalkReady student learning dashboard",
+        },
+        {
+          label: "Admin Dashboard",
+          src: assetPaths.projects.talkready.adminDashboard,
+          alt: "TalkReady administrator analytics",
+        },
+        {
+          label: "Trainer Portal",
+          src: assetPaths.projects.talkready.trainerDashboard,
+          alt: "TalkReady trainer course management",
+        },
+        {
+          label: "Reports & Certs",
+          src: assetPaths.projects.talkready.myReports,
+          alt: "TalkReady progress report and certificate authorization",
+        },
+      ],
+    },
+    links: {
+      caseStudy: "/projects/talkready",
+      live: "https://talkreadyweb.onrender.com/",
+      github: "https://github.com/jeimaku/TalkReady-web",
+    },
+  },
+  {
+    id: "crm-pipeline",
+    tabNumber: "02",
+    shortName: "CRM Pipeline",
+    title: "CRM Pipeline System",
+    subtitle: "Inquiry Management & Lead Qualification System",
+    category: "Lead Tracking & Operations",
+    role: "Full-Stack Developer & IT Intern",
+    year: "2026",
+    problem:
+      "Inquiries from walk-ins, web forms, Viber, and Facebook were scattered across unlinked channels and spreadsheets, leading to untracked prospects, delayed proposal drafting, and lack of visibility on client arrival status.",
+    solution:
+      "Developed an operational CRM pipeline system featuring dynamic stage tracking, proposal draft generation, package interest monitoring, staff acknowledgement workflows, and a real-time 'Arrived Today' front-desk dashboard.",
+    highlights: [
+      "Multi-channel inquiry ingestion & automated lead assignment",
+      "Interactive visual Kanban pipeline with stage progression",
+      "One-click proposal & email draft generator workflow",
+      "Front-desk 'Arrived Today' arrival verification logic",
+    ],
+    tech: ["React.js", "Node.js", "Express.js", "MySQL", "Tailwind CSS", "REST APIs"],
+    media: {
+      type: "video",
+      cover: assetPaths.projects.internshipSystems.crmPipeline.cover,
+      video: assetPaths.projects.internshipSystems.crmPipeline.video,
+    },
+    links: {
+      caseStudy: "/projects/internship-systems",
+    },
+  },
+  {
+    id: "virtual-office",
+    tabNumber: "03",
+    shortName: "Virtual Office",
+    title: "Launchpad Virtual Office Management System",
+    subtitle: "Contract Monitoring & Client Administration Platform",
+    category: "Client & Subscription Management",
+    role: "Full-Stack Developer & IT Intern",
+    year: "2026",
+    problem:
+      "Handling virtual office client contracts, renewal timelines, and billing receipts through spreadsheets led to missed expiration notices, disorganized client history, and delayed receipt verification.",
+    solution:
+      "Created a dedicated administrative client platform for Launchpad Coworking that automates contract duration monitoring, triggers proactive renewal alerts, generates dynamic PDF/image receipts, and supports bulk Excel import/export.",
+    highlights: [
+      "Automated contract duration tracking & renewal reminder alerts",
+      "Dynamic PDF & image receipt generator with verification status",
+      "Excel data import/export for streamlined client onboarding",
+      "Structured administrative dashboard for tenant operations",
+    ],
+    tech: ["React.js", "Node.js", "Tailwind CSS", "PDF Generation", "Excel Processing", "Database"],
+    media: {
+      type: "video",
+      cover: assetPaths.projects.internshipSystems.virtualOffice.cover,
+      video: assetPaths.projects.internshipSystems.virtualOffice.video,
+    },
+    links: {
+      caseStudy: "/projects/internship-systems",
+    },
+  },
+  {
+    id: "ticket-support",
+    tabNumber: "04",
+    shortName: "Ticket Support",
+    title: "520 Ticket Support System",
+    subtitle: "Centralized IT Issue Resolution & Helpdesk Workflow",
+    category: "Helpdesk & Service Management",
+    role: "Full-Stack Developer & IT Intern",
+    year: "2026",
+    problem:
+      "Technical support requests submitted informally across chat channels lacked priority categorization, resolution timelines, attachment logging, and structured escalation protocols for corporate tenants.",
+    solution:
+      "Engineered a centralized helpdesk platform allowing client companies to submit prioritized tickets with screenshot attachments, providing IT staff with filterable status dashboards, SLA tracking, and resolution logs.",
+    highlights: [
+      "Client-specific customized ticket submission links & forms",
+      "Screenshot & error log attachment upload capabilities",
+      "Multi-criteria search, priority triage & status boards",
+      "End-to-end resolution tracking with automated notifications",
+    ],
+    tech: ["React.js", "Node.js", "Express.js", "Tailwind CSS", "Database Integration", "REST APIs"],
+    media: {
+      type: "video",
+      cover: assetPaths.projects.internshipSystems.ticketSupport.cover,
+      video: assetPaths.projects.internshipSystems.ticketSupport.video,
+    },
+    links: {
+      caseStudy: "/projects/internship-systems",
+    },
+  },
+  {
+    id: "paysera-inventory",
+    tabNumber: "05",
+    shortName: "Inventory",
+    title: "Paysera Inventory Management System",
+    subtitle: "Internal Hardware Asset Lifecycle & Deployment Monitor",
+    category: "Asset Tracking & IT Operations",
+    role: "Full-Stack Developer & IT Intern",
+    year: "2026",
+    problem:
+      "Tracking company-issued hardware (workstations, laptops, accessories) without a centralized system led to untracked warranty expirations, missing return schedules, and undocumented repair histories.",
+    solution:
+      "Designed an internal hardware asset management system with role-based authentication, real-time employee deployment logs, warranty expiration counters, return schedule tracking, and maintenance audit trails.",
+    highlights: [
+      "Full asset lifecycle tracking from deployment to return",
+      "Warranty expiration tracking & return schedule alerts",
+      "Comprehensive hardware repair & maintenance audit logs",
+      "Role-based access control (RBAC) with inventory analytics",
+    ],
+    tech: ["React.js", "Node.js", "Database Integration", "RBAC", "Tailwind CSS", "Analytics"],
+    media: {
+      type: "video",
+      cover: assetPaths.projects.internshipSystems.payseraInventory.cover,
+      video: assetPaths.projects.internshipSystems.payseraInventory.video,
+    },
+    links: {
+      caseStudy: "/projects/internship-systems",
+    },
+  },
+];
+
 export const internshipSystems = {
   title: "Internship Systems Suite",
   subtitle: "Workflow systems built during internship work",
