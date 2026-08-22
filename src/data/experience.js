@@ -3,7 +3,7 @@ export const experience = [
     id: "launchpad-paysera-internship",
     title: "Full-Stack Developer & IT Intern",
     organization: "Launchpad Coworking & Paysera",
-    period: "December 2025 - April 2026",
+    period: "December 2025 - May 2026",
     badge: "Internship",
     type: "Professional Experience",
     description:

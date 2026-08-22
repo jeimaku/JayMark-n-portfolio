@@ -1,11 +1,8 @@
 import Footer from "../components/v2/Footer";
-import HeroExperience from "../components/v2/HeroExperience";
+import HeroAmbientBackground from "../components/v2/HeroAmbientBackground";
 
-import { motion } from "motion/react";
-
-import {
-  useEffect,
-} from "react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useEffect, useState } from "react";
 
 import {
   AboutSection,
@@ -22,8 +19,88 @@ import {
 } from "../components/v2/motion";
 
 import useHeroAboutTransition from "../hooks/useHeroAboutTransition";
-
 import { heroContent } from "../data/heroContent";
+import { aboutContent } from "../data/aboutContent";
+
+
+/* ─── Animation helpers ──────────────────────────────────────────────────── */
+
+/*
+ * Using motion/react for all entrance animations.
+ * This correctly respects reduced-motion at the JS level —
+ * no inline style + CSS keyframe conflicts.
+ */
+const EASE = [0.22, 1, 0.36, 1];
+
+function useFadeUp(delay = 0) {
+  const reduced = Boolean(useReducedMotion());
+
+  return {
+    initial: { opacity: 0, y: reduced ? 0 : 18 },
+    animate: { opacity: 1, y: 0 },
+    transition: { delay: reduced ? 0 : delay, duration: reduced ? 0 : 0.72, ease: EASE },
+  };
+}
+
+/* ─── Portrait ───────────────────────────────────────────────────────────── */
+
+function HeroPortrait() {
+  const [failed, setFailed] = useState(false);
+  const motionProps = useFadeUp(0.08);
+
+  return (
+    <motion.div {...motionProps} className="mb-7 flex justify-center">
+      <div className="relative">
+        {/* Photo frame */}
+        <div className="relative h-28 w-28 overflow-hidden rounded-[1.75rem] border border-cyan-300/20 bg-slate-900 shadow-[0_0_40px_rgba(34,211,238,0.09)] sm:h-32 sm:w-32">
+          {!failed ? (
+            <img
+              src={aboutContent.portrait.src}
+              alt="Jay Mark Apelado"
+              loading="eager"
+              decoding="async"
+              onError={() => setFailed(true)}
+              className="h-full w-full object-cover"
+              style={{ objectPosition: aboutContent.portrait.objectPosition }}
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center bg-slate-900">
+              <p className="text-3xl font-semibold tracking-[-0.06em] text-cyan-100">
+                JM
+              </p>
+            </div>
+          )}
+
+          {/* Subtle cyan overlay tint */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-cyan-300/[0.04] mix-blend-screen"
+          />
+
+          {/* Corner brackets */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-2.5 top-2.5 h-5 w-5 border-l border-t border-cyan-200/30"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute bottom-2.5 right-2.5 h-5 w-5 border-b border-r border-cyan-200/30"
+          />
+        </div>
+
+        {/* Availability indicator dot */}
+        <div
+          title="Available for opportunities"
+          className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full border-2 border-slate-950 bg-emerald-400"
+        >
+          <span className="sr-only">Available for opportunities</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ─── CTA icons ──────────────────────────────────────────────────────────── */
 
 function ArrowIcon() {
   return (
@@ -31,7 +108,7 @@ function ArrowIcon() {
       aria-hidden="true"
       viewBox="0 0 20 20"
       fill="none"
-      className="h-4 w-4"
+      className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
     >
       <path
         d="M4.5 10h11m-4.25-4.25L15.5 10l-4.25 4.25"
@@ -70,92 +147,156 @@ function DocumentIcon() {
   );
 }
 
-function ContactIcon() {
+/* ─── Scroll chevron ─────────────────────────────────────────────────────── */
+
+function ScrollChevron() {
   return (
-    <svg
+    <div
       aria-hidden="true"
-      viewBox="0 0 20 20"
-      fill="none"
-      className="h-4 w-4"
+      className="absolute bottom-8 left-1/2 -translate-x-1/2 [animation:heroChevronBounce_2.4s_ease-in-out_2.5s_infinite] motion-reduce:hidden"
     >
-      <path
-        d="M3 5.25h14v9.5H3v-9.5Z"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-      />
-
-      <path
-        d="m3.75 6 6.25 4.75L16.25 6"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        className="h-5 w-5 text-slate-600"
+      >
+        <path
+          d="M6 9l6 6 6-6"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
   );
 }
 
-function ProofPoint({ label, value }) {
+/* ─── HeroContent ────────────────────────────────────────────────────────── */
+
+function HeroContent() {
   return (
-    <li className="min-w-0">
-      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
-        {label}
-      </p>
+    <div className="mx-auto w-full max-w-2xl px-6 text-center sm:px-8">
 
-      <p className="mt-1 text-sm font-medium leading-6 text-slate-200">
-        {value}
-      </p>
-    </li>
+      {/* Status badge */}
+      <motion.div {...useFadeUp(0.2)}>
+        <div
+          role="status"
+          className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-xs font-medium text-slate-400"
+        >
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40 motion-reduce:animate-none" />
+            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          </span>
+
+          {heroContent.statusLabel}
+        </div>
+      </motion.div>
+
+      {/* Monogram */}
+      <motion.p
+        {...useFadeUp(0.3)}
+        aria-hidden="true"
+        className="mb-4 font-mono text-sm font-semibold tracking-[0.55em] text-cyan-400/55"
+      >
+        JM
+      </motion.p>
+
+      {/* Name */}
+      <motion.h1
+        id="hero-title"
+        {...useFadeUp(0.38)}
+      >
+        <span className="block text-5xl font-semibold leading-[0.96] tracking-[-0.06em] text-white sm:text-6xl md:text-7xl">
+          {heroContent.name}
+        </span>
+
+        {/* Dual-line role */}
+        <span className="mt-5 block">
+          <span className="text-[0.65rem] font-semibold uppercase tracking-[0.32em] text-cyan-300/80 sm:text-xs">
+            Full-Stack Developer
+          </span>
+
+          <span
+            aria-hidden="true"
+            className="mx-3 inline-block text-[0.65rem] text-slate-600 sm:text-xs"
+          >
+            •
+          </span>
+
+          <span className="text-[0.65rem] font-semibold uppercase tracking-[0.32em] text-cyan-300/80 sm:text-xs">
+            IT Support Specialist
+          </span>
+        </span>
+      </motion.h1>
+
+      {/* Summary */}
+      <motion.p
+        {...useFadeUp(0.52)}
+        className="mx-auto mt-7 max-w-lg text-base leading-8 text-slate-400 sm:text-lg"
+      >
+        {heroContent.summary}
+      </motion.p>
+
+      {/* CTA buttons */}
+      <motion.div
+        {...useFadeUp(0.65)}
+        className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center"
+      >
+        <a
+          href={heroContent.primaryAction.href}
+          className="group inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-cyan-300 px-7 py-3 text-sm font-semibold text-slate-950 shadow-[0_12px_36px_rgba(8,145,178,0.18)] transition duration-300 hover:-translate-y-0.5 hover:bg-cyan-200 hover:shadow-[0_16px_42px_rgba(8,145,178,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950 sm:w-auto"
+        >
+          {heroContent.primaryAction.label}
+          <ArrowIcon />
+        </a>
+
+        <a
+          href={heroContent.resumeAction.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.035] px-7 py-3 text-sm font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200/40 hover:bg-cyan-300/[0.07] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950 sm:w-auto"
+        >
+          <DocumentIcon />
+          {heroContent.resumeAction.label}
+        </a>
+      </motion.div>
+    </div>
   );
 }
+
+/* ─── HomeV2 ─────────────────────────────────────────────────────────────── */
 
 export default function HomeV2() {
   const {
     heroSceneRef,
     heroCopyStyle,
-    heroWorkspaceStyle,
     heroBackgroundStyle,
     transitionVeilStyle,
     transitionGlowStyle,
     transitionLineStyle,
   } = useHeroAboutTransition();
 
+  /* ── Document title + meta description ── */
   useEffect(() => {
-    const previousTitle =
-      document.title;
+    const previousTitle = document.title;
 
     document.title =
       "Jay Mark Apelado | Full-Stack Developer Portfolio";
 
-    let description =
-      document.querySelector(
-        'meta[name="description"]'
-      );
+    let description = document.querySelector(
+      'meta[name="description"]'
+    );
 
-    const createdDescription =
-      !description;
+    const createdDescription = !description;
 
     if (!description) {
-      description =
-        document.createElement(
-          "meta"
-        );
-
-      description.setAttribute(
-        "name",
-        "description"
-      );
-
-      document.head.appendChild(
-        description
-      );
+      description = document.createElement("meta");
+      description.setAttribute("name", "description");
+      document.head.appendChild(description);
     }
 
-    const previousDescription =
-      description.getAttribute(
-        "content"
-      );
+    const previousDescription = description.getAttribute("content");
 
     description.setAttribute(
       "content",
@@ -163,296 +304,84 @@ export default function HomeV2() {
     );
 
     return () => {
-      document.title =
-        previousTitle;
+      document.title = previousTitle;
 
       if (createdDescription) {
         description.remove();
         return;
       }
 
-      if (
-        previousDescription !== null
-      ) {
-        description.setAttribute(
-          "content",
-          previousDescription
-        );
+      if (previousDescription !== null) {
+        description.setAttribute("content", previousDescription);
       } else {
-        description.removeAttribute(
-          "content"
-        );
+        description.removeAttribute("content");
       }
     };
   }, []);
 
   return (
-  <ScrollMotionShell>
+    <ScrollMotionShell>
       <main
         id="main-content"
         tabIndex={-1}
         className="min-h-screen bg-slate-950 text-slate-50 focus:outline-none"
       >
+        {/* ── Hero scroll scene wrapper ─────────────────────────────────
+            Extra height beyond 100vh gives the scroll-exit transition
+            its parallax window. The inner section is sticky.
+        ──────────────────────────────────────────────────────────────── */}
         <div
           ref={heroSceneRef}
           data-hero-scroll-scene=""
-          className={[
-            "relative",
-            "min-h-[125vh]",
-            "sm:min-h-[135vh]",
-            "xl:min-h-[150vh]",
-          ].join(" ")}
+          className="relative min-h-[125vh] sm:min-h-[135vh] xl:min-h-[150vh]"
         >
           <section
             id="home"
             aria-labelledby="hero-title"
-            className="sticky top-0 isolate min-h-screen overflow-hidden bg-slate-950 pt-20 sm:pt-24"
+            className="sticky top-0 isolate flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 pb-16 pt-20 sm:pt-24"
           >
-          {/* Background atmosphere */}
-          <motion.div
-            aria-hidden="true"
-            style={heroBackgroundStyle}
-            className="pointer-events-none absolute inset-0 -z-10 origin-center will-change-transform"
-          >
-            <div className="absolute left-[4%] top-[18%] h-96 w-96 rounded-full bg-cyan-400/[0.045] blur-3xl" />
-
-            <div className="absolute right-[3%] top-[12%] h-[28rem] w-[28rem] rounded-full bg-indigo-400/[0.04] blur-3xl" />
-
-            <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(148,163,184,0.45)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.45)_1px,transparent_1px)] [background-size:72px_72px]" />
-
-            <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-300/25 to-transparent" />
-          </motion.div>
-
-          <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] w-full max-w-[90rem] items-start gap-12 px-4 py-10 sm:px-6 sm:py-12 xl:grid-cols-[0.9fr_1.1fr] xl:items-center xl:gap-16 xl:px-10 xl:py-14 2xl:gap-20">
-            {/* Hero copy */}
+            {/* ── Animated ambient background ────────────────────────── */}
             <motion.div
-                style={heroCopyStyle}
-                className="relative z-10 min-w-0 will-change-transform xl:pb-4"
-              >
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-200 sm:text-sm">
-                  {heroContent.eyebrow}
-                </p>
-
-                <span
-                  aria-hidden="true"
-                  className="hidden h-4 w-px bg-white/15 sm:block"
-                />
-
-                <div
-                  role="status"
-                  className="inline-flex items-center gap-2 text-xs font-medium text-slate-400"
-                >
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-40 motion-reduce:animate-none" />
-
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-                  </span>
-
-                  {heroContent.statusLabel}
-                </div>
-              </div>
-
-              <h1
-                id="hero-title"
-                className="mt-7 max-w-3xl tracking-[-0.06em]"
-              >
-                <span className="block text-4xl font-semibold leading-[0.97] text-white sm:text-5xl md:text-6xl xl:text-[4.25rem] 2xl:text-[4.75rem]">
-                  {heroContent.name}
-                </span>
-
-                <span className="mt-5 block max-w-2xl bg-gradient-to-r from-cyan-100 via-cyan-200 to-slate-300 bg-clip-text text-lg font-medium leading-tight text-transparent sm:text-2xl xl:text-[1.85rem]">
-                  {heroContent.role}
-                </span>
-              </h1>
-
-              <p className="mt-7 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
-                {heroContent.summary}
-              </p>
-
-              {/* Main actions */}
-              <div className="mt-9 grid w-full grid-cols-1 gap-3 sm:flex sm:w-auto sm:flex-wrap sm:items-center">
-                <a
-                  href={heroContent.primaryAction.href}
-                  className="group inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-cyan-300 px-6 py-3 text-sm font-semibold text-slate-950 shadow-[0_12px_36px_rgba(8,145,178,0.18)] transition duration-300 hover:-translate-y-0.5 hover:bg-cyan-200 hover:shadow-[0_16px_42px_rgba(8,145,178,0.25)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950 sm:w-auto"
-                >
-                  {heroContent.primaryAction.label}
-
-                  <span className="transition-transform duration-300 group-hover:translate-x-0.5">
-                    <ArrowIcon />
-                  </span>
-                </a>
-
-                <a
-                  href={heroContent.resumeAction.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.035] px-6 py-3 text-sm font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200/40 hover:bg-cyan-300/[0.07] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950 sm:w-auto"
-                >
-                  <DocumentIcon />
-
-                  {heroContent.resumeAction.label}
-                </a>
-              </div>
-
-              {/* Availability and contact */}
-              <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
-                <p className="max-w-lg text-sm leading-6 text-slate-500">
-                  {heroContent.availability}
-                </p>
-
-                <a
-                  href={heroContent.contactAction.href}
-                  className="group inline-flex items-center gap-2 text-sm font-semibold text-cyan-200 transition hover:text-cyan-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
-                >
-                  <ContactIcon />
-
-                  {heroContent.contactAction.label}
-
-                  <span
-                    aria-hidden="true"
-                    className="transition-transform duration-300 group-hover:translate-x-0.5"
-                  >
-                    →
-                  </span>
-                </a>
-              </div>
-
-              {/* Professional proof points */}
-              <ul
-                aria-label="Professional focus areas"
-                className="mt-10 grid max-w-2xl grid-cols-1 gap-5 border-t border-white/10 pt-6 sm:grid-cols-3 sm:gap-6"
-              >
-                {heroContent.proofPoints.map((point) => (
-                  <ProofPoint
-                    key={point.label}
-                    label={point.label}
-                    value={point.value}
-                  />
-                ))}
-              </ul>
+              aria-hidden="true"
+              style={heroBackgroundStyle}
+              className="pointer-events-none absolute inset-0 -z-10 origin-center will-change-transform"
+            >
+              <HeroAmbientBackground />
             </motion.div>
-            
-            {/* Interactive 3D workspace */}
+
+            {/* ── Hero copy — scroll-linked fade/rise exit ───────────── */}
             <motion.div
-                style={heroWorkspaceStyle}
-                className="relative mx-auto w-full min-w-0 max-w-4xl will-change-transform xl:max-w-none xl:translate-y-2"
-              >
-              <div className="mb-4 flex items-end justify-between gap-6 px-1">
-                <div>
-                  <p
-                    id="hero-workspace-title"
-                    className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-300"
-                  >
-                    {heroContent.scene.eyebrow}
-                  </p>
-
-                  <p
-                    id="hero-workspace-description"
-                    className="mt-1 hidden max-w-md text-xs leading-5 text-slate-600 sm:block"
-                  >
-                    {heroContent.scene.caption}
-                  </p>
-                </div>
-
-                <div className="hidden shrink-0 items-center gap-2 rounded-full border border-emerald-300/15 bg-emerald-300/[0.04] px-3 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.15em] text-emerald-300/80 sm:flex">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-
-                  {heroContent.scene.status}
-                </div>
-              </div>
-
-              <div
-                role="group"
-                aria-labelledby="hero-workspace-title"
-                aria-describedby="hero-workspace-description"
-                className="group relative h-[26rem] overflow-hidden rounded-[1.5rem] border border-cyan-300/15 bg-slate-900/25 shadow-[0_28px_90px_rgba(0,0,0,0.42)] sm:h-[34rem] sm:rounded-[2rem] md:h-[38rem] xl:h-[clamp(32rem,66vh,42rem)]"
-              >
-                {/* Decorative frame */}
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 z-10 rounded-[inherit] ring-1 ring-inset ring-white/[0.025]"
-                />
-
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute left-5 top-5 z-10 h-8 w-8 border-l border-t border-cyan-200/25"
-                />
-
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute bottom-5 right-5 z-10 h-8 w-8 border-b border-r border-cyan-200/25"
-                />
-
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_58%_35%,rgba(34,211,238,0.08),transparent_25rem)]"
-                />
-
-                <HeroExperience />
-
-                <div className="pointer-events-none absolute inset-x-5 bottom-5 z-20 hidden justify-center sm:flex">
-                  <div className="rounded-full border border-white/10 bg-slate-950/75 px-4 py-2 text-center text-[0.7rem] font-medium text-slate-400 shadow-lg backdrop-blur">
-                    Drag to explore
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 flex flex-col gap-2 px-1 text-xs text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:gap-5">
-                <p>Optimized for desktop and mobile devices</p>
-
-                <p className="hidden sm:block">
-                  Motion preferences respected
-                </p>
-              </div>
+              style={heroCopyStyle}
+              className="relative z-10 will-change-transform"
+            >
+              <HeroContent />
             </motion.div>
-          </div>
-          {/* Hero-to-About transition graphics */}
-          <motion.div
-            aria-hidden="true"
-            style={transitionVeilStyle}
-            className={[
-              "pointer-events-none absolute",
-              "inset-x-0 bottom-0 z-30",
-              "h-[38vh]",
-              "bg-gradient-to-t",
-              "from-slate-950",
-              "via-slate-950/75",
-              "to-transparent",
-            ].join(" ")}
-          />
 
-          <motion.div
-            aria-hidden="true"
-            style={transitionGlowStyle}
-            className={[
-              "pointer-events-none absolute",
-              "bottom-[-8rem] left-1/2 z-30",
-              "h-64 w-[min(80rem,92vw)]",
-              "-translate-x-1/2 rounded-full",
-              "bg-cyan-300/[0.11]",
-              "blur-3xl",
-            ].join(" ")}
-          />
+            {/* ── Scroll indicator ───────────────────────────────────── */}
+            <ScrollChevron />
 
-          <motion.div
-            aria-hidden="true"
-            style={transitionLineStyle}
-            className={[
-              "pointer-events-none absolute",
-              "inset-x-4 bottom-0 z-40",
-              "mx-auto h-px max-w-[90rem]",
-              "origin-center",
-              "bg-gradient-to-r",
-              "from-transparent",
-              "via-cyan-200/70",
-              "to-transparent",
-              "shadow-[0_0_22px_rgba(34,211,238,0.45)]",
-            ].join(" ")}
-          />
+            {/* ── Hero-to-About transition graphics ──────────────────── */}
+            <motion.div
+              aria-hidden="true"
+              style={transitionVeilStyle}
+              className="pointer-events-none absolute inset-x-0 bottom-0 z-30 h-[38vh] bg-gradient-to-t from-slate-950 via-slate-950/75 to-transparent"
+            />
+
+            <motion.div
+              aria-hidden="true"
+              style={transitionGlowStyle}
+              className="pointer-events-none absolute bottom-[-8rem] left-1/2 z-30 h-64 w-[min(80rem,92vw)] -translate-x-1/2 rounded-full bg-cyan-300/[0.11] blur-3xl"
+            />
+
+            <motion.div
+              aria-hidden="true"
+              style={transitionLineStyle}
+              className="pointer-events-none absolute inset-x-4 bottom-0 z-40 mx-auto h-px max-w-[90rem] origin-center bg-gradient-to-r from-transparent via-cyan-200/70 to-transparent shadow-[0_0_22px_rgba(34,211,238,0.45)]"
+            />
           </section>
         </div>
 
+        {/* ── Below-the-fold sections — untouched ──────────────────────── */}
         <MotionSection
           effect="rise"
           distance={40}

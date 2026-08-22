@@ -24,24 +24,38 @@ export const aboutContent = {
   statement:
     "The goal is not only to make a system work, but to make it understandable, dependable, and genuinely useful.",
 
-  details: [
-    {
-      label: "Based in",
-      value: "Philippines",
-    },
-    {
-      label: "Primary focus",
-      value: "Full-stack systems",
-    },
-    {
-      label: "Additional strength",
-      value: "IT support and infrastructure",
-    },
-    {
-      label: "Working style",
-      value: "Practical, iterative, and documentation-minded",
-    },
-  ],
+  profileCard: {
+    title: "Personal System Profile",
+
+    status:
+      "Available for opportunities",
+
+    items: [
+      {
+        label: "Role",
+        value:
+          "Full-Stack Developer & IT Support Specialist",
+      },
+
+      {
+        label: "Primary Domain",
+        value:
+          "Web applications, internal systems, and digital workflows",
+      },
+
+      {
+        label: "Technical Strength",
+        value:
+          "Software development, infrastructure support, and system reliability",
+      },
+
+      {
+        label: "Approach",
+        value:
+          "Practical, iterative, and documentation-minded",
+      },
+    ],
+  },
 
   approach: [
     {
