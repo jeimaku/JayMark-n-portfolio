@@ -1,924 +1,427 @@
-import {
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 
-import {
-  motion,
-} from "motion/react";
+// ─────────────────────────────────────────────────────────────────────────────
+// Constants
+// ─────────────────────────────────────────────────────────────────────────────
 
+const EASE = [0.22, 1, 0.36, 1];
+const EASE_IN = [0.4, 0, 1, 1];
 
-// --------------------------------------------------
-// Motion constants
-// --------------------------------------------------
-
-const MOTION_EASE = [
-  0.22,
-  1,
-  0.36,
-  1,
+// Boot log lines — appear sequentially during loading
+const BOOT_LINES = [
+  { id: "env",    text: "Initializing environment",          status: "ok"      },
+  { id: "assets", text: "Loading static assets",             status: "ok"      },
+  { id: "sys",    text: "Mounting application modules",      status: "ok"      },
+  { id: "theme",  text: "Applying system theme",             status: "ok"      },
+  { id: "ready",  text: "Portfolio ready",                   status: "ready"   },
 ];
 
+// MS between each log line appearing (normal / low-perf)
+const LINE_INTERVAL     = 220;
+const LP_LINE_INTERVAL  = 120;
 
-// --------------------------------------------------
-// Timing
-// --------------------------------------------------
-
-const NORMAL_TIMING = {
-  readyDelay: 1450,
-  exitDelay: 1900,
+// Total sequence timing (ms)
+const TIMING = {
+  normal:  { readyDelay: 1550, exitDelay: 2100 },
+  reduced: { readyDelay:  400, exitDelay:  700 },
 };
 
-const REDUCED_TIMING = {
-  readyDelay: 450,
-  exitDelay: 780,
-};
-
-
-// --------------------------------------------------
-// Performance detection
-// --------------------------------------------------
+// ─────────────────────────────────────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────────────────────────────────────
 
 function getPerformanceMode() {
-  if (
-    typeof navigator === "undefined"
-  ) {
-    return false;
-  }
-
-
-  const lowCPU =
-    navigator.hardwareConcurrency &&
-    navigator.hardwareConcurrency <= 4;
-
-
-  const lowMemory =
-    navigator.deviceMemory &&
-    navigator.deviceMemory <= 4;
-
-
-  return Boolean(
-    lowCPU ||
-    lowMemory
-  );
+  if (typeof navigator === "undefined") return false;
+  const lowCPU = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+  const lowMem = navigator.deviceMemory && navigator.deviceMemory <= 4;
+  return Boolean(lowCPU || lowMem);
 }
-
-
-// --------------------------------------------------
-// Reduced motion detection
-// --------------------------------------------------
 
 function useReducedMotion() {
-  const [
-    reducedMotion,
-    setReducedMotion,
-  ] = useState(false);
-
-
+  const [rm, setRm] = useState(false);
   useEffect(() => {
-    const media =
-      window.matchMedia(
-        "(prefers-reduced-motion: reduce)"
-      );
-
-
-    const update = () => {
-      setReducedMotion(
-        media.matches
-      );
-    };
-
-
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setRm(mq.matches);
     update();
-
-
-    media.addEventListener(
-      "change",
-      update
-    );
-
-
-    return () => {
-      media.removeEventListener(
-        "change",
-        update
-      );
-    };
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
   }, []);
-
-
-  return reducedMotion;
+  return rm;
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Sub-components
+// ─────────────────────────────────────────────────────────────────────────────
 
-// --------------------------------------------------
-// Utility
-// --------------------------------------------------
-
-function getInitials(name = "") {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .map(
-      (part) =>
-        part[0]
-    )
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
-
-
-// --------------------------------------------------
-// Corner Marker
-// --------------------------------------------------
-
-function CornerMarker({
-  position,
-  reducedMotion,
-  lowPerformance,
-}) {
-
-  const positions = {
-    topLeft:
-      "left-0 top-0 border-l border-t",
-
-    topRight:
-      "right-0 top-0 border-r border-t",
-
-    bottomLeft:
-      "left-0 bottom-0 border-l border-b",
-
-    bottomRight:
-      "right-0 bottom-0 border-r border-b",
-  };
-
-
+// Blinking cursor
+function Cursor({ visible }) {
   return (
     <motion.span
       aria-hidden="true"
-      className={[
-        "absolute",
-        "h-10",
-        "w-10",
-        "border-cyan-300/60",
-        positions[position],
-      ].join(" ")}
-      initial={{
-        opacity: 0,
-        scale:
-          lowPerformance
-            ? 1
-            : 0.85,
-      }}
-      animate={{
-        opacity: 1,
-        scale: 1,
-      }}
-      transition={{
-        duration:
-          reducedMotion ||
-          lowPerformance
-            ? 0.25
-            : 0.7,
-
-        delay:
-          reducedMotion ||
-          lowPerformance
-            ? 0
-            : 0.15,
-
-        ease: MOTION_EASE,
-      }}
+      animate={{ opacity: visible ? [1, 0, 1] : 0 }}
+      transition={visible ? { duration: 0.9, repeat: Infinity, ease: "linear" } : { duration: 0 }}
+      className="ml-0.5 inline-block h-3 w-0.5 translate-y-[1px] bg-cyan-300"
     />
   );
 }
 
+// Single log line
+function BootLine({ line, index, visible, isLast, lp }) {
+  const statusColor = {
+    ok:    "text-emerald-400",
+    ready: "text-cyan-300",
+    warn:  "text-amber-400",
+    error: "text-rose-400",
+  }[line.status] ?? "text-slate-400";
 
-// --------------------------------------------------
-// Portfolio Mark
-// --------------------------------------------------
-
-function PortfolioMark({
-  initials,
-  isExiting,
-  reducedMotion,
-  lowPerformance,
-}) {
+  const statusLabel = {
+    ok:    "OK",
+    ready: "READY",
+    warn:  "WARN",
+    error: "ERR",
+  }[line.status] ?? "—";
 
   return (
     <motion.div
-      className="
-        relative
-        flex
-        h-24
-        w-24
-        items-center
-        justify-center
-        rounded-2xl
-        border
-        border-cyan-300/30
-        bg-slate-900/70
-      "
-
-      initial={{
-        opacity: 0,
-        y: 20,
-        filter:
-          lowPerformance
-            ? "blur(0px)"
-            : "blur(5px)",
-      }}
-
-      animate={
-        isExiting
-          ? {
-              opacity: 0,
-              y: -40,
-              filter:
-                lowPerformance
-                  ? "blur(0px)"
-                  : "blur(5px)",
-            }
-
-          : {
-              opacity: 1,
-              y: 0,
-              filter: "blur(0px)",
-            }
-      }
-
-      transition={{
-        duration:
-          reducedMotion ||
-          lowPerformance
-            ? 0.25
-            : 0.8,
-
-        ease: MOTION_EASE,
-      }}
+      initial={{ opacity: 0, x: lp ? 0 : -6 }}
+      animate={visible ? { opacity: 1, x: 0 } : { opacity: 0, x: lp ? 0 : -6 }}
+      transition={{ duration: lp ? 0.15 : 0.32, ease: EASE }}
+      className="flex items-center gap-3 font-mono"
     >
-
-      <span
-        className="
-          text-3xl
-          font-semibold
-          tracking-tight
-          text-cyan-100
-        "
-      >
-        {initials}
+      {/* Line number */}
+      <span className="w-5 shrink-0 text-right text-[0.6rem] text-slate-700 select-none">
+        {String(index + 1).padStart(2, "0")}
       </span>
 
+      {/* Status badge */}
+      <span className={["w-10 shrink-0 text-[0.6rem] font-bold tracking-widest", statusColor].join(" ")}>
+        [{statusLabel}]
+      </span>
+
+      {/* Text */}
+      <span className="text-[0.7rem] tracking-wide text-slate-300">
+        {line.text}
+        {isLast && <Cursor visible={true} />}
+      </span>
     </motion.div>
   );
 }
 
-// --------------------------------------------------
-// Loader Identity
-// --------------------------------------------------
-
-function LoaderIdentity({
-  initials,
-  phase,
-  isExiting,
-  reducedMotion,
-  lowPerformance,
-}) {
-  const showIdentity =
-    phase !== "idle";
-
-
+// Horizontal scan sweep line (CSS animation, no JS loop)
+function ScanLine({ active, lp }) {
+  if (lp) return null;
   return (
     <motion.div
-      className="
-        flex
-        flex-col
-        items-center
-        gap-6
-        text-center
-      "
-
-      initial={{
-        opacity: 0,
-      }}
-
-      animate={{
-        opacity:
-          showIdentity
-            ? 1
-            : 0,
-      }}
-
-      transition={{
-        duration:
-          reducedMotion ||
-          lowPerformance
-            ? 0.25
-            : 0.6,
-
-        ease: MOTION_EASE,
-      }}
+      aria-hidden="true"
+      initial={{ scaleY: 0, opacity: 0 }}
+      animate={active ? { scaleY: 1, opacity: 1 } : { scaleY: 0, opacity: 0 }}
+      transition={{ duration: 0.4, ease: EASE }}
+      className="pointer-events-none absolute inset-x-0 top-0 origin-top overflow-hidden"
+      style={{ height: "100%" }}
     >
-
-      <PortfolioMark
-        initials={initials}
-        isExiting={isExiting}
-        reducedMotion={reducedMotion}
-        lowPerformance={lowPerformance}
-      />
-
-
-      <motion.div
-        initial={{
-          opacity: 0,
-          y: 18,
-          filter:
-            lowPerformance
-              ? "blur(0px)"
-              : "blur(5px)",
-        }}
-
-        animate={{
-          opacity:
-            phase === "identity" ||
-            phase === "ready"
-              ? 1
-              : 0,
-
-          y: 0,
-
-          filter:
-            "blur(0px)",
-        }}
-
-        transition={{
-          duration:
-            reducedMotion ||
-            lowPerformance
-              ? 0.25
-              : 0.7,
-
-          delay:
-            reducedMotion ||
-            lowPerformance
-              ? 0
-              : 0.15,
-
-          ease: MOTION_EASE,
-        }}
-
-        className="
-          space-y-2
-        "
-      >
-
-      <h1
-        className="
-          text-3xl
-          font-semibold
-          tracking-tight
-          text-white
-        "
-      >
-        JAY MARK APELADO
-      </h1>
-
-
-      <div
-        className="
-          mt-3
-          flex
-          flex-col
-          items-center
-          gap-1
-          text-sm
-          uppercase
-          tracking-[0.35em]
-          text-cyan-300/80
-        "
-      >
-
-        <span>
-          FULL-STACK DEVELOPER
-        </span>
-
-
-        <span
-          className="
-            text-cyan-200/60
-          "
-        >
-          •
-        </span>
-
-
-        <span>
-          IT SUPPORT SPECIALIST
-        </span>
-
-      </div>
-
-      </motion.div>
-
+      <div className="scan-sweep" />
     </motion.div>
   );
 }
 
-
-
-// --------------------------------------------------
-// Loading Line
-// --------------------------------------------------
-
-function LoadingLine({
-  phase,
-  reducedMotion,
-  lowPerformance,
-}) {
-
-  const completed =
-    phase === "ready";
-
-
+// Corner bracket (pure CSS, no JS animation)
+function Corner({ pos }) {
+  const cls = {
+    tl: "left-0 top-0 border-l border-t",
+    tr: "right-0 top-0 border-r border-t",
+    bl: "left-0 bottom-0 border-l border-b",
+    br: "right-0 bottom-0 border-r border-b",
+  }[pos];
   return (
-    <div
-      className="
-        relative
-        mt-10
-        h-px
-        w-64
-        overflow-hidden
-        bg-white/10
-      "
-    >
+    <span
+      aria-hidden="true"
+      className={["absolute h-8 w-8 border-cyan-300/50", cls].join(" ")}
+    />
+  );
+}
 
-      <motion.span
-        className="
-          absolute
-          left-0
-          top-0
-          h-full
-          bg-cyan-300
-        "
-
-        initial={{
-          width: "0%",
-        }}
-
-        animate={{
-          width:
-            completed
-              ? "100%"
-              : "65%",
-        }}
-
-        transition={{
-          duration:
-            reducedMotion ||
-            lowPerformance
-              ? 0.4
-              : 1.05,
-
-          ease: MOTION_EASE,
-        }}
+// Progress bar
+function ProgressBar({ progress, lp }) {
+  return (
+    <div className="relative h-px w-full overflow-hidden bg-white/[0.07]">
+      <motion.div
+        className="absolute left-0 top-0 h-full bg-gradient-to-r from-cyan-400 to-cyan-200"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: progress / 100 }}
+        style={{ originX: 0, width: "100%" }}
+        transition={{ duration: lp ? 0.2 : 0.55, ease: EASE }}
       />
-
-
-      {!reducedMotion &&
-      !lowPerformance ? (
-        <motion.span
-          aria-hidden="true"
-          className="
-            absolute
-            right-0
-            top-1/2
-            h-2
-            w-2
-            -translate-y-1/2
-            rounded-full
-            bg-cyan-300
-          "
-
-          animate={{
-            opacity: [
-              0.3,
-              1,
-              0.3,
-            ],
-          }}
-
-          transition={{
-            duration: 1.2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      ) : null}
-
     </div>
   );
 }
 
-// --------------------------------------------------
-// Main Portfolio Loader
-// --------------------------------------------------
-
-export default function PortfolioLoader({
-  onComplete,
-}) {
-
-  const reducedMotion =
-    useReducedMotion();
-
-
-  const lowPerformance =
-    useMemo(
-      () =>
-        getPerformanceMode(),
-      []
-    );
-
-
-  const [
-    phase,
-    setPhase,
-  ] = useState(
-    "identity"
+// Identity block — name + role + version
+function IdentityBlock({ visible, isExiting, lp }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: lp ? 0 : 14 }}
+      animate={
+        isExiting
+          ? { opacity: 0, y: lp ? 0 : -20 }
+          : visible
+          ? { opacity: 1, y: 0 }
+          : { opacity: 0, y: lp ? 0 : 14 }
+      }
+      transition={{ duration: lp ? 0.2 : 0.65, ease: EASE }}
+      className="text-center"
+    >
+      <p className="font-mono text-[0.55rem] uppercase tracking-[0.35em] text-cyan-300/60">
+        portfolio.v2 · initialized
+      </p>
+      <h1 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-white sm:text-3xl">
+        Jay Mark Apelado
+      </h1>
+      <p className="mt-2 font-mono text-[0.62rem] uppercase tracking-[0.28em] text-slate-400">
+        Full-Stack Developer · IT Support Specialist
+      </p>
+    </motion.div>
   );
+}
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Loader styles injected once
+// ─────────────────────────────────────────────────────────────────────────────
 
-  const [
-    isExiting,
-    setIsExiting,
-  ] = useState(false);
+const STYLES = `
+@keyframes scan {
+  0%   { transform: translateY(-100%); opacity: 0.18; }
+  50%  { opacity: 0.22; }
+  100% { transform: translateY(800%);  opacity: 0; }
+}
+.scan-sweep {
+  position: absolute;
+  inset-x: 0;
+  top: 0;
+  height: 12.5%;
+  background: linear-gradient(to bottom, transparent, rgba(34,211,238,0.08) 40%, transparent);
+  animation: scan 2.2s linear infinite;
+}
+`;
 
+function InjectStyles() {
+  useEffect(() => {
+    const el = document.createElement("style");
+    el.textContent = STYLES;
+    document.head.appendChild(el);
+    return () => document.head.removeChild(el);
+  }, []);
+  return null;
+}
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Main export
+// ─────────────────────────────────────────────────────────────────────────────
 
-  const initials =
-    useMemo(
-      () =>
-        getInitials(
-          "Jay Mark Apelado"
-        ),
-      []
+export default function PortfolioLoader({ onComplete }) {
+  const reducedMotion  = useReducedMotion();
+  const lp             = useMemo(() => getPerformanceMode(), []);
+  const skip           = reducedMotion;
+
+  const timing = skip ? TIMING.reduced : TIMING.normal;
+  const interval = lp ? LP_LINE_INTERVAL : LINE_INTERVAL;
+
+  // Which log lines are currently visible
+  const [visibleCount, setVisibleCount] = useState(0);
+
+  // "ready" phase — all lines shown, progress 100%
+  const [ready, setReady] = useState(false);
+
+  // Exiting — slide the panel away
+  const [exiting, setExiting] = useState(false);
+
+  // Lock scroll + run sequence
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+
+    if (skip) {
+      // Reduced motion: skip straight to ready → exit
+      setVisibleCount(BOOT_LINES.length);
+      setReady(true);
+      const t = setTimeout(() => {
+        setExiting(true);
+        document.body.style.overflow = "";
+        setTimeout(() => onComplete?.(), 150);
+      }, timing.readyDelay);
+      return () => { clearTimeout(t); document.body.style.overflow = ""; };
+    }
+
+    // Stagger each boot line
+    const lineTimers = BOOT_LINES.map((_, i) =>
+      setTimeout(() => setVisibleCount(i + 1), i * interval + 80)
     );
 
+    // Mark ready after all lines visible
+    const readyTimer = setTimeout(() => setReady(true), timing.readyDelay);
 
-
-  const timing =
-    reducedMotion
-      ? REDUCED_TIMING
-      : NORMAL_TIMING;
-
-
-
-  // ------------------------------------------------
-  // Lifecycle + scroll lock
-  // ------------------------------------------------
-
-  useEffect(() => {
-
-    document.body.style.overflow =
-      "hidden";
-
-
-    const readyTimer =
-      setTimeout(
-        () => {
-          setPhase(
-            "ready"
-          );
-        },
-        timing.readyDelay
-      );
-
-
-    const exitTimer =
-      setTimeout(
-        () => {
-
-          setIsExiting(
-            true
-          );
-
-
-          document.body.style.overflow =
-            "";
-
-
-          setTimeout(
-            () => {
-
-              onComplete?.();
-
-            },
-            reducedMotion
-              ? 100
-              : 650
-          );
-
-
-        },
-        timing.exitDelay
-      );
-
-
+    // Begin exit
+    const exitTimer = setTimeout(() => {
+      setExiting(true);
+      document.body.style.overflow = "";
+      setTimeout(() => onComplete?.(), reducedMotion ? 120 : 680);
+    }, timing.exitDelay);
 
     return () => {
-
-      clearTimeout(
-        readyTimer
-      );
-
-      clearTimeout(
-        exitTimer
-      );
-
-
-      document.body.style.overflow =
-        "";
-
+      lineTimers.forEach(clearTimeout);
+      clearTimeout(readyTimer);
+      clearTimeout(exitTimer);
+      document.body.style.overflow = "";
     };
+  }, [timing, interval, reducedMotion, skip, onComplete]);
 
-  }, [
-    timing,
-    reducedMotion,
-    onComplete,
-  ]);
-
-
+  const progress = Math.round((visibleCount / BOOT_LINES.length) * 100);
+  const lastVisible = visibleCount - 1;
 
   return (
+    <>
+      {!lp && !skip && <InjectStyles />}
 
-    <motion.div
-      className="
-        fixed
-        inset-0
-        z-[9999]
-        flex
-        items-center
-        justify-center
-        overflow-hidden
-        bg-[#020617]
-      "
-
-
-      animate={{
-        y:
-          isExiting
-            ? "-100%"
-            : "0%",
-      }}
-
-
-      transition={{
-        duration:
-          reducedMotion
-            ? 0.25
-            : 0.75,
-
-        ease: MOTION_EASE,
-      }}
-    >
-
-
-      {/* ------------------------------------------
-          Background atmosphere
-      ------------------------------------------ */}
-
-
-      <div
-        aria-hidden="true"
-        className="
-          absolute
-          inset-0
-          overflow-hidden
-        "
+      <motion.div
+        className="fixed inset-0 z-[9999] flex items-center justify-center overflow-hidden bg-[#020617]"
+        animate={{ y: exiting ? "-100%" : "0%" }}
+        transition={{ duration: skip ? 0.18 : 0.72, ease: EASE_IN }}
       >
 
-
-        <motion.div
-
-          className="
-            absolute
-            left-1/2
-            top-1/2
-            h-[30rem]
-            w-[30rem]
-            -translate-x-1/2
-            -translate-y-1/2
-            rounded-full
-            bg-cyan-400/10
-            blur-3xl
-          "
-
-
-          initial={{
-            opacity: 0,
-            scale:
-              lowPerformance
-                ? 1
-                : 0.8,
-          }}
-
-
-          animate={{
-            opacity: 1,
-            scale: 1,
-          }}
-
-
-          transition={{
-            duration:
-              lowPerformance
-                ? 0.35
-                : 1.2,
-
-            ease: MOTION_EASE,
-          }}
-
-        />
-
-
-
-        {!lowPerformance ? (
-
-          <motion.div
-
-            className="
-              absolute
-              right-[-10rem]
-              bottom-[-10rem]
-              h-[22rem]
-              w-[22rem]
-              rounded-full
-              bg-blue-400/10
-              blur-3xl
-            "
-
-
-            initial={{
-              opacity: 0,
-              scale: 0.75,
-            }}
-
-
-            animate={{
-              opacity: 1,
-              scale: 1,
-            }}
-
-
-            transition={{
-              duration: 1.2,
-              ease: MOTION_EASE,
-            }}
-
-          />
-
-        ) : null}
-
-
-
+        {/* ── Static grid bg (no animation, zero cost) ── */}
         <div
-          className="
-            absolute
-            inset-0
-            opacity-[0.04]
-            bg-[linear-gradient(to_right,#67e8f9_1px,transparent_1px),linear-gradient(to_bottom,#67e8f9_1px,transparent_1px)]
-            bg-[size:80px_80px]
-          "
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right,#67e8f9 1px,transparent 1px)," +
+              "linear-gradient(to bottom,#67e8f9 1px,transparent 1px)",
+            backgroundSize: "64px 64px",
+          }}
         />
 
-
-      </div>
-
-
-
-      {/* ------------------------------------------
-          Corner markers
-      ------------------------------------------ */}
-
-
-      <CornerMarker
-        position="topLeft"
-        reducedMotion={reducedMotion}
-        lowPerformance={lowPerformance}
-      />
-
-
-      <CornerMarker
-        position="topRight"
-        reducedMotion={reducedMotion}
-        lowPerformance={lowPerformance}
-      />
-
-
-      <CornerMarker
-        position="bottomLeft"
-        reducedMotion={reducedMotion}
-        lowPerformance={lowPerformance}
-      />
-
-
-      <CornerMarker
-        position="bottomRight"
-        reducedMotion={reducedMotion}
-        lowPerformance={lowPerformance}
-      />
-
-
-
-      {/* ------------------------------------------
-          Main identity
-      ------------------------------------------ */}
-
-
-      <div
-        className="
-          relative
-          z-10
-          flex
-          flex-col
-          items-center
-        "
-      >
-
-
-        <LoaderIdentity
-
-          initials={initials}
-
-          phase={phase}
-
-          isExiting={isExiting}
-
-          reducedMotion={reducedMotion}
-
-          lowPerformance={lowPerformance}
-
+        {/* ── Ambient glow (static, no animation) ── */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 45% at 50% 50%, rgba(34,211,238,0.07) 0%, transparent 100%)",
+          }}
         />
 
+        {/* ── Scan sweep (CSS-only, GPU composited) ── */}
+        <ScanLine active={!ready && !exiting} lp={lp} />
 
+        {/* ── Corner brackets ── */}
+        <Corner pos="tl" />
+        <Corner pos="tr" />
+        <Corner pos="bl" />
+        <Corner pos="br" />
 
-        <LoadingLine
+        {/* ── Top-left system label ── */}
+        <motion.div
+          aria-hidden="true"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: exiting ? 0 : 1 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="absolute left-5 top-5 flex items-center gap-2 font-mono text-[0.55rem] uppercase tracking-[0.28em] text-slate-600 sm:left-8 sm:top-8"
+        >
+          <span className="h-px w-4 bg-cyan-300/30" />
+          SYS · BOOT
+        </motion.div>
 
-          phase={phase}
+        {/* ── Top-right timestamp ── */}
+        <motion.div
+          aria-hidden="true"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: exiting ? 0 : 1 }}
+          transition={{ duration: 0.4, delay: 0.15 }}
+          className="absolute right-5 top-5 font-mono text-[0.55rem] uppercase tracking-[0.22em] text-slate-700 sm:right-8 sm:top-8"
+        >
+          {new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit" })}
+        </motion.div>
 
-          reducedMotion={reducedMotion}
-
-          lowPerformance={lowPerformance}
-
-        />
-
-
-
-        <motion.p
-
-          className="
-            mt-6
-            text-xs
-            uppercase
-            tracking-[0.4em]
-            text-slate-400
-          "
-
-
-          initial={{
-            opacity: 0,
-          }}
-
-
-          animate={{
-            opacity:
-              phase === "ready"
-                ? 1
-                : 0,
-          }}
-
-
-          transition={{
-            duration:
-              reducedMotion ||
-              lowPerformance
-                ? 0.25
-                : 0.5,
-          }}
-
+        {/* ── Main panel ── */}
+        <motion.div
+          initial={{ opacity: 0, y: lp ? 0 : 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: lp ? 0.2 : 0.55, ease: EASE }}
+          className="relative z-10 w-full max-w-sm px-5 sm:max-w-md sm:px-0"
         >
 
-          SYSTEM READY
+          {/* Terminal window chrome */}
+          <div className="overflow-hidden rounded-2xl border border-white/[0.08] bg-slate-950/90 shadow-[0_32px_80px_rgba(0,0,0,0.6)]">
 
-        </motion.p>
+            {/* Window title bar */}
+            <div className="flex items-center gap-2 border-b border-white/[0.06] px-4 py-3">
+              <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+              <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+              <span className="h-2.5 w-2.5 rounded-full bg-slate-700" />
+              <span className="ml-2 font-mono text-[0.58rem] uppercase tracking-[0.24em] text-slate-600">
+                portfolio — init
+              </span>
+              <span className="ml-auto font-mono text-[0.55rem] text-slate-700">
+                v2.0
+              </span>
+            </div>
 
+            {/* Log lines area */}
+            <div className="flex flex-col gap-2 px-5 py-5">
+              <AnimatePresence>
+                {BOOT_LINES.slice(0, visibleCount).map((line, i) => (
+                  <BootLine
+                    key={line.id}
+                    line={line}
+                    index={i}
+                    visible={true}
+                    isLast={i === lastVisible && !ready}
+                    lp={lp}
+                  />
+                ))}
+              </AnimatePresence>
+            </div>
 
-      </div>
+            {/* Progress bar */}
+            <div className="px-5 pb-2">
+              <ProgressBar progress={progress} lp={lp} />
+            </div>
 
+            {/* Bottom status bar */}
+            <div className="flex items-center justify-between border-t border-white/[0.05] px-5 py-3">
+              <motion.span
+                className="font-mono text-[0.58rem] uppercase tracking-[0.22em]"
+                animate={{
+                  color: ready ? "rgb(52,211,153)" : "rgb(148,163,184)",
+                }}
+                transition={{ duration: 0.4 }}
+              >
+                {ready ? "● Ready" : "○ Loading"}
+              </motion.span>
+              <span className="font-mono text-[0.58rem] text-slate-700">
+                {progress}%
+              </span>
+            </div>
+          </div>
 
-    </motion.div>
+          {/* Identity below the terminal */}
+          <div className="mt-7">
+            <IdentityBlock visible={ready} isExiting={exiting} lp={lp} />
+          </div>
 
+        </motion.div>
+
+        {/* ── Bottom-right build label ── */}
+        <motion.div
+          aria-hidden="true"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: exiting ? 0 : 1 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+          className="absolute bottom-5 right-5 font-mono text-[0.52rem] uppercase tracking-[0.2em] text-slate-700 sm:bottom-8 sm:right-8"
+        >
+          JayMark.dev · 2026
+        </motion.div>
+
+      </motion.div>
+    </>
   );
-
 }

@@ -263,36 +263,155 @@ export const interactiveProjects = [
 
 export const internshipSystems = {
   title: "Internship Systems Suite",
-  subtitle: "Workflow systems built during internship work",
+  subtitle: "Four internal applications built and shipped during an IT internship at Launchpad Coworking and Paysera.",
   description:
-    "A collection of internal systems developed to support operational workflows such as lead tracking, virtual office management, ticket handling, and inventory monitoring.",
+    "A suite of four full-stack internal systems developed to replace manual, spreadsheet-driven workflows across lead management, virtual office operations, IT helpdesk, and hardware asset tracking.",
+
+  /* ── Enriched narrative data for the premium case study redesign ─────────── */
+
+  problem:
+    "Operations at Launchpad Coworking and Paysera were running across spreadsheets, chat threads, and disconnected tools. Leads from walk-ins, Viber, and Facebook had no unified record. Support requests arrived informally and had no priority or status. Hardware had no audit trail. The work was happening — none of it was consistently trackable.",
+
+  outcome:
+    "Four production systems replaced the manual workflows they targeted. Each system was built and handed off within the internship timeline, used by actual staff during daily operations, and designed to remain maintainable by the teams after the internship ended. The work demonstrated the ability to move from a stated operational problem to a working, deployed application inside a professional environment.",
+
+  workflow: [
+    {
+      id: "inquiry",
+      label: "Inquiry Arrives",
+      description: "Walk-in, web form, Viber, or Facebook",
+      system: null,
+      color: "slate",
+    },
+    {
+      id: "crm",
+      label: "CRM Pipeline",
+      description: "Lead qualified → Stage moved → Proposal drafted → Arrival confirmed",
+      system: "crm-pipeline",
+      color: "cyan",
+    },
+    {
+      id: "contract",
+      label: "Contract Issued",
+      description: "Client onboarded to virtual office service",
+      system: null,
+      color: "slate",
+    },
+    {
+      id: "virtual-office",
+      label: "Virtual Office System",
+      description: "Contract tracked → Renewal alerted → Receipt generated",
+      system: "virtual-office",
+      color: "cyan",
+    },
+    {
+      id: "support",
+      label: "Issue Filed",
+      description: "Tenant submits IT support request",
+      system: null,
+      color: "slate",
+    },
+    {
+      id: "ticket",
+      label: "Ticket Support System",
+      description: "Ticket triaged → Assigned → Resolved → Logged",
+      system: "ticket-support",
+      color: "cyan",
+    },
+    {
+      id: "hardware",
+      label: "Hardware Deployed",
+      description: "Workstation or device issued to employee",
+      system: null,
+      color: "slate",
+    },
+    {
+      id: "inventory",
+      label: "Inventory System",
+      description: "Asset lifecycle tracked → Warranty monitored → Return scheduled",
+      system: "paysera-inventory",
+      color: "cyan",
+    },
+  ],
+
+  architecture: {
+    frontend: "React.js with component-based UI, React Router for navigation, and Tailwind CSS for consistent styling across all four systems.",
+    backend: "Node.js with Express.js providing REST API endpoints for data operations, authentication middleware, and business logic per system.",
+    database: "MySQL with relational schemas designed around each system's operational domain — leads and pipeline stages, client contracts, support tickets, and hardware records.",
+    deployment: "Internal deployment within the company network. Systems accessed by staff on local infrastructure during the internship.",
+    integrations: "PDF generation for receipts and reports, Excel import/export for bulk client onboarding, and email notification triggers for renewal alerts and ticket updates.",
+  },
+
+  engineeringChallenges: [
+    {
+      id: "arrival-state",
+      title: "Real-time arrival state without a push layer",
+      system: "CRM Pipeline",
+      context:
+        "The front desk needed a live 'Arrived Today' view to confirm when leads physically walked in — but the system had no WebSocket or push infrastructure.",
+      decision:
+        "Used short-interval polling on the arrival endpoint combined with optimistic UI updates on the staff-side acknowledgement action. The arrival status was stored as a timestamped boolean per lead record, resolved against the current date on each request. This kept the infrastructure simple while the dashboard stayed accurate within a few seconds.",
+    },
+    {
+      id: "receipt-generation",
+      title: "Dynamic receipt generation without a document server",
+      system: "Virtual Office System",
+      context:
+        "The virtual office system needed to produce printable and shareable payment receipts with logo, client details, and service breakdown — without a dedicated PDF service or server-side document pipeline.",
+      decision:
+        "Receipt generation was handled entirely client-side using a canvas-based rendering approach, converting a styled HTML receipt component into a downloadable image file. This eliminated a backend dependency, made receipts immediately available after payment entry, and let staff print or share them directly from the browser.",
+    },
+  ],
 
   systems: [
     {
       id: "crm-pipeline",
       name: "CRM Pipeline System",
-      tagline: "Lead tracking and inquiry management workflow",
+      tagline: "Lead tracking and inquiry management",
+      shortName: "CRM Pipeline",
       category: "Full-Stack System",
       type: "Internship Project",
 
       description:
-        "A CRM pipeline system designed to manage inquiries, lead details, source tracking, package interests, arrival status, and pipeline movements for Launchpad coworking operations.",
+        "Centralizes multi-channel inquiries into a structured Kanban-style pipeline with stage progression, source tracking, package interest monitoring, proposal draft generation, and a real-time front-desk arrival board.",
 
       problem:
-        "Inquiry and lead tracking can become difficult when information comes from different platforms and is not organized in one consistent workflow.",
+        "Inquiries from walk-ins, web forms, Viber, and Facebook were scattered with no unified record, leading to untracked prospects and delayed proposals.",
 
       solution:
-        "The CRM Pipeline System organizes leads into a structured pipeline and allows users to track inquiry details, source information, package interests, and daily arrivals more efficiently.",
+        "A visual pipeline where every lead is a card. Stage moves are tracked, proposals are generated from lead data, and the arrival board confirms walk-ins in near real-time.",
+
+      caseStudy: {
+        problem:
+          "Inquiries came in from the website, Facebook, Viber, and walk-ins with no single place to track them. Staff had to monitor separate channels to follow up, which made it easy to miss leads or lose track of where a conversation was left.",
+        solution:
+          "Every inquiry lands in one pipeline with defined stages. Staff can see what's waiting, who's handling it, and what needs to happen next. Sending a proposal takes one click instead of composing it from scratch each time.",
+        howItWorks: [
+          "Inquiry Received",
+          "Assigned to Staff",
+          "Acknowledged",
+          "Negotiation",
+          "Proposal Sent",
+          "Closed",
+        ],
+        challenge: {
+          title: "Keeping the public form separate from the internal pipeline",
+          description:
+            "The inquiry form needs to be open to anyone filling it in. The internal pipeline dashboard shouldn't be publicly accessible. Used Render to host the public form and Tailscale Funnel to keep the pipeline private — only staff can reach it.",
+        },
+        outcome:
+          "The team had one place to see every active inquiry regardless of where it came from. Follow-ups became more consistent because the pipeline made it visible when something was waiting for action.",
+      },
 
       keyFeatures: [
-        "Lead and inquiry tracking",
-        "Source-based inquiry handling",
-        "Pipeline card workflow",
-        "Package interest tracking",
-        "Arrived Today dashboard logic",
+        "Visual Kanban pipeline with stage progression and lead cards",
+        "Multi-channel inquiry ingestion and source attribution",
+        "One-click proposal and email draft generation from lead data",
+        "Front-desk 'Arrived Today' board with acknowledgement workflow",
+        "Package interest tracking and filtering per prospect",
       ],
 
-      tech: ["React.js", "Node.js", "JavaScript", "CSS", "Database"],
+      tech: ["React.js", "Node.js", "Express.js", "MySQL", "Tailwind CSS", "REST APIs"],
 
       media: {
         cover: assetPaths.projects.internshipSystems.crmPipeline.cover,
@@ -303,27 +422,50 @@ export const internshipSystems = {
     {
       id: "virtual-office",
       name: "Virtual Office Management System",
-      tagline: "Management workflow for virtual office clients",
+      tagline: "Contract monitoring and client administration",
+      shortName: "Virtual Office",
       category: "Full-Stack System",
       type: "Internship Project",
 
       description:
-        "A virtual office management system created to help organize client records, service details, and administrative workflows related to virtual office operations.",
+        "Tracks virtual office client contracts, service durations, and billing receipts. Automates renewal alerts, generates downloadable PDF and image receipts, and supports bulk client import via Excel.",
 
       problem:
-        "Virtual office records and service details need to be organized clearly so that staff can monitor clients and related information without relying on scattered records.",
+        "Client contracts and renewal timelines managed in spreadsheets led to missed expiration notices, disorganized client history, and delayed receipt verification.",
 
       solution:
-        "The system provides a structured interface for managing virtual office information, making records easier to access, update, and monitor.",
+        "A dedicated client administration platform with automated contract tracking, proactive renewal alerts, and client-side receipt generation — no document server required.",
+
+      caseStudy: {
+        problem:
+          "Client contracts were being tracked in spreadsheets, which meant renewal dates could easily be missed if nobody checked in time. Sending reminders was a manual task, and there was no consistent way to generate or track receipts.",
+        solution:
+          "Each client now has a full record with their contract period tracked automatically. Renewal reminders go out by email before a contract is due — staff don't need to remember to send them. Receipts are generated directly in the system with a unique reference number each time.",
+        howItWorks: [
+          "Client Added",
+          "Contract Period Set",
+          "Reminder Sent Automatically",
+          "Renewal Processed",
+          "Receipt Generated",
+        ],
+        challenge: {
+          title: "Making receipts verifiable",
+          description:
+            "A printed receipt isn't useful if there's no way to confirm it's legitimate. Built a unique numbering system and a verification step so any receipt can be checked against the record it came from — useful if a client questions a payment.",
+        },
+        outcome:
+          "Renewals stopped getting missed. The admin team spent less time on manual reminders and receipt writing. The process became consistent instead of depending on who happened to check the spreadsheet.",
+      },
 
       keyFeatures: [
-        "Client record organization",
-        "Virtual office service tracking",
-        "Administrative workflow support",
-        "Clean dashboard-based interface",
+        "Automated contract duration tracking with expiration alerts",
+        "Client-side PDF and image receipt generation for print and sharing",
+        "Excel import/export for streamlined client onboarding",
+        "Administrative client history with payment and status records",
+        "Renewal reminder workflow with notification triggers",
       ],
 
-      tech: ["React.js", "Node.js", "JavaScript", "CSS", "Database"],
+      tech: ["React.js", "Node.js", "Express.js", "MySQL", "PDF Generation", "Excel Processing"],
 
       media: {
         cover: assetPaths.projects.internshipSystems.virtualOffice.cover,
@@ -334,27 +476,50 @@ export const internshipSystems = {
     {
       id: "ticket-support",
       name: "Ticket Support System",
-      tagline: "Support request tracking and resolution workflow",
+      tagline: "Centralized IT helpdesk and issue resolution",
+      shortName: "Ticket Support",
       category: "Full-Stack System",
       type: "Internship Project",
 
       description:
-        "A ticket support system designed to organize support requests, monitor ticket status, and help manage issue resolution workflows.",
+        "Gives corporate tenants unique submission links to file IT support tickets with screenshots and attachments. IT staff get a filterable status board with priority triage, SLA context, and resolution logs.",
 
       problem:
-        "Support concerns can be difficult to manage when requests are not grouped, tracked, or monitored through a clear ticketing process.",
+        "Support requests submitted informally across chat lacked priority categorization, resolution timelines, attachment logging, and any structured escalation path.",
 
       solution:
-        "The Ticket Support System provides a structured workflow for logging, monitoring, and resolving support requests more efficiently.",
+        "A centralized helpdesk where each client company gets a custom submission link. Tickets are prioritized on intake, tracked to resolution, and logged for audit.",
+
+      caseStudy: {
+        problem:
+          "Support requests came in through calls and informal messages, so there was no record attached to them. Once a conversation ended, there was no easy way to know what was discussed, what was actually fixed, or whether the same issue had come up before for the same company.",
+        solution:
+          "Each client company gets its own link to submit a support request. The IT team manages everything from one dashboard — they can see all open tickets, search by company or status, and communicate with clients through the ticket itself. The full conversation history stays attached to the ticket.",
+        howItWorks: [
+          "Client Submits Ticket",
+          "Ticket Created",
+          "Admin Reviews",
+          "IT Responds",
+          "Resolved and Closed",
+        ],
+        challenge: {
+          title: "Preventing the same ticket from being submitted twice",
+          description:
+            "If a client refreshes the page or clicks submit more than once, duplicate tickets appear in the dashboard and add unnecessary noise. Added a lock on the form after the first submission and a check on the server side to catch duplicates before they get created.",
+        },
+        outcome:
+          "The IT team had a clear log of every open request across all client companies instead of managing it through memory and messages. Clients could follow up by referencing a ticket number rather than calling again to ask what was happening.",
+      },
 
       keyFeatures: [
-        "Support ticket creation",
-        "Ticket status monitoring",
-        "Issue tracking workflow",
-        "Support management interface",
+        "Client-specific submission links with custom intake forms",
+        "Screenshot and error log attachment upload",
+        "Priority triage with multi-criteria filtering and status boards",
+        "End-to-end resolution tracking with automated notifications",
+        "Audit log of all ticket activity per client",
       ],
 
-      tech: ["React.js", "Node.js", "JavaScript", "CSS", "Database"],
+      tech: ["React.js", "Node.js", "Express.js", "MySQL", "Tailwind CSS", "REST APIs"],
 
       media: {
         cover: assetPaths.projects.internshipSystems.ticketSupport.cover,
@@ -365,27 +530,50 @@ export const internshipSystems = {
     {
       id: "paysera-inventory",
       name: "Paysera Inventory System",
-      tagline: "Inventory monitoring and item management workflow",
+      tagline: "Hardware asset lifecycle and deployment tracking",
+      shortName: "Inventory",
       category: "Full-Stack System",
       type: "Internship Project",
 
       description:
-        "An inventory system created to help monitor items, organize inventory details, and support basic item management workflows for Paysera-related operations.",
+        "Tracks company-issued hardware from deployment to return. Records warranty expiration, return schedules, repair history, and employee assignment — all behind role-based access control.",
 
       problem:
-        "Inventory records can become difficult to maintain when item details are not organized in a dedicated management system.",
+        "Hardware tracked without a centralized system led to untracked warranty expirations, undocumented repair histories, and missing return schedules.",
 
       solution:
-        "The Paysera Inventory System provides a structured way to track inventory items and support clearer monitoring of item records.",
+        "An internal asset management system with full lifecycle tracking per device, role-based access per team, and warranty and return schedule monitoring with alerts.",
+
+      caseStudy: {
+        problem:
+          "Device records were stored separately — who had what, repair history, warranty dates. Getting a full picture of any single device meant checking multiple places, which slowed down maintenance decisions and made it easy to lose track of assets.",
+        solution:
+          "Every device has one record covering its full history: who it's assigned to, when it was deployed, what repairs it's had, and when its warranty runs out. Staff can look up any device and see everything in one place without asking around or digging through files.",
+        howItWorks: [
+          "Device Registered",
+          "Employee Assigned",
+          "Active Deployment",
+          "Maintenance if Needed",
+          "Returned / Available",
+        ],
+        challenge: {
+          title: "Preventing a device from being redeployed before it's ready",
+          description:
+            "When a device comes back from repair, it might still appear as 'available' if the status isn't updated right away. Added status logic that requires an explicit update before a device shows as ready to deploy — so nothing gets reassigned while it's still being serviced.",
+        },
+        outcome:
+          "Staff could look up any device and immediately know where it was, who had it last, whether it had been repaired, and when its warranty expired. That kind of information used to require checking separate records or asking around.",
+      },
 
       keyFeatures: [
-        "Inventory item tracking",
-        "Item record management",
-        "Dashboard-style monitoring",
-        "Organized inventory workflow",
+        "Full asset lifecycle tracking from deployment to return",
+        "Warranty expiration monitoring with return schedule alerts",
+        "Comprehensive hardware repair and maintenance audit logs",
+        "Role-based access control with per-role inventory views",
+        "Employee assignment history per device",
       ],
 
-      tech: ["React.js", "Node.js", "JavaScript", "CSS", "Database"],
+      tech: ["React.js", "Node.js", "Express.js", "MySQL", "Tailwind CSS", "RBAC"],
 
       media: {
         cover: assetPaths.projects.internshipSystems.payseraInventory.cover,
