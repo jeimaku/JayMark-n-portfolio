@@ -237,7 +237,6 @@ export default function PortfolioLoader({ onComplete }) {
 
   // Lock scroll + run sequence
   useEffect(() => {
-    document.body.style.overflow = "hidden";
 
     if (skip) {
       // Reduced motion: skip straight to ready → exit
@@ -245,10 +244,10 @@ export default function PortfolioLoader({ onComplete }) {
       setReady(true);
       const t = setTimeout(() => {
         setExiting(true);
-        document.body.style.overflow = "";
+        
         setTimeout(() => onComplete?.(), 150);
       }, timing.readyDelay);
-      return () => { clearTimeout(t); document.body.style.overflow = ""; };
+      return () => { clearTimeout(t); };
     }
 
     // Stagger each boot line
@@ -262,7 +261,7 @@ export default function PortfolioLoader({ onComplete }) {
     // Begin exit
     const exitTimer = setTimeout(() => {
       setExiting(true);
-      document.body.style.overflow = "";
+      
       setTimeout(() => onComplete?.(), reducedMotion ? 120 : 680);
     }, timing.exitDelay);
 
@@ -270,7 +269,7 @@ export default function PortfolioLoader({ onComplete }) {
       lineTimers.forEach(clearTimeout);
       clearTimeout(readyTimer);
       clearTimeout(exitTimer);
-      document.body.style.overflow = "";
+      
     };
   }, [timing, interval, reducedMotion, skip, onComplete]);
 
