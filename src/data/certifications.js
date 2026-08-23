@@ -6,7 +6,7 @@ export const certifications = [
     name: "Installing and Configuring Computer Systems",
     provider: "TESDA Online Program",
     category: "IT Systems",
-    year: "2024",
+    year: "2022",
 
     image:
       assetPaths.certifications
@@ -24,7 +24,7 @@ export const certifications = [
     name: "Introduction to CSS",
     provider: "TESDA Online Program",
     category: "Web Development",
-    year: "2024",
+    year: "2022",
 
     image:
       assetPaths.certifications
@@ -42,7 +42,7 @@ export const certifications = [
     name: "Maintaining Computer Systems and Networks",
     provider: "TESDA Online Program",
     category: "IT Support",
-    year: "2024",
+    year: "2022",
 
     image:
       assetPaths.certifications
@@ -60,7 +60,7 @@ export const certifications = [
     name: "Setting Up Computer Networks",
     provider: "TESDA Online Program",
     category: "Networking",
-    year: "2024",
+    year: "2022",
 
     image:
       assetPaths.certifications
@@ -78,7 +78,7 @@ export const certifications = [
     name: "Setting Up Computer Servers",
     provider: "TESDA Online Program",
     category: "Server Administration",
-    year: "2024",
+    year: "2022",
 
     image:
       assetPaths.certifications
@@ -97,7 +97,7 @@ export const certifications = [
       "SMART Android Mobile Apps Development for Beginners",
     provider: "TESDA Online Program",
     category: "Mobile Development",
-    year: "2024",
+    year: "2022",
 
     image:
       assetPaths.certifications
@@ -115,7 +115,7 @@ export const certifications = [
     name: "SMART Technopreneurship 101",
     provider: "TESDA Online Program",
     category: "Technopreneurship",
-    year: "2024",
+    year: "2022",
 
     image:
       assetPaths.certifications
