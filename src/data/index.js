@@ -10,6 +10,14 @@ export {
 } from "./projects";
 
 export { skillCategories, primarySkills } from "./skills";
+export {
+  creativeTechnologies,
+  itSupportCapabilities,
+  secondaryCapabilitySections,
+  skillGroups,
+  skillProjects,
+  technologies,
+} from "./skillsData";
 export { education } from "./education";
 export { experience } from "./experience";
 export { certifications } from "./certifications";

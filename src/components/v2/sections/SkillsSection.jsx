@@ -1,796 +1,804 @@
 import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
   useState,
 } from "react";
 
-import {
-  Brain,
-  Code2,
-  Cpu,
-  Database,
-  Film,
-  HardDrive,
-  Layers,
-  Network,
-  Palette,
-  Server,
-  Smartphone,
-  Wrench,
-} from "lucide-react";
-
-import {
-  motion,
-  useTransform,
-} from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 import Container from "../../layout/Container";
 import Section from "../../layout/Section";
-import SectionHeading from "../../ui/SectionHeading";
-import Card from "../../ui/Card";
+import SectionHeading from "./SectionHeading";
+import { StaggerItem, StaggerReveal } from "../motion";
 
 import {
-  StaggerItem,
-  StaggerReveal,
-} from "../motion";
-
-import {
-  primarySkills,
-  skillCategories,
+  creativeTechnologies,
+  itSupportCapabilities,
+  secondaryCapabilitySections,
+  skillGroups,
+  skillProjects,
+  technologies,
 } from "../../../data";
-
 import useSkillsMotion from "../../../hooks/useSkillsMotion";
 
-const iconMap = {
-  frontend: Code2,
-  backend: Database,
-  mobile: Smartphone,
-  ai: Brain,
-  "it-support": Server,
-  tools: Wrench,
-  creative: Palette,
+const EASE = [0.22, 1, 0.36, 1];
+
+const panelMotion = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.48, ease: EASE },
+  },
 };
 
-const simpleIconBase =
-  "https://cdn.simpleicons.org";
-
-const deviconBase =
-  "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
-
-const theSvgBase =
-  "https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons";
-
-const skillIconMap = {
-  "React.js":
-    `${simpleIconBase}/react/67E8F9`,
-
-  JavaScript:
-    `${simpleIconBase}/javascript/67E8F9`,
-
-  HTML5:
-    `${simpleIconBase}/html5/67E8F9`,
-
-  CSS3:
-    `${simpleIconBase}/css/67E8F9`,
-
-  "Tailwind CSS":
-    `${simpleIconBase}/tailwindcss/67E8F9`,
-
-  "Node.js":
-    `${simpleIconBase}/nodedotjs/67E8F9`,
-
-  "Express.js":
-    `${simpleIconBase}/express/67E8F9`,
-
-  MySQL:
-    `${simpleIconBase}/mysql/67E8F9`,
-
-  SQL:
-    `${simpleIconBase}/mysql/67E8F9`,
-
-  Firebase:
-    `${simpleIconBase}/firebase/67E8F9`,
-
-  Supabase:
-    `${simpleIconBase}/supabase/67E8F9`,
-
-  Flutter:
-    `${simpleIconBase}/flutter/67E8F9`,
-
-  Dart:
-    `${simpleIconBase}/dart/67E8F9`,
-
-
-  Git:
-    `${simpleIconBase}/git/67E8F9`,
-
-  GitHub:
-    `${simpleIconBase}/github/67E8F9`,
-
-
-  npm:
-    `${simpleIconBase}/npm/67E8F9`,
-
-  Render:
-    `${simpleIconBase}/render/67E8F9`,
-
-  Figma:
-    `${simpleIconBase}/figma/67E8F9`,
-
-  "OpenAI API":
-  `${theSvgBase}/openai/light.svg`,
-
-  "Azure AI":
-    `${deviconBase}/azure/azure-original.svg`,
-
-  "VS Code":
-    `${deviconBase}/vscode/vscode-original.svg`,
-
-  "Adobe Photoshop":
-    `${deviconBase}/photoshop/photoshop-original.svg`,
-
+const detailMotion = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.28, ease: EASE },
+  },
+  exit: {
+    opacity: 0,
+    y: -8,
+    transition: { duration: 0.18, ease: "easeOut" },
+  },
 };
 
-const fallbackSkillIcons = {
-  "OpenAI API": Brain,
-  "Azure AI": Brain,
-
-  "Speech Assessment": Cpu,
-  "AI Feedback Systems": Brain,
-
-  "Windows Server & AD": Server,
-  "Network Troubleshooting": Network,
-  "Hardware Troubleshooting": HardDrive,
-  "RAID Setup": Server,
-  "Technical Support": Wrench,
-  "IT Support": Wrench,
-
-  "VS Code": Code2,
-
-  "Adobe Photoshop": Palette,
-  "Adobe Premiere Pro": Film,
-  "UI/UX Design": Palette,
-  "Graphic Design": Palette,
+const logoSizeClasses = {
+  hero: "h-20 w-20 sm:h-24 sm:w-24",
+  rail: "h-9 w-9 sm:h-11 sm:w-11",
+  compact: "h-5 w-5",
 };
 
-function SkillBadge({
-  skill,
-  featured = false,
+const allLogoTechnologies = [
+  ...technologies,
+  ...creativeTechnologies,
+];
+
+const technologyByName = new Map(
+  allLogoTechnologies.map((technology) => [
+    technology.name,
+    technology,
+  ])
+);
+
+function getCategoryTechs(categoryId) {
+  return technologies.filter((technology) =>
+    technology.groups?.includes(categoryId)
+  );
+}
+
+function TechnologyLogo({
+  technology,
+  size = "rail",
+  className = "",
 }) {
-  const [
-    iconFailed,
-    setIconFailed,
-  ] = useState(false);
+  const [failedIconId, setFailedIconId] = useState(null);
+  const initials = technology.name
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase();
 
-  const iconUrl =
-    skillIconMap[skill];
-
-  const FallbackIcon =
-    fallbackSkillIcons[skill];
-
-  const showRemoteIcon =
-    Boolean(iconUrl) &&
-    !iconFailed;
+  const failed = failedIconId === technology.id;
 
   return (
     <span
       className={[
-        "group/skill inline-flex items-center",
-        "gap-2 rounded-full border",
-        "px-3 py-1.5 text-xs font-semibold",
-        "leading-none transition duration-300",
-        featured
-          ? [
-              "border-cyan-300/30",
-              "bg-cyan-300/10",
-              "text-cyan-50",
-              "hover:border-cyan-200/50",
-              "hover:bg-cyan-300/[0.16]",
-            ].join(" ")
-          : [
-              "border-white/10",
-              "bg-white/[0.03]",
-              "text-slate-200",
-              "hover:border-cyan-300/30",
-              "hover:bg-cyan-300/[0.07]",
-              "hover:text-cyan-50",
-            ].join(" "),
+        "flex shrink-0 items-center justify-center",
+        logoSizeClasses[size] ?? logoSizeClasses.rail,
+        className,
       ].join(" ")}
+      aria-hidden="true"
     >
-      {showRemoteIcon ? (
+      {technology.iconUrl && !failed ? (
         <img
-          src={iconUrl}
+          src={technology.iconUrl}
           alt=""
           loading="lazy"
           decoding="async"
-          onError={() => {
-            setIconFailed(true);
-          }}
-          className={[
-            "h-3.5 w-3.5 shrink-0",
-            "transition-transform duration-300",
-            "group-hover/skill:scale-110",
-          ].join(" ")}
+          className="h-full w-full object-contain"
+          onError={() => setFailedIconId(technology.id)}
         />
-      ) : FallbackIcon ? (
-        <FallbackIcon
-          aria-hidden="true"
-          className={[
-            "h-3.5 w-3.5 shrink-0",
-            "text-cyan-200",
-            "transition-transform duration-300",
-            "group-hover/skill:scale-110",
-          ].join(" ")}
-        />
-      ) : null}
-
-      <span>{skill}</span>
+      ) : (
+        <span
+          className="font-mono text-sm font-bold leading-none"
+          style={{ color: technology.brandColor ?? "#67e8f9" }}
+        >
+          {initials}
+        </span>
+      )}
     </span>
   );
 }
 
-function SkillBadgeGroup({
-  skills,
-  featured = false,
-  ariaLabel,
+function CategoryTabs({
+  groups,
+  activeId,
+  onSelect,
 }) {
-  return (
-    <StaggerReveal
-      className="flex flex-wrap gap-2"
-    >
-      {skills.map((skill) => (
-        <StaggerItem
-          key={skill}
-          className="inline-flex"
-        >
-          <SkillBadge
-            skill={skill}
-            featured={featured}
-          />
-        </StaggerItem>
-      ))}
+  const handleKeyDown = useCallback(
+    (event, index) => {
+      const keyActions = {
+        ArrowRight: 1,
+        ArrowLeft: -1,
+      };
 
-      <span className="sr-only">
-        {ariaLabel}
-      </span>
-    </StaggerReveal>
+      if (event.key === "Home") {
+        event.preventDefault();
+        onSelect(groups[0].id);
+        return;
+      }
+
+      if (event.key === "End") {
+        event.preventDefault();
+        onSelect(groups[groups.length - 1].id);
+        return;
+      }
+
+      const direction = keyActions[event.key];
+      if (!direction) return;
+
+      event.preventDefault();
+      const nextIndex =
+        (index + direction + groups.length) % groups.length;
+      onSelect(groups[nextIndex].id);
+    },
+    [groups, onSelect]
+  );
+
+  return (
+    <div
+      role="tablist"
+      aria-label="Technology areas"
+      className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    >
+      {groups.map((group, index) => {
+        const isActive = group.id === activeId;
+
+        return (
+          <button
+            key={group.id}
+            type="button"
+            role="tab"
+            id={`skills-tab-${group.id}`}
+            aria-selected={isActive}
+            aria-controls={`skills-panel-${group.id}`}
+            tabIndex={isActive ? 0 : -1}
+            onClick={() => onSelect(group.id)}
+            onKeyDown={(event) => handleKeyDown(event, index)}
+            className={[
+              "shrink-0 rounded-md border px-3.5 py-2 text-xs",
+              "font-semibold uppercase tracking-[0.16em]",
+              "transition duration-200",
+              "focus-visible:outline-2 focus-visible:outline-offset-2",
+              "focus-visible:outline-cyan-300",
+              isActive
+                ? "border-cyan-300/40 bg-cyan-300/[0.10] text-cyan-100"
+                : "border-white/10 bg-white/[0.025] text-slate-500 hover:border-white/20 hover:text-slate-300",
+            ].join(" ")}
+          >
+            {group.label}
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
-function SkillCategoryCard({
-  category,
-  index,
-  scrollYProgress,
-  allowEntranceMotion,
-  allowScrollLinkedMotion,
-  allowComplexMotion,
+function StackRail({
+  technologies: categoryTechs,
+  activeCategory,
+  selectedId,
+  onSelect,
+  onMove,
+  prefersReducedMotion,
 }) {
-  const Icon =
-    iconMap[category.id] ??
-    Layers;
+  const railRef = useRef(null);
+  const buttonRefs = useRef(new Map());
 
-  /*
-   * Each card receives a slightly different parallax range.
-   * This prevents the grid from moving as one flat object.
-   */
-  const parallaxDistance =
-    allowComplexMotion
-      ? 14 + (index % 3) * 5
-      : 4;
+  const registerButton = useCallback((id, node) => {
+    if (node) {
+      buttonRefs.current.set(id, node);
+      return;
+    }
 
-  const cardY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [
-      parallaxDistance,
-      -parallaxDistance,
-    ]
+    buttonRefs.current.delete(id);
+  }, []);
+
+  const scrollSelectedIntoView = useCallback(
+    (behavior = "smooth") => {
+      const selectedButton =
+        buttonRefs.current.get(selectedId);
+
+      selectedButton?.scrollIntoView({
+        block: "nearest",
+        inline: "center",
+        behavior: prefersReducedMotion ? "auto" : behavior,
+      });
+    },
+    [prefersReducedMotion, selectedId]
   );
 
-  const iconY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [
-      index % 2 === 0 ? 5 : -5,
-      index % 2 === 0 ? -5 : 5,
-    ]
+  useEffect(() => {
+    scrollSelectedIntoView();
+  }, [scrollSelectedIntoView]);
+
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail || typeof ResizeObserver === "undefined") {
+      return undefined;
+    }
+
+    let frame = 0;
+    const observer = new ResizeObserver(() => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        scrollSelectedIntoView("auto");
+      });
+    });
+
+    observer.observe(rail);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [scrollSelectedIntoView]);
+
+  const focusTechnology = useCallback((id) => {
+    requestAnimationFrame(() => {
+      buttonRefs.current.get(id)?.focus({
+        preventScroll: true,
+      });
+    });
+  }, []);
+
+  const selectByOffset = useCallback(
+    (currentId, offset) => {
+      const currentIndex = categoryTechs.findIndex(
+        (technology) => technology.id === currentId
+      );
+      const safeIndex = currentIndex >= 0 ? currentIndex : 0;
+      const nextIndex =
+        (safeIndex + offset + categoryTechs.length) %
+        categoryTechs.length;
+      const nextId = categoryTechs[nextIndex].id;
+
+      onSelect(nextId);
+      focusTechnology(nextId);
+    },
+    [categoryTechs, focusTechnology, onSelect]
   );
 
-  const hiddenState =
-    allowComplexMotion
-      ? {
-          opacity: 0,
-          x:
-            index % 2 === 0
-              ? 48
-              : -48,
-          y: 24,
-          scale: 0.985,
-          filter: "blur(6px)",
+  const handleTechnologyKeyDown = useCallback(
+    (event, technology) => {
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        selectByOffset(technology.id, 1);
+        return;
+      }
+
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        selectByOffset(technology.id, -1);
+        return;
+      }
+
+      if (event.key === "Home") {
+        event.preventDefault();
+        const firstId = categoryTechs[0]?.id;
+        if (firstId) {
+          onSelect(firstId);
+          focusTechnology(firstId);
         }
-      : {
-          opacity: 0,
-          x: 0,
-          y: 26,
-          scale: 0.99,
-          filter: "blur(4px)",
-        };
+        return;
+      }
 
-  const visibleState = {
-    opacity: 1,
-    x: 0,
-    y: 0,
-    scale: 1,
-    filter: "blur(0px)",
-  };
+      if (event.key === "End") {
+        event.preventDefault();
+        const lastId =
+          categoryTechs[categoryTechs.length - 1]?.id;
+        if (lastId) {
+          onSelect(lastId);
+          focusTechnology(lastId);
+        }
+      }
+    },
+    [
+      categoryTechs,
+      focusTechnology,
+      onSelect,
+      selectByOffset,
+    ]
+  );
 
   return (
-    <motion.div
-      style={
-        allowScrollLinkedMotion
-          ? {
-              y: cardY,
-            }
-          : undefined
-      }
-      className="h-full will-change-transform"
-    >
-      <motion.div
-        initial={
-          allowEntranceMotion
-            ? hiddenState
-            : false
-        }
-        whileInView={
-          allowEntranceMotion
-            ? visibleState
-            : undefined
-        }
-        viewport={{
-          once: true,
-          amount: 0.18,
-          margin:
-            "0px 0px -8% 0px",
-        }}
-        transition={{
-          duration: 0.68,
-          delay:
-            Math.min(index * 0.055, 0.28),
-          ease: [0.22, 1, 0.36, 1],
-        }}
-        className="h-full"
-      >
-        <motion.div
-          whileHover={
-            allowComplexMotion
-              ? {
-                  scale: 1.012,
-                  rotateX: 1.2,
-                  rotateY:
-                    index % 2 === 0
-                      ? -1.2
-                      : 1.2,
-                }
-              : undefined
-          }
-          transition={{
-            duration: 0.25,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className={[
-            "group h-full",
-            "[transform-style:preserve-3d]",
-          ].join(" ")}
-        >
-          <Card
-            className={[
-              "relative h-full min-h-[15rem]",
-              "overflow-hidden",
-              "transition duration-300",
-              "group-hover:border-cyan-300/25",
-              "group-hover:bg-white/[0.045]",
-            ].join(" ")}
+    <div className="relative">
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+          Stack Explorer
+        </p>
+
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => onMove(-1)}
+            aria-label="Previous technology"
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-white/10 bg-white/[0.03] text-slate-300 transition hover:border-cyan-300/35 hover:text-cyan-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
           >
-            <div
-              aria-hidden="true"
-              className={[
-                "pointer-events-none",
-                "absolute inset-0",
-                "bg-[radial-gradient(",
-                "circle_at_top_left,",
-                "rgba(34,211,238,0.08),",
-                "transparent_18rem)]",
-                "opacity-0 transition-opacity",
-                "duration-300",
-                "group-hover:opacity-100",
-              ].join("")}
-            />
+            <ChevronLeft size={17} aria-hidden="true" />
+          </button>
 
-            <div
-              aria-hidden="true"
+          <button
+            type="button"
+            onClick={() => onMove(1)}
+            aria-label="Next technology"
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-white/10 bg-white/[0.03] text-slate-300 transition hover:border-cyan-300/35 hover:text-cyan-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300"
+          >
+            <ChevronRight size={17} aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+
+      <div
+        ref={railRef}
+        role="tabpanel"
+        id={`skills-panel-${activeCategory}`}
+        aria-label="Selectable technology logos"
+        className={[
+          "flex snap-x gap-3 overflow-x-auto pb-3",
+          "overscroll-x-contain [scrollbar-width:none]",
+          "[&::-webkit-scrollbar]:hidden",
+        ].join(" ")}
+      >
+        {categoryTechs.map((technology) => {
+          const isSelected = technology.id === selectedId;
+          const isPrimary =
+            technology.weight === "primary";
+
+          return (
+            <button
+              key={technology.id}
+              ref={(node) =>
+                registerButton(technology.id, node)
+              }
+              type="button"
+              aria-pressed={isSelected}
+              aria-label={`Select ${technology.name}`}
+              onClick={() => onSelect(technology.id)}
+              onKeyDown={(event) =>
+                handleTechnologyKeyDown(event, technology)
+              }
               className={[
-                "pointer-events-none",
-                "absolute inset-x-0 top-0 h-px",
-                "bg-gradient-to-r",
-                "from-transparent",
-                "via-cyan-200/45",
-                "to-transparent",
-                "opacity-0 transition-opacity",
-                "duration-300",
-                "group-hover:opacity-100",
+                "group min-h-28 w-28 shrink-0 snap-center",
+                "rounded-lg border px-3 py-4 text-left",
+                "transition duration-200 sm:w-32",
+                "focus-visible:outline-2 focus-visible:outline-offset-2",
+                "focus-visible:outline-cyan-300",
+                isSelected
+                  ? "border-cyan-300/45 bg-cyan-300/[0.08]"
+                  : "border-white/10 bg-white/[0.025] hover:border-white/20 hover:bg-white/[0.04]",
               ].join(" ")}
+            >
+              <TechnologyLogo
+                technology={technology}
+                size="rail"
+                className={[
+                  "mx-auto transition duration-200",
+                  isSelected || isPrimary
+                    ? "scale-110"
+                    : "opacity-90 group-hover:scale-105",
+                ].join(" ")}
+              />
+
+              <span className="mt-4 block truncate text-center text-sm font-semibold text-white">
+                {technology.name}
+              </span>
+
+              <span className="mt-1 block truncate text-center text-[0.68rem] text-slate-500">
+                {technology.role}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function TechnologySpotlight({
+  technology,
+  allowMotion,
+}) {
+  if (!technology) return null;
+
+  const hasProjects =
+    Array.isArray(technology.projects) &&
+    technology.projects.length > 0;
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.article
+        key={technology.id}
+        variants={allowMotion ? detailMotion : undefined}
+        initial={allowMotion ? "hidden" : false}
+        animate={allowMotion ? "visible" : undefined}
+        exit={allowMotion ? "exit" : undefined}
+        aria-live="polite"
+        className={[
+          "relative min-h-[23rem] overflow-hidden rounded-lg",
+          "border border-white/10 bg-white/[0.025] p-5",
+          "sm:p-6 lg:p-7",
+        ].join(" ")}
+        style={{
+          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.05), 0 0 32px ${technology.brandColor}12`,
+        }}
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 h-px"
+          style={{
+            background: `linear-gradient(90deg, transparent, ${technology.brandColor}, transparent)`,
+            opacity: 0.6,
+          }}
+        />
+
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-start">
+          <div
+            className={[
+              "flex h-28 w-28 shrink-0 items-center justify-center",
+              "rounded-lg border border-white/10 bg-slate-950/60 p-4",
+            ].join(" ")}
+            style={{
+              borderColor: `${technology.brandColor}55`,
+              backgroundColor: `${technology.brandColor}0D`,
+            }}
+          >
+            <TechnologyLogo
+              technology={technology}
+              size="hero"
             />
+          </div>
 
-            <div className="relative">
-              <div className="flex items-start justify-between gap-4">
-                <motion.div
-                  style={
-                    allowScrollLinkedMotion
-                      ? {
-                          y: iconY,
-                        }
-                      : undefined
-                  }
-                  className={[
-                    "flex h-12 w-12 shrink-0",
-                    "items-center justify-center",
-                    "rounded-2xl border",
-                    "border-cyan-300/20",
-                    "bg-cyan-300/10",
-                    "text-cyan-200",
-                    "shadow-[0_10px_30px_rgba(8,145,178,0.08)]",
-                    "transition duration-300",
-                    "group-hover:border-cyan-200/35",
-                    "group-hover:bg-cyan-300/[0.15]",
-                  ].join(" ")}
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200">
+              {technology.role}
+            </p>
+
+            <h3 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">
+              {technology.name}
+            </h3>
+
+            <p className="mt-4 max-w-xl text-sm leading-7 text-slate-400 sm:text-base sm:leading-8">
+              {technology.shortDescription}
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-7 border-t border-white/[0.08] pt-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+            {hasProjects ? "Used in" : "How it fits"}
+          </p>
+
+          {hasProjects ? (
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {technology.projects.map((project) => (
+                <li
+                  key={project}
+                  className="rounded-md border border-cyan-300/20 bg-cyan-300/[0.055] px-3 py-1.5 text-xs font-medium text-cyan-50"
                 >
-                  <Icon
-                    size={22}
-                    aria-hidden="true"
-                  />
-                </motion.div>
+                  {project}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="mt-3 text-sm leading-7 text-slate-500">
+              A supporting tool in the workflow. It helps build,
+              design, test, or maintain the systems shown in this
+              portfolio.
+            </p>
+          )}
+        </div>
+      </motion.article>
+    </AnimatePresence>
+  );
+}
 
-                <div className="flex items-center gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="h-px w-8 bg-gradient-to-r from-white/15 to-transparent"
-                  />
+function ProjectEvidence() {
+  return (
+    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      {skillProjects.map((project) => (
+        <article
+          key={project.id}
+          className="rounded-lg border border-white/10 bg-white/[0.02] p-4"
+        >
+          <p className="text-sm font-semibold text-white">
+            {project.label}
+          </p>
 
-                  <span className="font-mono text-xs font-semibold text-slate-600 transition group-hover:text-cyan-200/70">
-                    {String(index + 1).padStart(
-                      2,
-                      "0"
-                    )}
-                  </span>
-                </div>
-              </div>
+          <p className="mt-2 text-xs leading-6 text-slate-500">
+            {project.description}
+          </p>
 
-              <h3 className="mt-6 break-safe text-xl font-semibold tracking-tight text-white sm:text-2xl">
-                {category.title}
-              </h3>
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {project.stack.map((technology) => (
+              <span
+                key={technology}
+                className="rounded-md border border-white/10 bg-white/[0.025] px-2 py-1 text-[0.62rem] font-semibold text-slate-300"
+              >
+                {technology}
+              </span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  );
+}
 
-              <p className="mt-3 text-sm leading-7 text-slate-400">
-                {category.description}
-              </p>
+function CapabilityBands() {
+  return (
+    <div className="grid gap-3 lg:grid-cols-4">
+      {secondaryCapabilitySections.map((section) => (
+        <section
+          key={section.id}
+          aria-labelledby={`skills-${section.id}`}
+          className="rounded-lg border border-white/10 bg-white/[0.02] p-4"
+        >
+          <h3
+            id={`skills-${section.id}`}
+            className="text-sm font-semibold text-white"
+          >
+            {section.label}
+          </h3>
 
-              <div className="mt-6">
-                <SkillBadgeGroup
-                  skills={category.skills}
-                  ariaLabel={`${category.title} technologies`}
-                />
-              </div>
-            </div>
-          </Card>
-        </motion.div>
-      </motion.div>
-    </motion.div>
+          <p className="mt-2 text-xs leading-6 text-slate-500">
+            {section.description}
+          </p>
+
+          <ul className="mt-4 flex flex-wrap gap-2">
+            {section.items.map((item) => {
+              const technology = technologyByName.get(item);
+
+              return (
+                <li
+                  key={item}
+                  className="inline-flex min-h-9 items-center gap-2 rounded-md border border-white/10 bg-white/[0.025] px-2.5 py-1.5 text-xs font-medium text-slate-300"
+                >
+                  {technology ? (
+                    <TechnologyLogo
+                      technology={technology}
+                      size="compact"
+                    />
+                  ) : null}
+
+                  <span>{item}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+function ItSupportSummary() {
+  return (
+    <section
+      aria-labelledby="skills-it-support"
+      className="rounded-lg border border-white/10 bg-white/[0.02] p-5"
+    >
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+            IT Support
+          </p>
+
+          <h3
+            id="skills-it-support"
+            className="mt-2 text-lg font-semibold text-white"
+          >
+            Infrastructure support that backs up the software work.
+          </h3>
+        </div>
+
+        <p className="max-w-md text-sm leading-7 text-slate-500">
+          Hardware, networking, troubleshooting, and basic server
+          administration are part of the same practical toolkit.
+        </p>
+      </div>
+
+      <div className="mt-5 grid gap-3 md:grid-cols-3">
+        {itSupportCapabilities.map((group) => (
+          <div
+            key={group.label}
+            className="rounded-lg border border-white/[0.07] bg-slate-950/30 p-4"
+          >
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-cyan-200">
+              {group.label}
+            </p>
+
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {group.skills.map((skill) => (
+                <li
+                  key={skill}
+                  className="rounded-md border border-white/10 bg-white/[0.025] px-2.5 py-1.5 text-xs text-slate-400"
+                >
+                  {skill}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
 export default function SkillsSection() {
   const {
-    sectionRef,
-    scrollYProgress,
-    leftPanelStyle,
-    gridStyle,
-    railStyle,
-    glowStyle,
     allowEntranceMotion,
-    allowScrollLinkedMotion,
     allowComplexMotion,
+    prefersReducedMotion,
   } = useSkillsMotion();
 
+  const initialCategory = skillGroups[0]?.id ?? "primary";
+  const [activeCategory, setActiveCategory] =
+    useState(initialCategory);
+  const [selectedTechId, setSelectedTechId] = useState(
+    () => getCategoryTechs(initialCategory)[0]?.id ?? null
+  );
+
+  const activeGroup = useMemo(
+    () =>
+      skillGroups.find((group) => group.id === activeCategory) ??
+      skillGroups[0],
+    [activeCategory]
+  );
+
+  const categoryTechs = useMemo(
+    () => getCategoryTechs(activeCategory),
+    [activeCategory]
+  );
+
+  const selectedTechnology = useMemo(
+    () =>
+      categoryTechs.find(
+        (technology) => technology.id === selectedTechId
+      ) ?? categoryTechs[0],
+    [categoryTechs, selectedTechId]
+  );
+
+  const effectiveSelectedTechId =
+    selectedTechnology?.id ?? null;
+
+  const handleCategorySelect = useCallback((categoryId) => {
+    const firstTechnology = getCategoryTechs(categoryId)[0];
+    setActiveCategory(categoryId);
+    setSelectedTechId(firstTechnology?.id ?? null);
+  }, []);
+
+  const handleMoveSelection = useCallback(
+    (offset) => {
+      if (categoryTechs.length === 0) return;
+
+      const currentIndex = categoryTechs.findIndex(
+        (technology) =>
+          technology.id === effectiveSelectedTechId
+      );
+      const safeIndex = currentIndex >= 0 ? currentIndex : 0;
+      const nextIndex =
+        (safeIndex + offset + categoryTechs.length) %
+        categoryTechs.length;
+
+      setSelectedTechId(categoryTechs[nextIndex].id);
+    },
+    [categoryTechs, effectiveSelectedTechId]
+  );
+
   return (
-    <Section
-      id="skills"
-      spacing="compact"
-    >
-      <div
-        ref={sectionRef}
-        data-skills-motion-scene=""
-        className="relative isolate overflow-hidden"
-      >
-        {/* Ambient section lighting */}
+    <Section id="skills" spacing="compact">
+      <Container>
+        <StaggerReveal>
+          <StaggerItem>
+            <SectionHeading
+              eyebrow="Skills"
+              title="Technology stack for real internal systems."
+              description="A practical view of what I build with, what I use, and where those tools show up in actual projects."
+            />
+          </StaggerItem>
+        </StaggerReveal>
+
         <motion.div
-          aria-hidden="true"
-          style={glowStyle}
+          variants={allowEntranceMotion ? panelMotion : undefined}
+          initial={allowEntranceMotion ? "hidden" : false}
+          whileInView={
+            allowEntranceMotion ? "visible" : undefined
+          }
+          viewport={{ once: true, amount: 0.18 }}
           className={[
-            "pointer-events-none",
-            "absolute -right-32 top-[15%]",
-            "-z-10 h-[28rem] w-[28rem]",
-            "rounded-full",
-            "bg-cyan-400/[0.07]",
-            "blur-3xl",
-            "will-change-transform",
+            "mt-10 overflow-hidden rounded-lg border border-white/10",
+            "bg-white/[0.025] p-4 sm:p-5 lg:p-6",
           ].join(" ")}
-        />
-
-        <div
-          aria-hidden="true"
-          className={[
-            "pointer-events-none",
-            "absolute inset-0 -z-20",
-            "opacity-[0.025]",
-            "[background-image:linear-gradient(",
-            "rgba(148,163,184,0.5)_1px,",
-            "transparent_1px),",
-            "linear-gradient(90deg,",
-            "rgba(148,163,184,0.5)_1px,",
-            "transparent_1px)]",
-            "[background-size:64px_64px]",
-          ].join("")}
-        />
-
-        <Container>
-          <div className="relative grid gap-12 py-4 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
-            {/* Desktop capability-progress rail */}
-            <div
-              aria-hidden="true"
-              className={[
-                "absolute -left-5 top-4",
-                "hidden h-[calc(100%-2rem)]",
-                "w-px lg:block",
-                "xl:-left-8",
-              ].join(" ")}
-            >
-              <div className="absolute inset-0 bg-white/[0.07]" />
-
-              <motion.div
-                style={railStyle}
-                className={[
-                  "absolute inset-0",
-                  "origin-top",
-                  "bg-gradient-to-b",
-                  "from-cyan-300",
-                  "via-cyan-200/80",
-                  "to-indigo-300",
-                  "shadow-[0_0_16px_rgba(34,211,238,0.45)]",
-                ].join(" ")}
+        >
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_23rem] xl:grid-cols-[minmax(0,1fr)_26rem]">
+            <div className="min-w-0">
+              <CategoryTabs
+                groups={skillGroups}
+                activeId={activeCategory}
+                onSelect={handleCategorySelect}
               />
 
-              <span className="absolute -left-[3px] top-0 h-[7px] w-[7px] rounded-full border border-cyan-200/40 bg-slate-950" />
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.p
+                  key={activeCategory}
+                  initial={
+                    allowEntranceMotion
+                      ? { opacity: 0, y: 4 }
+                      : false
+                  }
+                  animate={
+                    allowEntranceMotion
+                      ? { opacity: 1, y: 0 }
+                      : undefined
+                  }
+                  exit={
+                    allowEntranceMotion
+                      ? { opacity: 0, y: -4 }
+                      : undefined
+                  }
+                  transition={{ duration: 0.18 }}
+                  className="mt-4 max-w-2xl text-sm leading-7 text-slate-500"
+                >
+                  {activeGroup?.description}
+                </motion.p>
+              </AnimatePresence>
 
-              <span className="absolute -bottom-[1px] -left-[3px] h-[7px] w-[7px] rounded-full border border-indigo-200/40 bg-slate-950" />
+              <div className="mt-6">
+                <StackRail
+                  technologies={categoryTechs}
+                  activeCategory={activeCategory}
+                  selectedId={effectiveSelectedTechId}
+                  onSelect={setSelectedTechId}
+                  onMove={handleMoveSelection}
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              </div>
             </div>
 
-            {/* Sticky introduction */}
-            <div className="lg:sticky lg:top-28">
-              <motion.div
-                style={leftPanelStyle}
-                className="will-change-transform"
-              >
-                <motion.div
-                  initial={
-                    allowEntranceMotion
-                      ? {
-                          opacity: 0,
-                          x: -32,
-                          filter:
-                            "blur(5px)",
-                        }
-                      : false
-                  }
-                  whileInView={
-                    allowEntranceMotion
-                      ? {
-                          opacity: 1,
-                          x: 0,
-                          filter:
-                            "blur(0px)",
-                        }
-                      : undefined
-                  }
-                  viewport={{
-                    once: true,
-                    amount: 0.2,
-                  }}
-                  transition={{
-                    duration: 0.7,
-                    ease: [
-                      0.22,
-                      1,
-                      0.36,
-                      1,
-                    ],
-                  }}
-                >
-                  <SectionHeading
-                    eyebrow="Skills"
-                    title="A technical toolkit built across real projects."
-                    description="My skills are shaped by academic projects, internship systems, AI integration, IT support work, and creative design activities."
-                  />
-                </motion.div>
-
-                <motion.div
-                  initial={
-                    allowEntranceMotion
-                      ? {
-                          opacity: 0,
-                          y: 24,
-                          scale: 0.985,
-                        }
-                      : false
-                  }
-                  whileInView={
-                    allowEntranceMotion
-                      ? {
-                          opacity: 1,
-                          y: 0,
-                          scale: 1,
-                        }
-                      : undefined
-                  }
-                  viewport={{
-                    once: true,
-                    amount: 0.25,
-                  }}
-                  transition={{
-                    duration: 0.65,
-                    delay: 0.08,
-                    ease: [
-                      0.22,
-                      1,
-                      0.36,
-                      1,
-                    ],
-                  }}
-                  className={[
-                    "relative mt-8 overflow-hidden",
-                    "rounded-[1.75rem]",
-                    "border border-cyan-300/20",
-                    "bg-cyan-300/10",
-                    "p-5 sm:p-6",
-                  ].join(" ")}
-                >
-                  <div
-                    aria-hidden="true"
-                    className={[
-                      "pointer-events-none",
-                      "absolute inset-0",
-                      "bg-[radial-gradient(",
-                      "circle_at_top_left,",
-                      "rgba(103,232,249,0.12),",
-                      "transparent_18rem)]",
-                    ].join("")}
-                  />
-
-                  <div className="relative">
-                    <div className="flex items-center justify-between gap-4">
-                      <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
-                        Core Stack
-                      </p>
-
-                      <span className="font-mono text-[0.62rem] uppercase tracking-[0.16em] text-cyan-300/55">
-                        Primary
-                      </span>
-                    </div>
-
-                    <div className="mt-5">
-                      <SkillBadgeGroup
-                        skills={primarySkills}
-                        featured
-                        ariaLabel="Primary technology stack"
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={
-                    allowEntranceMotion
-                      ? {
-                          opacity: 0,
-                          y: 24,
-                        }
-                      : false
-                  }
-                  whileInView={
-                    allowEntranceMotion
-                      ? {
-                          opacity: 1,
-                          y: 0,
-                        }
-                      : undefined
-                  }
-                  viewport={{
-                    once: true,
-                    amount: 0.25,
-                  }}
-                  transition={{
-                    duration: 0.65,
-                    delay: 0.14,
-                    ease: [
-                      0.22,
-                      1,
-                      0.36,
-                      1,
-                    ],
-                  }}
-                  className={[
-                    "relative mt-5 overflow-hidden",
-                    "rounded-[1.75rem]",
-                    "border border-white/10",
-                    "bg-white/[0.03]",
-                    "p-5 sm:p-6",
-                  ].join(" ")}
-                >
-                  <div
-                    aria-hidden="true"
-                    className={[
-                      "absolute left-0 top-0",
-                      "h-full w-px",
-                      "bg-gradient-to-b",
-                      "from-cyan-300/45",
-                      "via-cyan-200/10",
-                      "to-transparent",
-                    ].join(" ")}
-                  />
-
-                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">
-                    Skill Direction
-                  </p>
-
-                  <p className="mt-4 text-sm leading-7 text-slate-400">
-                    I focus on connecting software development,
-                    IT support, AI tools, and interface design
-                    into practical systems that are usable,
-                    maintainable, and visually clean.
-                  </p>
-                </motion.div>
-              </motion.div>
-            </div>
-
-            {/* Capability cards */}
-            <motion.div
-              style={gridStyle}
-              className={[
-                "grid gap-5 sm:grid-cols-2",
-                "will-change-transform",
-              ].join(" ")}
-            >
-              {skillCategories.map(
-                (category, index) => (
-                  <SkillCategoryCard
-                    key={category.id}
-                    category={category}
-                    index={index}
-                    scrollYProgress={
-                      scrollYProgress
-                    }
-                    allowEntranceMotion={
-                      allowEntranceMotion
-                    }
-                    allowScrollLinkedMotion={
-                      allowScrollLinkedMotion
-                    }
-                    allowComplexMotion={
-                      allowComplexMotion
-                    }
-                  />
-                )
-              )}
-            </motion.div>
+            <TechnologySpotlight
+              technology={selectedTechnology}
+              allowMotion={allowComplexMotion}
+            />
           </div>
-        </Container>
-      </div>
+        </motion.div>
+
+        <div className="mt-8">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+            Project Evidence
+          </p>
+          <ProjectEvidence />
+        </div>
+
+        <div className="mt-8">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+            Secondary Capabilities
+          </p>
+          <CapabilityBands />
+        </div>
+
+        <div className="mt-4">
+          <ItSupportSummary />
+        </div>
+      </Container>
     </Section>
   );
 }

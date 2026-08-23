@@ -1,586 +1,579 @@
 import { useState } from "react";
 import {
-  AlertCircle,
   ArrowLeft,
   ArrowRight,
-  CheckCircle2,
   Code2,
   ExternalLink,
-  Layers,
   Maximize2,
   Play,
-  Sparkles,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 import Container from "../../layout/Container";
-import SectionHeading from "./SectionHeading";
-import LazyVideo from "../../ui/LazyVideo";
 import MediaLightbox from "../../ui/MediaLightbox";
+import SectionHeading from "./SectionHeading";
 import { interactiveProjects } from "../../../data";
-import useProjectGallery from "../../../hooks/useProjectGallery";
+import useMotionRuntime from "../../../hooks/useMotionRuntime";
 
-/* ─── Technology Stack Badge ─────────────────────────────────────────────── */
+function getRelativeOffset(index, activeIndex, projectCount) {
+  const rawOffset = index - activeIndex;
+  const halfCount = projectCount / 2;
 
-function TechBadge({ name }) {
+  if (rawOffset > halfCount) return rawOffset - projectCount;
+  if (rawOffset < -halfCount) return rawOffset + projectCount;
+
+  return rawOffset;
+}
+
+function getProjectImage(project, screenIndex = 0) {
+  const screens = project.media?.screens ?? [];
+
+  if (project.media?.type === "gallery" && screens.length > 0) {
+    return screens[screenIndex] ?? screens[0];
+  }
+
+  return {
+    src: project.media?.cover,
+    alt: `${project.title} project preview`,
+    label: "System preview",
+  };
+}
+
+function getSlotStyle(offset) {
+  if (offset === 0) {
+    return {
+      "--slot-x": "0px",
+      "--slot-scale": "1",
+      "--slot-opacity": "1",
+      "--slot-blur": "0px",
+    };
+  }
+
+  const isNear = Math.abs(offset) === 1;
+  const slotX = isNear
+    ? offset < 0
+      ? "clamp(-34rem, -39vw, -22rem)"
+      : "clamp(22rem, 39vw, 34rem)"
+    : offset < 0
+      ? "clamp(-50rem, -58vw, -32rem)"
+      : "clamp(32rem, 58vw, 50rem)";
+
+  return {
+    "--slot-x": slotX,
+    "--slot-scale": isNear ? "0.48" : "0.34",
+    "--slot-opacity": isNear ? "0.72" : "0.38",
+    "--slot-blur": isNear ? "0px" : "1px",
+  };
+}
+
+function getSlotClasses(offset) {
+  if (offset === 0) return "z-30";
+  if (Math.abs(offset) === 1) return "hidden z-20 md:block";
+  return "hidden z-10 lg:block";
+}
+
+function restartPreview(event) {
+  const video = event.currentTarget;
+
+  if (video.paused) {
+    video.play().catch(() => {});
+  }
+}
+
+function ProjectPreview({
+  project,
+  index,
+  offset,
+  activeScreenIndex,
+  onSelect,
+  onOpen,
+  prefersReducedMotion,
+}) {
+  const isActive = offset === 0;
+  const preview = isActive
+    ? getProjectImage(project, activeScreenIndex)
+    : getProjectImage(project);
+  const isVideoPreview =
+    project.media?.type === "video" && Boolean(project.media.video);
+  const mediaType = project.media?.type === "video" ? "System demo" : "Project preview";
+
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 text-xs font-semibold text-slate-300 transition duration-300 hover:border-cyan-300/40 hover:bg-cyan-300/[0.08] hover:text-cyan-100">
-      <span
-        aria-hidden="true"
-        className="h-1.5 w-1.5 rounded-full bg-cyan-300/70"
-      />
-      {name}
-    </span>
+    <div
+      className={`absolute left-1/2 top-0 w-[min(84vw,52rem)] origin-center transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${getSlotClasses(offset)}`}
+      style={{
+        ...getSlotStyle(offset),
+        transform:
+          "translateX(calc(-50% + var(--slot-x))) scale(var(--slot-scale))",
+        opacity: "var(--slot-opacity)",
+        filter: "blur(var(--slot-blur))",
+      }}
+    >
+      <motion.button
+        type="button"
+        onClick={() => (isActive ? onOpen() : onSelect(index))}
+        aria-label={
+          isActive
+            ? `Inspect ${project.title} preview`
+            : `Select ${project.title} project`
+        }
+        aria-current={isActive ? "true" : undefined}
+        initial={false}
+        animate={{
+          y: isActive ? 0 : -8,
+          transition: {
+            duration: prefersReducedMotion ? 0 : 0.45,
+            ease: [0.22, 1, 0.36, 1],
+          },
+        }}
+        className={`group relative block w-full overflow-hidden rounded-[1.35rem] border text-left shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950 sm:rounded-[1.75rem] ${
+          isActive
+            ? "border-cyan-200/35 bg-slate-900 shadow-cyan-950/40"
+            : "border-white/15 bg-slate-900/90 shadow-black/50 hover:border-cyan-200/40"
+        }`}
+      >
+        <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
+          {isVideoPreview ? (
+            <video
+              src={project.media.video}
+              poster={preview.src}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              aria-label={`${project.title} live preview`}
+              onLoadedData={restartPreview}
+              className={`h-full w-full object-cover object-top transition duration-700 motion-reduce:transition-none ${
+                isActive
+                  ? "scale-[1.01] group-hover:scale-[1.035]"
+                  : "scale-100 group-hover:scale-[1.03]"
+              }`}
+            />
+          ) : (
+            <img
+              src={preview.src}
+              alt={preview.alt}
+              loading={isActive ? "eager" : "lazy"}
+              decoding="async"
+              className={`h-full w-full object-cover object-top transition duration-700 motion-reduce:transition-none ${
+                isActive
+                  ? "scale-[1.01] group-hover:scale-[1.035]"
+                  : "scale-100 group-hover:scale-[1.03]"
+              }`}
+            />
+          )}
+
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/5 to-transparent"
+          />
+
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 sm:p-5">
+            <div className="min-w-0">
+              <p className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-cyan-200/80">
+                {project.tabNumber} / {mediaType}
+              </p>
+              <p className="mt-1 truncate text-sm font-semibold text-white sm:text-base">
+                {project.shortName}
+              </p>
+            </div>
+
+            {isActive ? (
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 bg-slate-950/70 text-cyan-100 backdrop-blur-sm">
+                <Maximize2 size={15} aria-hidden="true" />
+              </span>
+            ) : (
+              <span className="hidden shrink-0 text-xs font-semibold text-slate-200 sm:block">
+                Select
+              </span>
+            )}
+          </div>
+        </div>
+
+        {isActive ? (
+          <div className="flex items-center justify-between border-t border-white/10 bg-slate-950/85 px-4 py-3 text-xs text-slate-400 sm:px-5">
+            <span className="flex items-center gap-2">
+              <Play size={13} className="text-cyan-300" aria-hidden="true" />
+              {project.media?.type === "gallery"
+                ? `${preview.label} view`
+                : "Live system preview"}
+            </span>
+            <span className="hidden text-slate-500 sm:inline">
+              Click to inspect
+            </span>
+          </div>
+        ) : null}
+      </motion.button>
+    </div>
   );
 }
 
-/* ─── Main Interactive Projects Section Component ────────────────────────── */
+function ProjectScreenSelector({ project, activeScreenIndex, onSelect }) {
+  const screens = project.media?.screens ?? [];
+
+  if (project.media?.type !== "gallery" || screens.length < 2) return null;
+
+  return (
+    <div className="mt-4 flex flex-wrap items-center gap-2">
+      <span className="mr-1 text-[0.63rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
+        Screens
+      </span>
+      {screens.map((screen, index) => (
+        <button
+          key={screen.label}
+          type="button"
+          onClick={() => onSelect(index)}
+          aria-label={`Show ${project.title} ${screen.label}`}
+          aria-pressed={activeScreenIndex === index}
+          className={`rounded-md border px-2.5 py-1.5 text-xs transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 ${
+            activeScreenIndex === index
+              ? "border-cyan-200/40 bg-cyan-300/10 text-cyan-100"
+              : "border-white/10 text-slate-400 hover:border-white/25 hover:text-slate-200"
+          }`}
+        >
+          {screen.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function ProjectDetails({
+  project,
+  projectCount,
+  onPrevious,
+  onNext,
+  prefersReducedMotion,
+}) {
+  return (
+    <div className="mt-9 grid gap-8 border-t border-white/10 pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12">
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/75">
+          <span>{project.category}</span>
+          <span aria-hidden="true" className="text-slate-700">
+            /
+          </span>
+          <span className="font-mono text-slate-500">
+            {project.tabNumber} / {String(projectCount).padStart(2, "0")}
+          </span>
+        </div>
+
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={project.id}
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -8 }}
+            transition={{
+              duration: prefersReducedMotion ? 0 : 0.28,
+              ease: "easeOut",
+            }}
+            className="mt-3"
+            aria-live="polite"
+          >
+            <h3 className="max-w-4xl text-2xl font-semibold leading-tight tracking-[-0.035em] text-white sm:text-3xl lg:text-4xl">
+              {project.title}
+            </h3>
+            <p className="mt-3 max-w-3xl text-base leading-7 text-slate-400">
+              {project.subtitle}
+            </p>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">
+              {project.solution}
+            </p>
+
+            <dl className="mt-6 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-3">
+              <div>
+                <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  Role
+                </dt>
+                <dd className="mt-1.5 text-sm text-slate-200">{project.role}</dd>
+              </div>
+              <div>
+                <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  Built
+                </dt>
+                <dd className="mt-1.5 text-sm text-slate-200">{project.year}</dd>
+              </div>
+              <div className="col-span-2 sm:col-span-1">
+                <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                  With
+                </dt>
+                <dd className="mt-1.5 flex flex-wrap gap-x-2 gap-y-1 text-sm text-slate-200">
+                  {project.tech.slice(0, 4).map((technology) => (
+                    <span key={technology}>{technology}</span>
+                  ))}
+                </dd>
+              </div>
+            </dl>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <div className="flex flex-col justify-between gap-8 lg:items-end">
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onPrevious}
+            aria-label="Previous project"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.03] text-slate-200 transition hover:border-cyan-200/45 hover:bg-cyan-300/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+          >
+            <ArrowLeft size={17} aria-hidden="true" />
+          </button>
+          <span className="min-w-16 text-center font-mono text-xs text-slate-500">
+            <span className="text-cyan-200">{project.tabNumber}</span> / {String(projectCount).padStart(2, "0")}
+          </span>
+          <button
+            type="button"
+            onClick={onNext}
+            aria-label="Next project"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.03] text-slate-200 transition hover:border-cyan-200/45 hover:bg-cyan-300/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+          >
+            <ArrowRight size={17} aria-hidden="true" />
+          </button>
+        </div>
+
+        <div className="flex flex-wrap gap-2 lg:justify-end">
+          {project.links?.caseStudy ? (
+            <a
+              href={project.links.caseStudy}
+              className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-cyan-300 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
+            >
+              View Case Study
+              <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+            </a>
+          ) : null}
+
+          {project.links?.live ? (
+            <a
+              href={project.links.live}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-white/15 bg-white/[0.035] px-4 py-2.5 text-sm font-semibold text-white transition hover:border-cyan-200/40 hover:bg-cyan-300/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+            >
+              Live Platform
+              <ExternalLink size={14} aria-hidden="true" />
+            </a>
+          ) : null}
+
+          {project.links?.github ? (
+            <a
+              href={project.links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View ${project.title} GitHub repository`}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-white/15 bg-white/[0.035] text-slate-300 transition hover:border-cyan-200/40 hover:bg-cyan-300/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+            >
+              <Code2 size={16} aria-hidden="true" />
+            </a>
+          ) : null}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function ProjectsSection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeScreenIndex, setActiveScreenIndex] = useState(0);
   const [activeMedia, setActiveMedia] = useState(null);
+  const { prefersReducedMotion } = useMotionRuntime();
 
-  const {
-    sectionRef,
-    activeIndex,
-    direction,
-    activeProject,
-    activeScreenIndex,
-    setActiveScreenIndex,
-    goToProject,
-    goNext,
-    goPrevious,
-    handleTouchStart,
-    handleTouchEnd,
-    prefersReducedMotion,
-  } = useProjectGallery({
-    projects: interactiveProjects,
-    initialIndex: 0,
-  });
+  const projectCount = interactiveProjects.length;
+  const safeActiveIndex = Math.min(
+    Math.max(activeIndex, 0),
+    Math.max(projectCount - 1, 0)
+  );
+  const activeProject = interactiveProjects[safeActiveIndex] ?? null;
 
-  const isGalleryProject = activeProject?.media?.type === "gallery";
-  const screens = activeProject?.media?.screens ?? [];
-  const currentScreen = screens[activeScreenIndex] ?? screens[0] ?? null;
+  const selectProject = (index) => {
+    if (projectCount === 0) return;
 
-  const handleOpenLightbox = () => {
-    if (!activeProject) return;
+    const nextIndex = (index + projectCount) % projectCount;
+    if (nextIndex === safeActiveIndex) return;
 
-    if (isGalleryProject && currentScreen) {
-      setActiveMedia({
-        type: "image",
-        src: currentScreen.src,
-        title: `${activeProject.title} — ${currentScreen.label}`,
-        description: currentScreen.alt ?? activeProject.subtitle,
-      });
-    } else if (activeProject.media?.video) {
-      setActiveMedia({
-        type: "video",
-        src: activeProject.media.video,
-        title: activeProject.title,
-        description: activeProject.subtitle ?? activeProject.description,
-      });
-    } else if (activeProject.media?.cover) {
-      setActiveMedia({
-        type: "image",
-        src: activeProject.media.cover,
-        title: activeProject.title,
-        description: activeProject.subtitle ?? activeProject.description,
-      });
+    setActiveIndex(nextIndex);
+    setActiveScreenIndex(0);
+  };
+
+  const goPrevious = () => selectProject(safeActiveIndex - 1);
+  const goNext = () => selectProject(safeActiveIndex + 1);
+
+  const handleKeyDown = (event) => {
+    if (
+      event.target instanceof Element &&
+      event.target.closest("input, textarea, select")
+    ) {
+      return;
+    }
+
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      goPrevious();
+    } else if (event.key === "ArrowRight") {
+      event.preventDefault();
+      goNext();
+    } else if (event.key === "Home") {
+      event.preventDefault();
+      selectProject(0);
+    } else if (event.key === "End") {
+      event.preventDefault();
+      selectProject(projectCount - 1);
     }
   };
 
-  /* Motion variants for directional project transition */
-  const slideVariants = {
-    enter: (dir) => ({
-      x: prefersReducedMotion ? 0 : dir > 0 ? 32 : -32,
-      opacity: 0,
-      filter: prefersReducedMotion ? "none" : "blur(4px)",
-    }),
-    center: {
-      x: 0,
-      opacity: 1,
-      filter: "blur(0px)",
-      transition: {
-        duration: prefersReducedMotion ? 0 : 0.42,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    },
-    exit: (dir) => ({
-      x: prefersReducedMotion ? 0 : dir > 0 ? -32 : 32,
-      opacity: 0,
-      filter: prefersReducedMotion ? "none" : "blur(4px)",
-      transition: {
-        duration: prefersReducedMotion ? 0 : 0.32,
-        ease: [0.22, 1, 0.36, 1],
-      },
-    }),
+  const handleOpenMedia = () => {
+    if (!activeProject) return;
+
+    const preview = getProjectImage(activeProject, activeScreenIndex);
+    const isVideo =
+      activeProject.media?.type === "video" &&
+      Boolean(activeProject.media.video);
+
+    setActiveMedia({
+      type: isVideo ? "video" : "image",
+      src: isVideo ? activeProject.media.video : preview.src,
+      title: activeProject.title,
+      description: preview.alt ?? activeProject.subtitle,
+    });
   };
 
   return (
     <section
-      ref={sectionRef}
       id="projects"
       aria-labelledby="projects-heading"
+      tabIndex={-1}
+      onKeyDown={handleKeyDown}
       className="relative isolate scroll-mt-20 overflow-hidden bg-slate-950 py-20 sm:py-28"
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
     >
-      {/* Background Ambient Lighting & High-Tech Grid */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-30 opacity-[0.03] [background-image:linear-gradient(rgba(148,163,184,0.4)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.4)_1px,transparent_1px)] [background-size:64px_64px]"
+        className="pointer-events-none absolute inset-x-0 top-24 -z-10 h-px bg-gradient-to-r from-transparent via-cyan-200/20 to-transparent"
       />
-
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -left-40 top-1/4 -z-20 h-[32rem] w-[32rem] rounded-full bg-cyan-400/[0.065] blur-3xl"
-      />
-
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-40 bottom-1/4 -z-20 h-[30rem] w-[30rem] rounded-full bg-indigo-500/[0.055] blur-3xl"
+        className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-[30rem] w-[min(76rem,92vw)] -translate-x-1/2 rounded-full bg-cyan-400/[0.045] blur-3xl"
       />
 
       <Container>
-        {/* Section Header */}
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
             id="projects-heading"
-            eyebrow="Featured Projects"
-            title="TalkReady and four internship systems."
-            description="An interactive engineering gallery featuring an AI-assisted language platform and four operational internship workflow systems."
+            eyebrow="Selected Work"
+            title="A collection of systems I have built."
+            description="Explore the interfaces, workflows, and tools behind projects built for learning, operations, client management, and IT support."
           />
 
-          {/* Quick Counter & Keyboard Nav Hint */}
-          <div className="hidden shrink-0 text-right lg:block">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-xs font-mono text-slate-400">
-              <span className="text-cyan-300 font-semibold">
-                {String(activeIndex + 1).padStart(2, "0")}
-              </span>
-              <span className="text-slate-600">/</span>
-              <span>{String(interactiveProjects.length).padStart(2, "0")}</span>
-            </div>
-            <p className="mt-1.5 text-[0.68rem] text-slate-500">
-              Use <kbd className="rounded border border-white/15 bg-white/[0.04] px-1 py-0.5 font-mono text-[0.62rem] text-slate-300">←</kbd> <kbd className="rounded border border-white/15 bg-white/[0.04] px-1 py-0.5 font-mono text-[0.62rem] text-slate-300">→</kbd> arrow keys to navigate
-            </p>
-          </div>
+          <p className="max-w-xs text-sm leading-6 text-slate-500 lg:pb-1 lg:text-right">
+            Select a preview to bring it forward. The collection stays in your hands.
+          </p>
         </div>
 
-        {/* ─── Project Navigation Bar ──────────────────────────────────────── */}
-        <div className="mt-10 border-b border-white/10 pb-4">
-          <div
-            role="tablist"
-            aria-label="Project showcase navigation"
-            className="no-scrollbar flex items-center gap-2 overflow-x-auto py-1"
-          >
-            {interactiveProjects.map((project, index) => {
-              const isActive = index === activeIndex;
+        {activeProject ? (
+          <div className="mt-10" onKeyDown={handleKeyDown}>
+            <div className="relative h-[clamp(19rem,62vw,32rem)] md:h-[clamp(26rem,60vw,38rem)]">
+              {interactiveProjects.map((project, index) => {
+                const offset = getRelativeOffset(index, safeActiveIndex, projectCount);
 
-              return (
-                <button
-                  key={project.id}
-                  id={`project-tab-${project.id}`}
-                  type="button"
-                  role="tab"
-                  aria-selected={isActive}
-                  aria-controls={`project-panel-${project.id}`}
-                  onClick={() => goToProject(index)}
-                  className={[
-                    "relative flex shrink-0 items-center gap-2 rounded-full px-4 py-2.5 text-xs font-medium transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200",
-                    isActive
-                      ? "text-cyan-50 font-semibold shadow-[0_0_24px_rgba(34,211,238,0.15)]"
-                      : "text-slate-400 hover:border-white/15 hover:bg-white/[0.035] hover:text-slate-200",
-                  ].join(" ")}
-                >
-                  {/* Animated Background Pill for Active Tab */}
-                  {isActive && (
-                    <motion.span
-                      layoutId="activeProjectTabPill"
-                      transition={{
-                        type: "spring",
-                        stiffness: 400,
-                        damping: 32,
-                      }}
-                      className="absolute inset-0 rounded-full border border-cyan-300/35 bg-cyan-300/[0.12]"
-                    />
-                  )}
-
-                  {/* Indicator Dot */}
-                  <span
-                    className={[
-                      "relative z-10 h-1.5 w-1.5 rounded-full transition-colors duration-300",
-                      isActive
-                        ? "bg-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.9)]"
-                        : "bg-slate-600",
-                    ].join(" ")}
+                return (
+                  <ProjectPreview
+                    key={project.id}
+                    project={project}
+                    index={index}
+                    offset={offset}
+                    activeScreenIndex={activeScreenIndex}
+                    onSelect={selectProject}
+                    onOpen={handleOpenMedia}
+                    prefersReducedMotion={prefersReducedMotion}
                   />
+                );
+              })}
+            </div>
 
-                  {/* Tab Number & Name */}
-                  <span className="relative z-10 font-mono text-[0.7rem] text-slate-400">
-                    {project.tabNumber}
-                  </span>
-                  <span className="relative z-10 tracking-tight">
-                    {project.shortName}
-                  </span>
-                </button>
-              );
-            })}
+            <div className="mt-5 flex items-center justify-between gap-4 md:hidden">
+              <span className="text-[0.63rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                More projects
+              </span>
+              <span className="font-mono text-xs text-slate-500">Swipe or select</span>
+            </div>
+
+            <div
+              role="tablist"
+              aria-label="Selected work projects"
+              className="no-scrollbar mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 md:hidden"
+            >
+              {interactiveProjects.map((project, index) => {
+                const preview = getProjectImage(project);
+                const isActive = index === safeActiveIndex;
+
+                return (
+                  <button
+                    key={project.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-label={`Select ${project.title}`}
+                    onClick={() => selectProject(index)}
+                    className={`w-40 shrink-0 snap-start overflow-hidden rounded-lg border text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 ${
+                      isActive
+                        ? "border-cyan-200/45 bg-cyan-300/10"
+                        : "border-white/10 bg-white/[0.025]"
+                    }`}
+                  >
+                    <img
+                      src={preview.src}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      className="aspect-[16/10] w-full object-cover object-top"
+                    />
+                    <span className="block truncate px-3 py-2 text-xs font-medium text-slate-200">
+                      {project.shortName}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <ProjectScreenSelector
+              project={activeProject}
+              activeScreenIndex={activeScreenIndex}
+              onSelect={setActiveScreenIndex}
+            />
+
+            <ProjectDetails
+              project={activeProject}
+              projectCount={projectCount}
+              onPrevious={goPrevious}
+              onNext={goNext}
+              prefersReducedMotion={prefersReducedMotion}
+            />
+
+            <div className="mt-5 hidden items-center justify-between border-t border-white/[0.07] pt-4 md:flex">
+              <div className="flex items-center gap-2" aria-label="Project position">
+                {interactiveProjects.map((project, index) => (
+                  <button
+                    key={project.id}
+                    type="button"
+                    aria-label={`Select project ${index + 1}: ${project.title}`}
+                    aria-current={index === safeActiveIndex ? "true" : undefined}
+                    onClick={() => selectProject(index)}
+                    className={`h-1.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 ${
+                      index === safeActiveIndex
+                        ? "w-10 bg-cyan-300"
+                        : "w-4 bg-slate-700 hover:bg-slate-500"
+                    }`}
+                  />
+                ))}
+              </div>
+              <p className="text-xs text-slate-600">
+                Focus the gallery and use the arrow keys to move through the work.
+              </p>
+            </div>
           </div>
-        </div>
-
-        {/* ─── Main Project Showcase Stage ─────────────────────────────────── */}
-        <div className="relative mt-8 min-h-[640px]">
-          <AnimatePresence mode="wait" custom={direction} initial={false}>
-            {activeProject && (
-              <motion.article
-                key={activeProject.id}
-                id={`project-panel-${activeProject.id}`}
-                role="tabpanel"
-                aria-labelledby={`project-tab-${activeProject.id}`}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                className="grid gap-8 lg:grid-cols-[1fr_1.1fr] xl:grid-cols-[0.88fr_1.12fr] xl:gap-12 items-start"
-              >
-                {/* ─── LEFT SIDE: Project Information ──────────────────────── */}
-                <div className="flex flex-col gap-6">
-                  {/* Category Pill & Project Sequence */}
-                  <div className="flex flex-wrap items-center justify-between gap-4">
-                    <span className="inline-flex items-center gap-2 rounded-full border border-cyan-300/25 bg-cyan-300/[0.08] px-3.5 py-1.5 text-xs font-semibold text-cyan-200">
-                      <Layers aria-hidden="true" size={13} />
-                      {activeProject.category}
-                    </span>
-
-                    <span className="font-mono text-xs text-slate-500">
-                      Project {activeProject.tabNumber} of{" "}
-                      {String(interactiveProjects.length).padStart(2, "0")}
-                    </span>
-                  </div>
-
-                  {/* Title & Subtitle */}
-                  <div>
-                    <h3 className="break-safe text-3xl font-semibold leading-[1.08] tracking-[-0.04em] text-white sm:text-4xl xl:text-5xl">
-                      {activeProject.title}
-                    </h3>
-
-                    {activeProject.subtitle && (
-                      <p className="mt-2.5 text-base font-medium leading-7 text-cyan-200/90 sm:text-lg">
-                        {activeProject.subtitle}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Metadata Spec Grid: Role, Year, Category */}
-                  <dl className="grid grid-cols-2 gap-4 rounded-2xl border border-white/10 bg-white/[0.02] p-4 sm:grid-cols-3">
-                    <div>
-                      <dt className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
-                        Role
-                      </dt>
-                      <dd className="mt-1 text-xs font-medium leading-5 text-slate-200 sm:text-sm">
-                        {activeProject.role}
-                      </dd>
-                    </div>
-
-                    <div>
-                      <dt className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
-                        Timeline
-                      </dt>
-                      <dd className="mt-1 text-xs font-medium leading-5 text-slate-200 sm:text-sm">
-                        {activeProject.year}
-                      </dd>
-                    </div>
-
-                    <div className="col-span-2 sm:col-span-1">
-                      <dt className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
-                        System Focus
-                      </dt>
-                      <dd className="mt-1 text-xs font-medium leading-5 text-slate-200 sm:text-sm">
-                        {activeProject.category}
-                      </dd>
-                    </div>
-                  </dl>
-
-                  {/* Problem Solved Callout */}
-                  <div className="rounded-2xl border border-rose-400/20 bg-rose-500/[0.035] p-4 sm:p-5">
-                    <div className="flex items-center gap-2 text-rose-300">
-                      <AlertCircle size={15} aria-hidden="true" />
-                      <h4 className="text-xs font-semibold uppercase tracking-[0.2em]">
-                        Problem Solved
-                      </h4>
-                    </div>
-                    <p className="mt-2.5 text-sm leading-relaxed text-slate-300">
-                      {activeProject.problem}
-                    </p>
-                  </div>
-
-                  {/* Solution Summary */}
-                  <div className="rounded-2xl border border-cyan-300/20 bg-cyan-400/[0.035] p-4 sm:p-5">
-                    <div className="flex items-center gap-2 text-cyan-200">
-                      <Sparkles size={15} aria-hidden="true" />
-                      <h4 className="text-xs font-semibold uppercase tracking-[0.2em]">
-                        Solution Summary
-                      </h4>
-                    </div>
-                    <p className="mt-2.5 text-sm leading-relaxed text-slate-300">
-                      {activeProject.solution}
-                    </p>
-                  </div>
-
-                  {/* Key Highlights (4 points) */}
-                  {activeProject.highlights?.length > 0 && (
-                    <div>
-                      <h4 className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-slate-400">
-                        Key Engineering Highlights
-                      </h4>
-                      <ul className="mt-3 grid gap-2.5 sm:grid-cols-2">
-                        {activeProject.highlights.map((highlight) => (
-                          <li
-                            key={highlight}
-                            className="flex items-start gap-2.5 rounded-xl border border-white/[0.07] bg-white/[0.02] p-3 text-xs leading-relaxed text-slate-300"
-                          >
-                            <CheckCircle2
-                              size={14}
-                              aria-hidden="true"
-                              className="mt-0.5 shrink-0 text-cyan-300"
-                            />
-                            <span>{highlight}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {/* Technology Stack */}
-                  {activeProject.tech?.length > 0 && (
-                    <div>
-                      <h4 className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-slate-400">
-                        Technology Stack
-                      </h4>
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {activeProject.tech.map((item) => (
-                          <TechBadge key={item} name={item} />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* ─── RIGHT SIDE: Large Visual Preview & Interactive Media ── */}
-                <div className="flex flex-col gap-4">
-                  {/* Cyber-Frame Visual Container */}
-                  <div className="group/preview relative overflow-hidden rounded-[1.75rem] border border-cyan-300/20 bg-slate-900 shadow-[0_24px_80px_rgba(0,0,0,0.6)] sm:rounded-[2rem]">
-                    {/* Corner Bracket Accents */}
-                    <div
-                      aria-hidden="true"
-                      className="pointer-events-none absolute left-4 top-4 z-30 h-7 w-7 border-l-2 border-t-2 border-cyan-300/40"
-                    />
-                    <div
-                      aria-hidden="true"
-                      className="pointer-events-none absolute bottom-4 right-4 z-30 h-7 w-7 border-b-2 border-r-2 border-cyan-300/40"
-                    />
-
-                    {/* Media Display: Video or Image */}
-                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-black">
-                      {isGalleryProject ? (
-                        <AnimatePresence mode="wait">
-                          <motion.img
-                            key={currentScreen?.src ?? activeProject.id}
-                            src={currentScreen?.src ?? activeProject.media?.cover}
-                            alt={currentScreen?.alt ?? `${activeProject.title} preview`}
-                            initial={{ opacity: 0, scale: 1.02 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.99 }}
-                            transition={{ duration: 0.35, ease: "easeInOut" }}
-                            className="h-full w-full object-cover object-top cursor-pointer"
-                            onClick={handleOpenLightbox}
-                          />
-                        </AnimatePresence>
-                      ) : activeProject.media?.video ? (
-                        <div
-                          className="relative h-full w-full cursor-pointer"
-                          onClick={handleOpenLightbox}
-                        >
-                          <LazyVideo
-                            src={activeProject.media.video}
-                            poster={activeProject.media.cover}
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            className="h-full w-full object-cover object-top"
-                          />
-                        </div>
-                      ) : (
-                        <img
-                          src={activeProject.media?.cover}
-                          alt={`${activeProject.title} preview`}
-                          className="h-full w-full object-cover object-top cursor-pointer"
-                          onClick={handleOpenLightbox}
-                        />
-                      )}
-
-                      {/* Ambient Gradient Overlay */}
-                      <div
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-slate-950/70 via-transparent to-black/20"
-                      />
-
-                      {/* Header Badge Overlay */}
-                      <div className="absolute left-4 top-4 z-30 flex items-center gap-2">
-                        <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-slate-950/80 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-cyan-200 backdrop-blur">
-                          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" />
-                          {isGalleryProject ? "Interactive Screenshots" : "System Demo Video"}
-                        </span>
-                      </div>
-
-                      {/* Expand / Lightbox Button Overlay */}
-                      <button
-                        type="button"
-                        onClick={handleOpenLightbox}
-                        aria-label={`Expand ${activeProject.title} media preview`}
-                        className="absolute right-4 top-4 z-30 flex h-9 w-9 items-center justify-center rounded-full border border-white/20 bg-slate-950/80 text-white shadow-lg backdrop-blur transition duration-300 hover:border-cyan-300 hover:bg-cyan-300/[0.15] hover:text-cyan-200"
-                      >
-                        <Maximize2 size={15} />
-                      </button>
-                    </div>
-
-                    {/* Interactive Screenshot Selector (for Gallery projects like TalkReady) */}
-                    {isGalleryProject && screens.length > 0 && (
-                      <div className="border-t border-white/10 bg-slate-950/90 p-3 backdrop-blur-md">
-                        <p className="px-2 text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
-                          System Screens (Click to view)
-                        </p>
-                        <div className="mt-2 flex flex-wrap gap-2">
-                          {screens.map((screen, sIdx) => {
-                            const isCurrent = sIdx === activeScreenIndex;
-                            return (
-                              <button
-                                key={screen.label}
-                                type="button"
-                                onClick={() => setActiveScreenIndex(sIdx)}
-                                className={[
-                                  "rounded-lg px-3 py-1.5 text-xs font-medium transition duration-200",
-                                  isCurrent
-                                    ? "border border-cyan-300/40 bg-cyan-300/[0.12] text-cyan-100 font-semibold"
-                                    : "border border-white/10 bg-white/[0.025] text-slate-400 hover:border-white/20 hover:text-slate-200",
-                                ].join(" ")}
-                              >
-                                {screen.label}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Bottom Status Bar */}
-                    <div className="flex items-center justify-between border-t border-white/10 bg-slate-950/60 px-5 py-3 text-xs text-slate-400">
-                      <span className="flex items-center gap-2">
-                        <Play size={13} className="text-cyan-300" />
-                        <span>
-                          {isGalleryProject
-                            ? `${currentScreen?.label ?? "Overview"} view`
-                            : "Full-motion system preview"}
-                        </span>
-                      </span>
-                      <button
-                        type="button"
-                        onClick={handleOpenLightbox}
-                        className="text-[0.7rem] font-medium text-cyan-300 hover:underline"
-                      >
-                        Click preview to inspect full size ↗
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* ─── Bottom Actions Toolbar ────────────────────────────── */}
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between rounded-2xl border border-white/10 bg-white/[0.025] p-4">
-                    {/* Left: Previous / Next Project Controls */}
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={goPrevious}
-                        aria-label="Previous project"
-                        className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full border border-white/15 bg-white/[0.04] px-4 text-xs font-semibold text-slate-200 transition duration-300 hover:border-cyan-300/40 hover:bg-cyan-300/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
-                      >
-                        <ArrowLeft size={14} />
-                        <span>Prev</span>
-                      </button>
-
-                      <div className="px-2 text-center">
-                        <span className="font-mono text-xs font-semibold text-cyan-300">
-                          {String(activeIndex + 1).padStart(2, "0")}
-                        </span>
-                        <span className="font-mono text-xs text-slate-600"> / </span>
-                        <span className="font-mono text-xs text-slate-400">
-                          {String(interactiveProjects.length).padStart(2, "0")}
-                        </span>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={goNext}
-                        aria-label="Next project"
-                        className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full border border-white/15 bg-white/[0.04] px-4 text-xs font-semibold text-slate-200 transition duration-300 hover:border-cyan-300/40 hover:bg-cyan-300/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
-                      >
-                        <span>Next</span>
-                        <ArrowRight size={14} />
-                      </button>
-                    </div>
-
-                    {/* Right: CTA Buttons */}
-                    <div className="flex flex-wrap items-center gap-2.5">
-                      {activeProject.links?.caseStudy && (
-                        <a
-                          href={activeProject.links.caseStudy}
-                          className="group inline-flex h-10 items-center justify-center gap-2 rounded-full bg-cyan-300 px-5 text-xs font-semibold text-slate-950 shadow-[0_8px_24px_rgba(8,145,178,0.2)] transition duration-300 hover:-translate-y-0.5 hover:bg-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
-                        >
-                          View Case Study
-                          <ArrowRight
-                            size={14}
-                            className="transition-transform duration-300 group-hover:translate-x-0.5"
-                          />
-                        </a>
-                      )}
-
-                      {activeProject.links?.live && (
-                        <a
-                          href={activeProject.links.live}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full border border-white/15 bg-white/[0.04] px-4 text-xs font-semibold text-white transition duration-300 hover:-translate-y-0.5 hover:border-cyan-300/40 hover:bg-cyan-300/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
-                        >
-                          Live Platform
-                          <ExternalLink size={13} />
-                        </a>
-                      )}
-
-                      {activeProject.links?.github && (
-                        <a
-                          href={activeProject.links.github}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`View ${activeProject.title} GitHub repository`}
-                          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-slate-300 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-300/40 hover:bg-cyan-300/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
-                        >
-                          <Code2 size={16} />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </motion.article>
-            )}
-          </AnimatePresence>
-        </div>
+        ) : null}
       </Container>
 
-      {/* Lightbox for Full-Resolution Image / Video Inspection */}
-      <MediaLightbox
-        media={activeMedia}
-        onClose={() => setActiveMedia(null)}
-      />
+      <MediaLightbox media={activeMedia} onClose={() => setActiveMedia(null)} />
     </section>
   );
 }
