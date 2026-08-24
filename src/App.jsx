@@ -20,6 +20,8 @@ import HomeV2 from "./pages/HomeV2";
 import TalkReadyCaseStudyV2 from "./pages/TalkReadyCaseStudyV2";
 import InternshipSystemsCaseStudyV2 from "./pages/InternshipSystemsCaseStudyV2";
 
+import SocialPreview from "./pages/SocialPreview";
+
 export default function App() {
   const { pathname } = useLocation();
 
@@ -30,8 +32,10 @@ export default function App() {
 
   const isRebuiltCaseStudy =
     pathname === "/projects/talkready" ||
-    pathname ===
-      "/projects/internship-systems";
+    pathname === "/projects/internship-systems";
+
+  const isSocialPreview =
+    pathname === "/social-preview";
 
   /*
    * Rebuilt case-study pages provide their own
@@ -39,10 +43,12 @@ export default function App() {
    * through CaseStudyLayout.
    */
   const showGlobalHeader =
-    !isRebuiltCaseStudy;
+    !isRebuiltCaseStudy &&
+    !isSocialPreview;
 
   const showGlobalSkipLink =
-    !isRebuiltCaseStudy;
+    !isRebuiltCaseStudy &&
+    !isSocialPreview;
 
   const handlePortfolioLoaderComplete =
     () => {
@@ -83,6 +89,13 @@ export default function App() {
           <Route
             path="/"
             element={<HomeV2 />}
+          />
+
+          <Route
+            path="/social-preview"
+            element={
+              <SocialPreview />
+            }
           />
 
           <Route
