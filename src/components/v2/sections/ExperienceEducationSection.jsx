@@ -6,6 +6,8 @@ import {
 import Container from "../../layout/Container";
 import SectionHeading from "../../ui/SectionHeading";
 
+import ExperienceGallery from "./ExperienceGallery";
+
 import {
   StaggerItem,
   StaggerReveal,
@@ -950,6 +952,9 @@ export default function ExperienceEducationSection() {
               No featured experience entries are currently available.
             </div>
           )}
+
+          {/* Interactive field experience gallery */}
+          <ExperienceGallery />
         </Container>
       </section>
 

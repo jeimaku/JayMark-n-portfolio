@@ -29,3 +29,4 @@ export { mainNavigation, footerNavigation } from "./navigation";
 export { homepageContent, contentHierarchy } from "./contentMap";
 export { assetPaths } from "./assets";
 export { caseStudies } from "./caseStudies";
+export { experienceGallery } from "./experienceGallery";
