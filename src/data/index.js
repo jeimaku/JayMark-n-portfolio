@@ -11,8 +11,10 @@ export {
 
 export { skillCategories, primarySkills } from "./skills";
 export {
+  capabilityMarqueeLanes,
   creativeTechnologies,
   itSupportCapabilities,
+  primaryStackLanes,
   secondaryCapabilitySections,
   skillGroups,
   skillProjects,

@@ -175,6 +175,50 @@ code {
   }
 }
 
+/* Skills technology ecosystem marquees */
+
+@keyframes skillsMarqueeLeft {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes skillsMarqueeRight {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.skills-marquee-track {
+  display: flex;
+  width: max-content;
+  padding-block: 0.25rem;
+  will-change: transform;
+  animation-duration: var(--marquee-duration, 40s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.skills-marquee-track--left {
+  animation-name: skillsMarqueeLeft;
+}
+
+.skills-marquee-track--right {
+  animation-name: skillsMarqueeRight;
+}
+
+.skills-marquee-row:hover .skills-marquee-track {
+  animation-play-state: paused;
+}
+
 /* Off-screen section rendering optimization */
 
 .content-auto-section {
@@ -242,6 +286,11 @@ code {
 
   .motion-safe\:animate-\[floatSoft_7s_ease-in-out_infinite\] {
     animation: none !important;
+  }
+
+  .skills-marquee-track {
+    animation: none !important;
+    transform: none !important;
   }
 
   /*

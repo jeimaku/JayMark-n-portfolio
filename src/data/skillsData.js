@@ -184,7 +184,7 @@ export const technologies = [
   },
   {
     id: "html5",
-    name: "HTML5",
+    name: "HTML",
     groups: ["web"],
     iconUrl: `${SI}/html5`,
     brandColor: "#E34F26",
@@ -195,7 +195,7 @@ export const technologies = [
   },
   {
     id: "css3",
-    name: "CSS3",
+    name: "CSS",
     groups: ["web"],
     iconUrl: `${SI}/css`,
     brandColor: "#1572B6",
@@ -459,13 +459,13 @@ export const creativeTechnologies = [
   {
     id: "canva",
     name: "Canva",
-    iconUrl: `${SI}/canva`,
+    iconUrl: "/canva-seeklogo.png",
     brandColor: "#00C4CC",
   },
   {
     id: "capcut",
     name: "CapCut",
-    iconUrl: `${SI}/capcut/white`,
+    iconUrl: "/capcut-seeklogo.png",
     brandColor: "#FFFFFF",
   },
   {
@@ -523,17 +523,107 @@ export const secondaryCapabilitySections = [
   },
 ];
 
-export const itSupportCapabilities = [
+/*
+ * Presentation data for the v2 technology ecosystem. Technology details
+ * remain in the collections above; these lanes only define their visual
+ * grouping and rhythm in the Skills section.
+ */
+export const primaryStackLanes = [
   {
-    label: "Hardware",
-    skills: [
-      "Hardware troubleshooting",
-      "Desktop components",
-      "Cable crimping",
+    id: "frontend",
+    label: "Frontend",
+    index: "01",
+    direction: "left",
+    duration: 36,
+    technologyIds: [
+      "react",
+      "javascript",
+      "tailwind",
+      "html5",
+      "css3",
     ],
   },
   {
+    id: "backend",
+    label: "Backend & data",
+    index: "02",
+    direction: "right",
+    duration: 42,
+    technologyIds: [
+      "nodejs",
+      "supabase",
+      "postgresql",
+      "mysql",
+    ],
+  },
+];
+
+export const capabilityMarqueeLanes = [
+  {
+    id: "development-tools",
+    label: "Development tools",
+    index: "01",
+    direction: "right",
+    duration: 38,
+    technologyIds: [
+      "git",
+      "github",
+      "vscode",
+      "npm",
+      "render",
+      "tailscale",
+    ],
+  },
+  {
+    id: "ai-workflow",
+    label: "AI development & integration",
+    index: "02",
+    direction: "left",
+    duration: 46,
+    technologyIds: [
+      "codex",
+      "claude-code",
+      "gemini",
+      "antigravity",
+      "openai",
+      "azure-ai",
+    ],
+  },
+  {
+    id: "creative-workflow",
+    label: "Creative workflow",
+    index: "03",
+    direction: "right",
+    duration: 43,
+    technologyIds: [
+      "figma",
+      "photoshop",
+      "canva",
+      "capcut",
+      "premiere",
+    ],
+  },
+];
+
+export const itSupportCapabilities = [
+  {
+    id: "hardware",
+    label: "Hardware",
+    icon: "hardware",
+    accent: "#67E8F9",
+    status: "Field diagnostics",
+    skills: [
+      "Hardware troubleshooting",
+      "Desktop components",
+      "Cable installation",
+    ],
+  },
+  {
+    id: "networking",
     label: "Networking",
+    icon: "networking",
+    accent: "#A5B4FC",
+    status: "Network layer",
     skills: [
       "Network fundamentals",
       "TCP/IP",
@@ -543,7 +633,11 @@ export const itSupportCapabilities = [
     ],
   },
   {
+    id: "systems",
     label: "Systems",
+    icon: "systems",
+    accent: "#6EE7B7",
+    status: "System administration",
     skills: [
       "Software troubleshooting",
       "Basic server administration",
