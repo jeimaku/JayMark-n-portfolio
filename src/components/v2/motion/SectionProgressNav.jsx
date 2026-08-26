@@ -1,59 +1,28 @@
 import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-
-import {
   motion,
-  useMotionValueEvent,
   useScroll,
   useTransform,
 } from "motion/react";
 
-import useMotionRuntime from "../../../hooks/useMotionRuntime";
+import {
+  useNavigate,
+} from "react-router";
 
-const sectionItems = [
-  {
-    id: "home",
-    label: "Home",
-  },
-  {
-    id: "about",
-    label: "About",
-  },
-  {
-    id: "skills",
-    label: "Skills",
-  },
-  {
-    id: "projects",
-    label: "Projects",
-  },
-  {
-    id: "experience",
-    label: "Experience",
-  },
-  {
-    id: "education",
-    label: "Education",
-  },
-  {
-    id: "contact",
-    label: "Contact",
-  },
-];
+import useMotionRuntime from "../../../hooks/useMotionRuntime";
+import useScrollState from "../../../hooks/useScrollState";
+import {
+  markPortfolioNavigation,
+  PORTFOLIO_SECTIONS,
+  scrollToPortfolioSection,
+} from "../../../lib/smoothScroll";
+
+const sectionItems = PORTFOLIO_SECTIONS;
 
 export default function SectionProgressNav() {
-  const [activeSection, setActiveSection] =
-    useState("home");
-
-  const sectionElementsRef =
-    useRef([]);
+  const navigate = useNavigate();
+  const { activeSection } = useScrollState();
 
   const {
-    scrollY,
     scrollYProgress,
   } = useScroll();
 
@@ -68,94 +37,18 @@ export default function SectionProgressNav() {
     [0, 1, 1]
   );
 
-  const updateActiveSection =
-    useCallback(() => {
-      const elements =
-        sectionElementsRef.current;
-
-      if (elements.length === 0) {
-        return;
-      }
-
-      const viewportMarker =
-        window.innerHeight * 0.34;
-
-      let nextSection =
-        elements[0]?.id ?? "home";
-
-      for (const element of elements) {
-        const bounds =
-          element.node.getBoundingClientRect();
-
-        if (
-          bounds.top <= viewportMarker
-        ) {
-          nextSection = element.id;
-        }
-
-        if (
-          bounds.top <= viewportMarker &&
-          bounds.bottom > viewportMarker
-        ) {
-          nextSection = element.id;
-          break;
-        }
-      }
-
-      setActiveSection(
-        (currentSection) =>
-          currentSection === nextSection
-            ? currentSection
-            : nextSection
-      );
-    }, []);
-
-  useEffect(() => {
-    sectionElementsRef.current =
-      sectionItems
-        .map((item) => ({
-          id: item.id,
-          node:
-            document.getElementById(
-              item.id
-            ),
-        }))
-        .filter((item) =>
-          Boolean(item.node)
-        );
-
-    const hashSection =
-      window.location.hash.replace(
-        "#",
-        ""
-      );
-
-    if (
-      sectionItems.some(
-        (item) =>
-          item.id === hashSection
-      )
-    ) {
-      setActiveSection(hashSection);
-    }
-
-    const frameId =
-      window.requestAnimationFrame(
-        updateActiveSection
-      );
-
-    return () => {
-      window.cancelAnimationFrame(
-        frameId
-      );
-    };
-  }, [updateActiveSection]);
-
-  useMotionValueEvent(
-    scrollY,
-    "change",
-    updateActiveSection
-  );
+  const handleNavigation = (
+    event,
+    sectionId
+  ) => {
+    event.preventDefault();
+    markPortfolioNavigation(sectionId);
+    navigate({
+      pathname: "/",
+      hash: `#${sectionId}`,
+    });
+    scrollToPortfolioSection(sectionId);
+  };
 
   return (
     <motion.nav
@@ -184,6 +77,12 @@ export default function SectionProgressNav() {
               <li key={item.id}>
                 <a
                   href={`#${item.id}`}
+                  onClick={(event) =>
+                    handleNavigation(
+                      event,
+                      item.id
+                    )
+                  }
                   aria-label={`Go to ${item.label}`}
                   aria-current={
                     active

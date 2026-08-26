@@ -6,10 +6,8 @@ export default function SectionPanel({
   return (
     <Component
       className={[
-        "relative overflow-hidden rounded-3xl",
+        "ambient-surface relative overflow-hidden rounded-3xl",
         "border border-white/10",
-        "bg-white/[0.025]",
-        "shadow-[0_24px_70px_rgba(0,0,0,0.22)]",
         className,
       ].join(" ")}
     >

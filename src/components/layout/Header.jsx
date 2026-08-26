@@ -7,7 +7,6 @@ import {
 import {
   AnimatePresence,
   motion,
-  useReducedMotion,
 } from "motion/react";
 
 import {
@@ -16,123 +15,25 @@ import {
   X,
 } from "lucide-react";
 
+import {
+  useNavigate,
+} from "react-router";
+
 import SocialLink from "../ui/SocialLink";
 import Container from "./Container";
 
 import { profile } from "../../data";
+import useScrollState from "../../hooks/useScrollState";
+import {
+  markPortfolioNavigation,
+  scrollToPortfolioSection,
+  startSmoothScroll,
+  stopSmoothScroll,
+  PORTFOLIO_SECTIONS,
+} from "../../lib/smoothScroll";
 
-const HEADER_NAVIGATION = [
-  {
-    id: "home",
-    label: "Home",
-  },
-  {
-    id: "about",
-    label: "About",
-  },
-  {
-    id: "skills",
-    label: "Skills",
-  },
-  {
-    id: "projects",
-    label: "Projects",
-  },
-  {
-    id: "experience",
-    label: "Experience",
-  },
-  {
-    id: "education",
-    label: "Education",
-  },
-  {
-    id: "certifications",
-    label: "Certifications",
-  },
-  {
-    id: "contact",
-    label: "Contact",
-  },
-];
-
-const HEADER_SCROLL_OFFSET = 96;
-
-function getDocumentScrollProgress() {
-  const scrollableDistance =
-    document.documentElement.scrollHeight -
-    window.innerHeight;
-
-  if (scrollableDistance <= 0) {
-    return 0;
-  }
-
-  return Math.min(
-    1,
-    Math.max(
-      0,
-      window.scrollY /
-        scrollableDistance
-    )
-  );
-}
-
-function getCurrentSection() {
-  const viewportProbe = Math.min(
-    window.innerHeight * 0.32,
-    260
-  );
-
-  const reachedPageEnd =
-    window.scrollY +
-      window.innerHeight >=
-    document.documentElement
-      .scrollHeight -
-      8;
-
-  if (reachedPageEnd) {
-    return "contact";
-  }
-
-  let currentSection =
-    HEADER_NAVIGATION[0].id;
-
-  for (const item of HEADER_NAVIGATION) {
-    const section =
-      document.getElementById(
-        item.id
-      );
-
-    if (!section) {
-      continue;
-    }
-
-    const rectangle =
-      section.getBoundingClientRect();
-
-    const intersectsProbe =
-      rectangle.top <=
-        viewportProbe &&
-      rectangle.bottom >
-        viewportProbe;
-
-    if (intersectsProbe) {
-      currentSection =
-        item.id;
-      break;
-    }
-
-    if (
-      rectangle.top <=
-      viewportProbe
-    ) {
-      currentSection =
-        item.id;
-    }
-  }
-
-  return currentSection;
-}
+const HEADER_NAVIGATION =
+  PORTFOLIO_SECTIONS;
 
 function BrandMark() {
   return (
@@ -489,103 +390,21 @@ function MobileNavigation({
 }
 
 export default function Header() {
-  const reducedMotion =
-    useReducedMotion();
+  const navigate = useNavigate();
 
   const [
     isOpen,
     setIsOpen,
   ] = useState(false);
 
-  const [
-    isScrolled,
-    setIsScrolled,
-  ] = useState(false);
-
-  const [
+  const {
     activeSection,
-    setActiveSection,
-  ] = useState("home");
-
-  const [
+    isScrolled,
     scrollProgress,
-    setScrollProgress,
-  ] = useState(0);
+  } = useScrollState();
 
   const menuButtonRef =
     useRef(null);
-
-  useEffect(() => {
-    let animationFrame = null;
-
-    const updateHeaderState = () => {
-      if (animationFrame) {
-        window.cancelAnimationFrame(
-          animationFrame
-        );
-      }
-
-      animationFrame =
-        window.requestAnimationFrame(
-          () => {
-            setIsScrolled(
-              window.scrollY > 24
-            );
-
-            setScrollProgress(
-              getDocumentScrollProgress()
-            );
-
-            setActiveSection(
-              getCurrentSection()
-            );
-          }
-        );
-    };
-
-    updateHeaderState();
-
-    window.addEventListener(
-      "scroll",
-      updateHeaderState,
-      {
-        passive: true,
-      }
-    );
-
-    window.addEventListener(
-      "resize",
-      updateHeaderState
-    );
-
-    window.addEventListener(
-      "hashchange",
-      updateHeaderState
-    );
-
-    return () => {
-      if (animationFrame) {
-        window.cancelAnimationFrame(
-          animationFrame
-        );
-      }
-
-      window.removeEventListener(
-        "scroll",
-        updateHeaderState
-      );
-
-      window.removeEventListener(
-        "resize",
-        updateHeaderState
-      );
-
-      window.removeEventListener(
-        "hashchange",
-        updateHeaderState
-      );
-    };
-  }, []);
 
   useEffect(() => {
     if (!isOpen) {
@@ -597,6 +416,8 @@ export default function Header() {
 
     document.body.style.overflow =
       "hidden";
+
+    stopSmoothScroll();
 
     const handleKeyDown = (
       event
@@ -639,6 +460,8 @@ export default function Header() {
       document.body.style.overflow =
         previousOverflow;
 
+      startSmoothScroll();
+
       window.removeEventListener(
         "keydown",
         handleKeyDown
@@ -661,45 +484,13 @@ export default function Header() {
   ) => {
     event.preventDefault();
 
-    const section =
-      document.getElementById(
-        sectionId
-      );
-
-    if (!section) {
-      return;
-    }
-
     setIsOpen(false);
-    setActiveSection(sectionId);
-
-    const targetTop =
-      section.getBoundingClientRect()
-        .top +
-      window.scrollY -
-      HEADER_SCROLL_OFFSET;
-
-    window.history.pushState(
-      null,
-      "",
-      `#${sectionId}`
-    );
-
-    window.requestAnimationFrame(
-      () => {
-        window.scrollTo({
-          top: Math.max(
-            0,
-            targetTop
-          ),
-          left: 0,
-          behavior:
-            reducedMotion
-              ? "auto"
-              : "smooth",
-        });
-      }
-    );
+    markPortfolioNavigation(sectionId);
+    navigate({
+      pathname: "/",
+      hash: `#${sectionId}`,
+    });
+    scrollToPortfolioSection(sectionId);
   };
 
   return (

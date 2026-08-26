@@ -7,6 +7,7 @@ export default function MediaLightbox({ media, onClose }) {
 
   return (
     <div
+      data-lenis-prevent=""
       className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/90 p-4 backdrop-blur-xl"
       role="dialog"
       aria-modal="true"

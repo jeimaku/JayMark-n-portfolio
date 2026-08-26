@@ -59,7 +59,7 @@ export default function Footer() {
       className={[
         "relative isolate overflow-hidden",
         "border-t border-white/[0.08]",
-        "bg-slate-950",
+        "bg-slate-950/80",
         "py-10 sm:py-12",
       ].join(" ")}
     >
@@ -86,8 +86,8 @@ export default function Footer() {
           "absolute inset-0 -z-30",
           "bg-gradient-to-b",
           "from-transparent",
-          "via-slate-950",
-          "to-slate-950",
+          "via-slate-950/82",
+          "to-slate-950/90",
         ].join(" ")}
       />
 

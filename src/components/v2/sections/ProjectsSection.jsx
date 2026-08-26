@@ -10,6 +10,7 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 
 import Container from "../../layout/Container";
+import LazyVideo from "../../ui/LazyVideo";
 import MediaLightbox from "../../ui/MediaLightbox";
 import SectionHeading from "./SectionHeading";
 import { interactiveProjects } from "../../../data";
@@ -132,17 +133,22 @@ function ProjectPreview({
         }`}
       >
         <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
-          {isVideoPreview ? (
-            <video
+          {isVideoPreview && isActive ? (
+            <LazyVideo
               src={project.media.video}
               poster={preview.src}
-              autoPlay
+              autoPlay={!prefersReducedMotion}
               muted
               loop
               playsInline
-              preload="auto"
+              preload="metadata"
+              lazy
               aria-label={`${project.title} live preview`}
-              onLoadedData={restartPreview}
+              onLoadedData={
+                prefersReducedMotion
+                  ? undefined
+                  : restartPreview
+              }
               className={`h-full w-full object-cover object-top transition duration-700 motion-reduce:transition-none ${
                 isActive
                   ? "scale-[1.01] group-hover:scale-[1.035]"
@@ -153,7 +159,7 @@ function ProjectPreview({
             <img
               src={preview.src}
               alt={preview.alt}
-              loading={isActive ? "eager" : "lazy"}
+              loading="lazy"
               decoding="async"
               className={`h-full w-full object-cover object-top transition duration-700 motion-reduce:transition-none ${
                 isActive
@@ -443,7 +449,7 @@ export default function ProjectsSection() {
       aria-labelledby="projects-heading"
       tabIndex={-1}
       onKeyDown={handleKeyDown}
-      className="relative isolate scroll-mt-20 overflow-hidden bg-slate-950 py-20 sm:py-28"
+      className="relative isolate scroll-mt-20 overflow-hidden bg-slate-950/78 py-20 sm:py-28"
     >
       <div
         aria-hidden="true"
@@ -499,6 +505,7 @@ export default function ProjectsSection() {
             <div
               role="tablist"
               aria-label="Selected work projects"
+              data-lenis-prevent-horizontal=""
               className="no-scrollbar mt-3 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 md:hidden"
             >
               {interactiveProjects.map((project, index) => {

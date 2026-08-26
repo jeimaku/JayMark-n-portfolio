@@ -517,6 +517,7 @@ function CertificatePreview({
                 <img
                   src={certificate.image}
                   alt={`${certificate.name} certificate issued by ${certificate.provider}`}
+                  loading="lazy"
                   decoding="async"
                   draggable={false}
                   className={[
@@ -648,6 +649,7 @@ function CertificateLightbox({
     <motion.div
       role="dialog"
       aria-modal="true"
+      data-lenis-prevent=""
       aria-label={`${certificate.name} certificate preview`}
       initial={{
         opacity: 0,
@@ -970,6 +972,7 @@ export default function CertificationsSection() {
     <>
       <Section
         id="certifications"
+        optimize={false}
         className="relative overflow-hidden"
       >
         <div
@@ -1078,6 +1081,7 @@ export default function CertificationsSection() {
               role="tablist"
               aria-label="Certificate selection"
               aria-orientation="vertical"
+              data-lenis-prevent=""
               className={[
                 "grid gap-3",
                 "sm:grid-cols-2",

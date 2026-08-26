@@ -1,8 +1,7 @@
 import Footer from "../components/v2/Footer";
-import HeroAmbientBackground from "../components/v2/HeroAmbientBackground";
 
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useEffect, useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { useEffect } from "react";
 
 import {
   AboutSection,
@@ -20,7 +19,6 @@ import {
 
 import useHeroAboutTransition from "../hooks/useHeroAboutTransition";
 import { heroContent } from "../data/heroContent";
-import { aboutContent } from "../data/aboutContent";
 
 
 /* ─── Animation helpers ──────────────────────────────────────────────────── */
@@ -43,62 +41,6 @@ function useFadeUp(delay = 0) {
 }
 
 /* ─── Portrait ───────────────────────────────────────────────────────────── */
-
-function HeroPortrait() {
-  const [failed, setFailed] = useState(false);
-  const motionProps = useFadeUp(0.08);
-
-  return (
-    <motion.div {...motionProps} className="mb-7 flex justify-center">
-      <div className="relative">
-        {/* Photo frame */}
-        <div className="relative h-28 w-28 overflow-hidden rounded-[1.75rem] border border-cyan-300/20 bg-slate-900 shadow-[0_0_40px_rgba(34,211,238,0.09)] sm:h-32 sm:w-32">
-          {!failed ? (
-            <img
-              src={aboutContent.portrait.src}
-              alt="Jay Mark Apelado"
-              loading="eager"
-              decoding="async"
-              onError={() => setFailed(true)}
-              className="h-full w-full object-cover"
-              style={{ objectPosition: aboutContent.portrait.objectPosition }}
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center bg-slate-900">
-              <p className="text-3xl font-semibold tracking-[-0.06em] text-cyan-100">
-                JM
-              </p>
-            </div>
-          )}
-
-          {/* Subtle cyan overlay tint */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-cyan-300/[0.04] mix-blend-screen"
-          />
-
-          {/* Corner brackets */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute left-2.5 top-2.5 h-5 w-5 border-l border-t border-cyan-200/30"
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute bottom-2.5 right-2.5 h-5 w-5 border-b border-r border-cyan-200/30"
-          />
-        </div>
-
-        {/* Availability indicator dot */}
-        <div
-          title="Available for opportunities"
-          className="absolute -bottom-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full border-2 border-slate-950 bg-emerald-400"
-        >
-          <span className="sr-only">Available for opportunities</span>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
 
 /* ─── CTA icons ──────────────────────────────────────────────────────────── */
 
@@ -324,7 +266,7 @@ export default function HomeV2() {
       <main
         id="main-content"
         tabIndex={-1}
-        className="min-h-screen bg-slate-950 text-slate-50 focus:outline-none"
+        className="min-h-screen bg-transparent text-slate-50 focus:outline-none"
       >
         {/* ── Hero scroll scene wrapper ─────────────────────────────────
             Extra height beyond 100vh gives the scroll-exit transition
@@ -338,7 +280,7 @@ export default function HomeV2() {
           <section
             id="home"
             aria-labelledby="hero-title"
-            className="sticky top-0 isolate flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950 pb-16 pt-20 sm:pt-24"
+            className="sticky top-0 isolate flex min-h-screen flex-col items-center justify-center overflow-hidden bg-slate-950/72 pb-16 pt-20 sm:pt-24"
           >
             {/* ── Animated ambient background ────────────────────────── */}
             <motion.div
@@ -346,7 +288,9 @@ export default function HomeV2() {
               style={heroBackgroundStyle}
               className="pointer-events-none absolute inset-0 -z-10 origin-center will-change-transform"
             >
-              <HeroAmbientBackground />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_72%_58%_at_50%_42%,rgba(8,145,178,0.13),transparent_68%)]" />
+
+              <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(148,163,184,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.5)_1px,transparent_1px)] [background-size:64px_64px]" />
             </motion.div>
 
             {/* ── Hero copy — scroll-linked fade/rise exit ───────────── */}

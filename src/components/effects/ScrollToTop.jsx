@@ -1,81 +1,27 @@
 import {
-  useEffect,
   useLayoutEffect,
-  useRef,
 } from "react";
-import { useLocation } from "react-router";
 
-const LAST_SECTION_KEY = "jaymark-portfolio:last-section";
+import {
+  useLocation,
+} from "react-router";
 
-const SECTION_IDS = [
-  "home",
-  "about",
-  "skills",
-  "projects",
-  "experience",
-  "education",
-  "certifications",
-  "contact",
-];
+import {
+  clearPendingPortfolioNavigation,
+  HEADER_SCROLL_OFFSET,
+  isPortfolioSection,
+  isPendingPortfolioNavigation,
+  scrollToElement,
+  scrollToTop,
+} from "../../lib/smoothScroll";
 
-function readLastSection() {
-  try {
-    const sectionId = window.sessionStorage.getItem(
-      LAST_SECTION_KEY
-    );
-
-    return SECTION_IDS.includes(sectionId)
-      ? sectionId
-      : null;
-  } catch {
-    return null;
-  }
-}
-
-function writeLastSection(sectionId) {
-  try {
-
-    window.sessionStorage.setItem(
-      LAST_SECTION_KEY,
-      sectionId
-    );
-  } catch {
-    // Storage can be unavailable in private browsing modes.
-  }
-}
-
-function getCurrentSection() {
-  const marker = window.innerHeight * 0.34;
-  let currentSection = "home";
-
-  for (const sectionId of SECTION_IDS) {
-    const section = document.getElementById(sectionId);
-
-    if (section && section.getBoundingClientRect().top <= marker) {
-      currentSection = sectionId;
-    }
-  }
-
-  return currentSection;
-}
-
-function isDocumentReload() {
-  const navigationEntry =
-    window.performance?.getEntriesByType?.(
-      "navigation"
-    )?.[0];
-
-  return navigationEntry?.type === "reload";
-}
+const MAX_HASH_TARGET_ATTEMPTS = 8;
 
 export default function ScrollToTop() {
-  const { pathname, hash } = useLocation();
-  const initialPositionHandledRef =
-    useRef(false);
-
-  const restoreTimeoutRef =
-    useRef(null);
-    useRef(false);
+  const {
+    hash,
+    pathname,
+  } = useLocation();
 
   useLayoutEffect(() => {
     const previousScrollRestoration =
@@ -90,97 +36,72 @@ export default function ScrollToTop() {
   }, []);
 
   useLayoutEffect(() => {
-    const hashSection = hash
+    const sectionId = hash
       ? decodeURIComponent(hash.replace("#", ""))
       : null;
-    const isInitialAppEntry =
-      !initialPositionHandledRef.current;
-    const shouldRestoreLastSection =
-      isInitialAppEntry &&
-      pathname === "/" &&
-      !hashSection &&
-      isDocumentReload();
-    const restoredSection = null;
-    const targetSection =
-      hashSection || restoredSection;
-    let frameId = 0;
-    let secondFrameId = 0;
+
+    let animationFrame = 0;
+    let attempts = 0;
 
     const restorePosition = () => {
-      initialPositionHandledRef.current =
-        true;
-
-      const element = targetSection
-        ? document.getElementById(targetSection)
+      const target = sectionId
+        ? document.getElementById(sectionId)
         : null;
 
-      if (element) {
-        element.scrollIntoView({
-          behavior: "auto",
-          block: "start",
+      if (target) {
+        const portfolioTarget =
+          pathname === "/" &&
+          isPortfolioSection(sectionId);
+
+        if (
+          portfolioTarget &&
+          isPendingPortfolioNavigation(sectionId)
+        ) {
+          window.setTimeout(() => {
+            clearPendingPortfolioNavigation(sectionId);
+          }, 0);
+
+          return;
+        }
+
+        scrollToElement(target, {
+          immediate: true,
+          offset: portfolioTarget
+            ? -HEADER_SCROLL_OFFSET
+            : 0,
         });
-        writeLastSection(targetSection);
+
         return;
       }
 
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "auto",
-      });
-      writeLastSection("home");
-    };
+      attempts += 1;
 
-    frameId = window.requestAnimationFrame(() => {
-      secondFrameId = window.requestAnimationFrame(() => {
-        restoreTimeoutRef.current =
-          window.setTimeout(() => {
-            restorePosition();
-          }, 500);
-      });
-    });
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-      window.cancelAnimationFrame(secondFrameId);
-
-      if (restoreTimeoutRef.current) {
-        window.clearTimeout(
-          restoreTimeoutRef.current
-        );
+      if (
+        sectionId &&
+        attempts < MAX_HASH_TARGET_ATTEMPTS
+      ) {
+        animationFrame =
+          window.requestAnimationFrame(
+            restorePosition
+          );
+        return;
       }
-    };
-  }, [pathname, hash]);
 
-  useEffect(() => {
-    if (pathname !== "/" || hash) {
-      return undefined;
-    }
-
-    let frameId = 0;
-
-    const rememberCurrentSection = () => {
-      frameId = 0;
-      writeLastSection(getCurrentSection());
-    };
-
-    const handleScroll = () => {
-      if (frameId === 0) {
-        frameId = window.requestAnimationFrame(
-          rememberCurrentSection
-        );
+      if (!sectionId) {
+        scrollToTop({
+          immediate: true,
+        });
       }
     };
 
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
+    animationFrame = window.requestAnimationFrame(
+      restorePosition
+    );
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.cancelAnimationFrame(frameId);
+      window.cancelAnimationFrame(animationFrame);
     };
-  }, [pathname, hash]);
+  }, [hash, pathname]);
 
   return null;
 }

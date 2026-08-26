@@ -1,8 +1,8 @@
 import SectionDivider from "./SectionDivider";
 
 const TONE_CLASSES = {
-  default: "bg-slate-950",
-  subtle: "bg-slate-950/95",
+  default: "bg-slate-950/78",
+  subtle: "bg-slate-950/74",
   elevated: "bg-slate-900/[0.12]",
 };
 

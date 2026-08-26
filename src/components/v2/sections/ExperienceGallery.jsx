@@ -118,7 +118,7 @@ function DesktopPhotoStack({ onSelect, reduceMotion }) {
               rounded-[1.4rem]
               border
               border-white/10
-              bg-slate-950
+              bg-slate-950/78
               text-left
               shadow-[0_26px_90px_rgba(0,0,0,0.45)]
               outline-none
@@ -134,6 +134,7 @@ function DesktopPhotoStack({ onSelect, reduceMotion }) {
                 src={leadImage.src}
                 alt={leadImage.alt}
                 loading="lazy"
+                decoding="async"
                 className="
                   h-full
                   w-full
@@ -234,6 +235,7 @@ function DesktopPhotoStack({ onSelect, reduceMotion }) {
 function MobilePhotoStack({ onSelect }) {
   return (
     <div
+      data-lenis-prevent-horizontal=""
       className="
         -mx-1
         flex
@@ -268,6 +270,7 @@ function MobilePhotoStack({ onSelect }) {
               src={item.images[0].src}
               alt={item.images[0].alt}
               loading="lazy"
+              decoding="async"
               className="
                 h-full
                 w-full

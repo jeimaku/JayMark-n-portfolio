@@ -1,27 +1,29 @@
-import { useEffect, useRef } from "react";
+import {
+  useEffect,
+  useRef,
+} from "react";
 
 import {
-  useElementInView,
+  useReducedMotion,
+} from "motion/react";
+
+import {
   usePageVisibility,
 } from "../../hooks/useHeroRuntime";
-
-/* ─────────────────────────────────────────────
-   Particle + network line animation on 2D canvas
-   No WebGL. No Three.js. Pure canvas 2D API.
-───────────────────────────────────────────── */
 
 const PARTICLE_COUNT_DESKTOP = 38;
 const PARTICLE_COUNT_MOBILE = 18;
 const CONNECTION_DISTANCE = 140;
 const MAX_CONNECTIONS = 3;
+const MOBILE_FRAME_INTERVAL = 1000 / 30;
 
 const CYAN = "34, 211, 238";
 const CYAN_LINE = "103, 232, 249";
 
-function createParticle(w, h) {
+function createParticle(width, height) {
   return {
-    x: Math.random() * w,
-    y: Math.random() * h,
+    x: Math.random() * width,
+    y: Math.random() * height,
     vx: (Math.random() - 0.5) * 0.28,
     vy: (Math.random() - 0.5) * 0.22,
     radius: Math.random() * 1.6 + 0.6,
@@ -29,189 +31,273 @@ function createParticle(w, h) {
   };
 }
 
-function drawFrame(ctx, state) {
-  const { width, height, particles } = state;
-  ctx.clearRect(0, 0, width, height);
+function drawFrame(context, state) {
+  const {
+    width,
+    height,
+    particles,
+  } = state;
 
-  for (const p of particles) {
-    p.x += p.vx;
-    p.y += p.vy;
-    if (p.x < 0) p.x = width;
-    if (p.x > width) p.x = 0;
-    if (p.y < 0) p.y = height;
-    if (p.y > height) p.y = 0;
+  context.clearRect(0, 0, width, height);
+
+  for (const particle of particles) {
+    particle.x += particle.vx;
+    particle.y += particle.vy;
+
+    if (particle.x < 0) {
+      particle.x = width;
+    }
+
+    if (particle.x > width) {
+      particle.x = 0;
+    }
+
+    if (particle.y < 0) {
+      particle.y = height;
+    }
+
+    if (particle.y > height) {
+      particle.y = 0;
+    }
   }
 
-  for (let i = 0; i < particles.length; i++) {
-    const a = particles[i];
+  for (let index = 0; index < particles.length; index += 1) {
+    const source = particles[index];
     let connections = 0;
 
-    for (let j = i + 1; j < particles.length; j++) {
-      if (connections >= MAX_CONNECTIONS) break;
+    for (
+      let targetIndex = index + 1;
+      targetIndex < particles.length;
+      targetIndex += 1
+    ) {
+      if (connections >= MAX_CONNECTIONS) {
+        break;
+      }
 
-      const b = particles[j];
-      const dx = a.x - b.x;
-      const dy = a.y - b.y;
-      const dist = Math.sqrt(dx * dx + dy * dy);
+      const target = particles[targetIndex];
+      const xDistance = source.x - target.x;
+      const yDistance = source.y - target.y;
+      const distance = Math.sqrt(
+        xDistance * xDistance +
+          yDistance * yDistance
+      );
 
-      if (dist < CONNECTION_DISTANCE) {
-        const alpha = (1 - dist / CONNECTION_DISTANCE) * 0.22;
-        ctx.beginPath();
-        ctx.moveTo(a.x, a.y);
-        ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(${CYAN_LINE}, ${alpha})`;
-        ctx.lineWidth = 0.7;
-        ctx.stroke();
-        connections++;
+      if (distance < CONNECTION_DISTANCE) {
+        const alpha =
+          (1 -
+            distance / CONNECTION_DISTANCE) *
+          0.22;
+
+        context.beginPath();
+        context.moveTo(source.x, source.y);
+        context.lineTo(target.x, target.y);
+        context.strokeStyle = `rgba(${CYAN_LINE}, ${alpha})`;
+        context.lineWidth = 0.7;
+        context.stroke();
+        connections += 1;
       }
     }
   }
 
-  for (const p of particles) {
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(${CYAN}, ${p.opacity})`;
-    ctx.fill();
+  for (const particle of particles) {
+    context.beginPath();
+    context.arc(
+      particle.x,
+      particle.y,
+      particle.radius,
+      0,
+      Math.PI * 2
+    );
+    context.fillStyle = `rgba(${CYAN}, ${particle.opacity})`;
+    context.fill();
   }
 }
 
 function useAmbientCanvas(canvasRef, active) {
-  const stateRef = useRef({ particles: [], animId: null, width: 0, height: 0 });
+  const activeRef = useRef(active);
+  const stateRef = useRef({
+    animId: null,
+    frameInterval: 0,
+    height: 0,
+    lastFrame: 0,
+    particles: [],
+    start: null,
+    stop: null,
+    width: 0,
+  });
+
+  useEffect(() => {
+    activeRef.current = active;
+
+    if (active) {
+      stateRef.current.start?.();
+      return;
+    }
+
+    stateRef.current.stop?.();
+  }, [active]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    if (!canvas) {
+      return undefined;
+    }
+
+    const context = canvas.getContext("2d");
+
+    if (!context) {
+      return undefined;
+    }
+
     const state = stateRef.current;
 
-    function resize() {
-      const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      state.width = rect.width;
-      state.height = rect.height;
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      ctx.scale(dpr, dpr);
-    }
-
-    function seed() {
-      const isMobile = window.innerWidth < 768;
-      const count = isMobile ? PARTICLE_COUNT_MOBILE : PARTICLE_COUNT_DESKTOP;
-      state.particles = Array.from({ length: count }, () =>
-        createParticle(state.width, state.height)
+    const resize = () => {
+      const bounds = canvas.getBoundingClientRect();
+      const devicePixelRatio = Math.min(
+        window.devicePixelRatio || 1,
+        2
       );
-    }
 
-    function loop() {
-      drawFrame(ctx, state);
-      state.animId = requestAnimationFrame(loop);
-    }
+      state.width = Math.max(1, bounds.width);
+      state.height = Math.max(1, bounds.height);
+      state.frameInterval =
+        window.innerWidth < 768
+          ? MOBILE_FRAME_INTERVAL
+          : 0;
+
+      canvas.width = Math.round(
+        state.width * devicePixelRatio
+      );
+      canvas.height = Math.round(
+        state.height * devicePixelRatio
+      );
+
+      context.setTransform(
+        devicePixelRatio,
+        0,
+        0,
+        devicePixelRatio,
+        0,
+        0
+      );
+    };
+
+    const seed = () => {
+      const particleCount =
+        window.innerWidth < 768
+          ? PARTICLE_COUNT_MOBILE
+          : PARTICLE_COUNT_DESKTOP;
+
+      state.particles = Array.from(
+        {
+          length: particleCount,
+        },
+        () =>
+          createParticle(
+            state.width,
+            state.height
+          )
+      );
+    };
+
+    const loop = (timestamp) => {
+      state.animId = null;
+
+      if (!activeRef.current) {
+        return;
+      }
+
+      const shouldDraw =
+        state.frameInterval === 0 ||
+        timestamp - state.lastFrame >=
+          state.frameInterval;
+
+      if (shouldDraw) {
+        drawFrame(context, state);
+        state.lastFrame = timestamp;
+      }
+
+      state.animId = window.requestAnimationFrame(loop);
+    };
+
+    state.stop = () => {
+      if (state.animId !== null) {
+        window.cancelAnimationFrame(state.animId);
+        state.animId = null;
+      }
+    };
+
+    state.start = () => {
+      if (
+        activeRef.current &&
+        state.animId === null
+      ) {
+        state.animId =
+          window.requestAnimationFrame(loop);
+      }
+    };
 
     resize();
     seed();
 
-    let resizeTimer;
-    const ro = new ResizeObserver(() => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
+    let resizeTimer = 0;
+
+    const resizeObserver = new ResizeObserver(() => {
+      window.clearTimeout(resizeTimer);
+
+      resizeTimer = window.setTimeout(() => {
         resize();
         seed();
       }, 120);
     });
-    ro.observe(canvas);
 
-    if (active) loop();
+    resizeObserver.observe(canvas);
+    state.start();
 
     return () => {
-      if (state.animId) {
-        cancelAnimationFrame(state.animId);
-        state.animId = null;
-      }
-      ro.disconnect();
-      clearTimeout(resizeTimer);
+      state.stop?.();
+      state.start = null;
+      state.stop = null;
+      resizeObserver.disconnect();
+      window.clearTimeout(resizeTimer);
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  /* Respond to active prop changes after initial mount */
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d");
-    const state = stateRef.current;
-
-    if (active) {
-      if (!state.animId) {
-        function loop() {
-          drawFrame(ctx, state);
-          state.animId = requestAnimationFrame(loop);
-        }
-        loop();
-      }
-    } else {
-      if (state.animId) {
-        cancelAnimationFrame(state.animId);
-        state.animId = null;
-      }
-    }
-  }, [active, canvasRef]);
+  }, [canvasRef]);
 }
 
-/* ─────────────────────────────────────────────
-   HeroAmbientBackground
-   Renders only ambient decoration — no content.
-───────────────────────────────────────────── */
-
+/*
+ * A single fixed environment for the full V2 portfolio. Hero-specific
+ * parallax is layered separately in HomeV2 so this canvas never restarts.
+ */
 export default function HeroAmbientBackground() {
   const canvasRef = useRef(null);
-  const wrapperRef = useRef(null);
-
   const pageVisible = usePageVisibility();
+  const reducedMotion = Boolean(
+    useReducedMotion()
+  );
 
-  const { elementRef, isInView } = useElementInView({
-    rootMargin: "200px",
-    threshold: 0.01,
-  });
-
-  const active = isInView && pageVisible;
-
-  useAmbientCanvas(canvasRef, active);
-
-  function setRefs(el) {
-    wrapperRef.current = el;
-    elementRef.current = el;
-  }
+  useAmbientCanvas(
+    canvasRef,
+    pageVisible && !reducedMotion
+  );
 
   return (
     <div
-      ref={setRefs}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-hidden"
+      className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
     >
-      {/* Static cyan radial glows */}
-      <div className="absolute left-[8%] top-[20%] h-[28rem] w-[28rem] rounded-full bg-cyan-400/[0.055] blur-3xl" />
-      <div className="absolute right-[6%] top-[15%] h-[24rem] w-[24rem] rounded-full bg-indigo-400/[0.04] blur-3xl" />
-      <div className="absolute bottom-[10%] left-1/2 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-cyan-300/[0.035] blur-3xl" />
+      <div className="absolute left-[8%] top-[20%] h-[28rem] w-[28rem] rounded-full bg-cyan-400/[0.045] blur-3xl" />
+      <div className="absolute right-[6%] top-[15%] h-[24rem] w-[24rem] rounded-full bg-indigo-400/[0.035] blur-3xl" />
+      <div className="absolute bottom-[10%] left-1/2 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-cyan-300/[0.028] blur-3xl" />
 
-      {/* Grid overlay */}
-      <div className="absolute inset-0 opacity-[0.032] [background-image:linear-gradient(rgba(148,163,184,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.5)_1px,transparent_1px)] [background-size:64px_64px] [mask-image:radial-gradient(ellipse_80%_70%_at_50%_40%,black_30%,transparent_100%)]" />
+      <div className="absolute inset-0 opacity-[0.025] [background-image:linear-gradient(rgba(148,163,184,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.5)_1px,transparent_1px)] [background-size:64px_64px] [mask-image:radial-gradient(ellipse_80%_70%_at_50%_40%,black_30%,transparent_100%)]" />
 
-      {/*
-       * Particle canvas.
-       * Hidden when prefers-reduced-motion is set — static glows remain.
-       */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full motion-reduce:hidden"
       />
 
-      {/* Radial vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_50%,transparent_0%,rgba(2,6,23,0.18)_55%,rgba(2,6,23,0.72)_100%)]" />
-
-      {/* Bottom fade into next section */}
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-slate-950 to-transparent" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_50%,transparent_0%,rgba(2,6,23,0.14)_55%,rgba(2,6,23,0.56)_100%)]" />
     </div>
   );
 }
-

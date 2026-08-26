@@ -1,4 +1,4 @@
-import gradPic from "../assets/images/GradPic.jpg";
+import gradPic from "../assets/images/GradPic-640.jpg";
 
 export const aboutContent = {
   title:

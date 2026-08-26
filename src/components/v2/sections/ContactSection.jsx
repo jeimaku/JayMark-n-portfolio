@@ -303,6 +303,7 @@ export default function ContactSection() {
     <Section
       id="contact"
       spacing="compact"
+      optimize={false}
       className="relative pb-20 sm:pb-24 lg:pb-28"
     >
       <div

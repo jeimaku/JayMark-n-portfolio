@@ -59,7 +59,12 @@ export default function SkillsSection() {
   } = useSkillsMotion();
 
   return (
-    <Section id="skills" spacing="compact" className="isolate">
+    <Section
+      id="skills"
+      spacing="compact"
+      optimize={false}
+      className="isolate"
+    >
       <div data-skills-motion-scene="" className="relative">
         <div
           aria-hidden="true"
