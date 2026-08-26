@@ -1,5 +1,6 @@
 export { default as AboutSection } from "./AboutSection";
 export { default as ContactSection } from "./ContactSection";
+export { default as CreativeWorkSection } from "./CreativeWorkSection";
 export { default as ExperienceEducationSection } from "./ExperienceEducationSection";
 export { default as PageSection } from "./PageSection";
 export { default as ProjectsSection } from "./ProjectsSection";

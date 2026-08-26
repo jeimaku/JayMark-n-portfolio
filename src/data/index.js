@@ -30,3 +30,8 @@ export { homepageContent, contentHierarchy } from "./contentMap";
 export { assetPaths } from "./assets";
 export { caseStudies } from "./caseStudies";
 export { experienceGallery } from "./experienceGallery";
+export {
+  creativeWork,
+  creativeWorkArtworks,
+  creativeWorkMarqueeLanes,
+} from "./creativeWork";

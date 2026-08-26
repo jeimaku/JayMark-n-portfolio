@@ -241,6 +241,92 @@ code {
   animation-play-state: paused;
 }
 
+/* Creative-work contact sheet */
+
+@keyframes creativeMarqueeLeft {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes creativeMarqueeRight {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.creative-marquee-viewport {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 7%,
+    #000 93%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 7%,
+    #000 93%,
+    transparent
+  );
+}
+
+.creative-marquee-track {
+  display: flex;
+  width: max-content;
+  padding-block: 0.25rem;
+  will-change: transform;
+  animation-duration: var(--creative-marquee-duration, 64s);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.creative-marquee-track--left {
+  animation-name: creativeMarqueeLeft;
+}
+
+.creative-marquee-track--right {
+  animation-name: creativeMarqueeRight;
+}
+
+.creative-marquee-group {
+  display: flex;
+  width: max-content;
+  flex: none;
+  align-items: center;
+  gap: 1rem;
+  padding-right: 1rem;
+}
+
+.creative-marquee-static-rail {
+  scrollbar-width: none;
+}
+
+.creative-marquee-static-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.creative-marquee-row[data-paused="true"] .creative-marquee-track,
+.creative-marquee-row:focus-within .creative-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .creative-marquee-row:hover .creative-marquee-track {
+    animation-play-state: paused;
+  }
+}
+
 /* Off-screen section rendering optimization */
 
 .content-auto-section {

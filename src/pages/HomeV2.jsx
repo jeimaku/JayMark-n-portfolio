@@ -7,6 +7,7 @@ import {
   AboutSection,
   CertificationsSection,
   ContactSection,
+  CreativeWorkSection,
   ExperienceEducationSection,
   ProjectsSection,
   SkillsSection,
@@ -337,6 +338,7 @@ export default function HomeV2() {
         </MotionSection>
         <SkillsSection />
         <ProjectsSection />
+        <CreativeWorkSection />
         <ExperienceEducationSection />
         <CertificationsSection />
         <ContactSection />
