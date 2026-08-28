@@ -37,12 +37,34 @@ const HEADER_NAVIGATION =
 
 function BrandMark() {
   return (
-    <span className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-neutral-100/25 bg-neutral-100/[0.08] text-sm font-bold text-neutral-100 shadow-[0_10px_30px_rgba(0,0,0,0.4)] transition duration-300 group-hover:border-white/45 group-hover:bg-neutral-100/[0.13]">
-      {profile.initials}
+    <span
+      className={[
+        "relative flex",
+        "h-10 w-10 shrink-0",
+        "items-center justify-center",
+        "overflow-hidden",
+        "rounded-xl",
+        "transition duration-300",
+        "group-hover:scale-[1.04]",
+      ].join(" ")}
+    >
+      <img
+        src="/branding/jm-logo.png"
+        alt=""
+        aria-hidden="true"
+        className="h-full w-full object-cover"
+      />
 
       <span
         aria-hidden="true"
-        className="absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full border-2 border-neutral-950 bg-emerald-400"
+        className={[
+          "absolute -right-0.5 -top-0.5",
+          "flex h-3 w-3",
+          "items-center justify-center",
+          "rounded-full",
+          "border-2 border-neutral-950",
+          "bg-emerald-400",
+        ].join(" ")}
       >
         <span className="h-1.5 w-1.5 animate-ping rounded-full bg-emerald-300 opacity-60 motion-reduce:animate-none" />
       </span>
