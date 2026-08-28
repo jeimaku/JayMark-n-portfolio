@@ -16,12 +16,12 @@ export default function CaseStudyMediaFrame({
       className={[
         "overflow-hidden rounded-3xl",
         "border border-white/10",
-        "bg-slate-900/35",
+        "bg-neutral-900/35",
         "shadow-[0_28px_80px_rgba(0,0,0,0.35)]",
         className,
       ].join(" ")}
     >
-      <div className="relative overflow-hidden bg-slate-950">
+      <div className="relative overflow-hidden bg-neutral-950">
         {!imageFailed && src ? (
           <img
             src={src}
@@ -38,14 +38,14 @@ export default function CaseStudyMediaFrame({
           <div
             role="img"
             aria-label={alt}
-            className="flex aspect-[16/10] w-full items-center justify-center bg-slate-900"
+            className="flex aspect-[16/10] w-full items-center justify-center bg-neutral-900"
           >
             <div className="text-center">
-              <p className="text-4xl font-semibold tracking-[-0.05em] text-cyan-100">
+              <p className="text-4xl font-semibold tracking-[-0.05em] text-neutral-100">
                 JM
               </p>
 
-              <p className="mt-3 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-slate-600">
+              <p className="mt-3 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-neutral-600">
                 Project Preview
               </p>
             </div>
@@ -59,7 +59,7 @@ export default function CaseStudyMediaFrame({
       </div>
 
       {caption ? (
-        <figcaption className="border-t border-white/10 px-4 py-3 text-xs leading-5 text-slate-500 sm:px-5">
+        <figcaption className="border-t border-white/10 px-4 py-3 text-xs leading-5 text-neutral-500 sm:px-5">
           {caption}
         </figcaption>
       ) : null}

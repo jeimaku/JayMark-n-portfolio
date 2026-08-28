@@ -4,7 +4,7 @@ function ContextLink({ item }) {
   return (
     <a
       href={item.href}
-      className="inline-flex items-center gap-2 text-xs font-semibold text-cyan-200 transition hover:text-cyan-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+      className="inline-flex items-center gap-2 text-xs font-semibold text-white transition hover:text-neutral-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950"
     >
       {item.relatedWork}
 
@@ -29,7 +29,7 @@ export default function HeroSceneContextOverlay({
         aria-label="Explore professional areas in the 3D workspace"
         className="pointer-events-auto absolute inset-x-3 top-3 touch-pan-x overflow-x-auto overscroll-x-contain sm:inset-x-4"
       >
-        <div className="flex w-max gap-1.5 rounded-2xl border border-white/10 bg-slate-950/80 p-1.5 shadow-xl backdrop-blur-md sm:rounded-full">
+        <div className="flex w-max gap-1.5 rounded-2xl border border-white/10 bg-neutral-950/80 p-1.5 shadow-xl backdrop-blur-md sm:rounded-full">
           {heroSceneContext.map((item) => {
             const selected =
               item.id === activeContextId;
@@ -48,10 +48,10 @@ export default function HeroSceneContextOverlay({
                   "tracking-[0.13em] transition",
                   "focus-visible:outline-none",
                   "focus-visible:ring-2",
-                  "focus-visible:ring-cyan-200",
+                  "focus-visible:ring-white",
                   selected
                     ? "bg-white/10 text-white"
-                    : "text-slate-400 hover:bg-white/[0.05] hover:text-slate-200",
+                    : "text-neutral-400 hover:bg-white/[0.05] hover:text-neutral-200",
                 ].join(" ")}
               >
                 <span
@@ -75,7 +75,7 @@ export default function HeroSceneContextOverlay({
       {/* Mobile selected-context panel */}
       <aside
         aria-live="polite"
-        className="pointer-events-auto absolute inset-x-3 bottom-3 max-h-[10rem] overflow-y-auto rounded-2xl border border-white/10 bg-slate-950/90 p-3 shadow-2xl backdrop-blur-md md:hidden"
+        className="pointer-events-auto absolute inset-x-3 bottom-3 max-h-[10rem] overflow-y-auto rounded-2xl border border-white/10 bg-neutral-950/90 p-3 shadow-2xl backdrop-blur-md md:hidden"
       >
         <div className="flex items-center gap-2">
           <span
@@ -87,7 +87,7 @@ export default function HeroSceneContextOverlay({
             }}
           />
 
-          <p className="text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-slate-400">
+          <p className="text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-neutral-400">
             Professional Context
           </p>
         </div>
@@ -96,7 +96,7 @@ export default function HeroSceneContextOverlay({
           {activeItem.title}
         </h3>
 
-        <p className="mt-1.5 text-[0.72rem] leading-5 text-slate-400">
+        <p className="mt-1.5 text-[0.72rem] leading-5 text-neutral-400">
           {activeItem.description}
         </p>
 
@@ -108,7 +108,7 @@ export default function HeroSceneContextOverlay({
       {/* Tablet and desktop selected-context panel */}
       <aside
         aria-live="polite"
-        className="pointer-events-auto absolute bottom-4 left-4 hidden max-w-sm rounded-2xl border border-white/10 bg-slate-950/85 p-4 shadow-2xl backdrop-blur-md md:block"
+        className="pointer-events-auto absolute bottom-4 left-4 hidden max-w-sm rounded-2xl border border-white/10 bg-neutral-950/85 p-4 shadow-2xl backdrop-blur-md md:block"
       >
         <div className="flex items-center gap-2">
           <span
@@ -120,7 +120,7 @@ export default function HeroSceneContextOverlay({
             }}
           />
 
-          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-slate-400">
+          <p className="text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-400">
             Professional Context
           </p>
         </div>
@@ -129,7 +129,7 @@ export default function HeroSceneContextOverlay({
           {activeItem.title}
         </h3>
 
-        <p className="mt-2 text-xs leading-5 text-slate-400">
+        <p className="mt-2 text-xs leading-5 text-neutral-400">
           {activeItem.description}
         </p>
 

@@ -89,7 +89,7 @@ export default function ProfessionalHotspot({
             pointerEvents: "none",
           }}
         >
-          <div className="whitespace-nowrap rounded-full border border-white/10 bg-slate-950/90 px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-white shadow-xl backdrop-blur">
+          <div className="whitespace-nowrap rounded-full border border-white/10 bg-neutral-950/90 px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-white shadow-xl backdrop-blur">
             {item.shortLabel}
           </div>
         </Html>

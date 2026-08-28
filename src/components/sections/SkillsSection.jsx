@@ -92,8 +92,8 @@ export default function SkillsSection() {
               description="My skills are shaped by academic projects, internship systems, AI integration, IT support work, and creative design activities."
             />
 
-            <div className="mt-8 rounded-[1.75rem] border border-cyan-300/20 bg-cyan-300/10 p-5 sm:p-6">
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+            <div className="mt-8 rounded-[1.75rem] border border-neutral-100/20 bg-neutral-100/10 p-5 sm:p-6">
+              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-white">
                 Core Stack
               </p>
 
@@ -105,11 +105,11 @@ export default function SkillsSection() {
             </div>
 
             <div className="mt-5 rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5 sm:p-6">
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">
+              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-neutral-500">
                 Skill Direction
               </p>
 
-              <p className="mt-4 text-sm leading-7 text-slate-400">
+              <p className="mt-4 text-sm leading-7 text-neutral-400">
                 I focus on connecting software development, IT support, AI
                 tools, and interface design into practical systems that are
                 usable, maintainable, and visually clean.
@@ -125,11 +125,11 @@ export default function SkillsSection() {
                 <StaggerItem key={category.id}>
                   <Card className="h-full min-h-[15rem]">
                     <div className="flex items-start justify-between gap-4">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-neutral-100/20 bg-neutral-100/10 text-white">
                         <Icon size={22} />
                       </div>
 
-                      <span className="text-xs font-semibold text-slate-600">
+                      <span className="text-xs font-semibold text-neutral-600">
                         0{index + 1}
                       </span>
                     </div>
@@ -138,7 +138,7 @@ export default function SkillsSection() {
                       {category.title}
                     </h3>
 
-                    <p className="mt-3 text-sm leading-7 text-slate-400">
+                    <p className="mt-3 text-sm leading-7 text-neutral-400">
                       {category.description}
                     </p>
 
@@ -167,8 +167,8 @@ function SkillBadge({ skill, featured = false }) {
       className={[
         "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold leading-none transition duration-300",
         featured
-          ? "border-cyan-300/30 bg-cyan-300/10 text-cyan-50"
-          : "border-white/10 bg-white/[0.03] text-slate-200",
+          ? "border-neutral-100/30 bg-neutral-100/10 text-neutral-50"
+          : "border-white/10 bg-white/[0.03] text-neutral-200",
       ].join(" ")}
     >
       {iconUrl ? (
@@ -180,7 +180,7 @@ function SkillBadge({ skill, featured = false }) {
           className="h-3.5 w-3.5 shrink-0"
         />
       ) : FallbackIcon ? (
-        <FallbackIcon className="h-3.5 w-3.5 shrink-0 text-cyan-200" />
+        <FallbackIcon className="h-3.5 w-3.5 shrink-0 text-white" />
       ) : null}
 
       <span>{skill}</span>

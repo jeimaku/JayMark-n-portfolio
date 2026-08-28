@@ -35,21 +35,21 @@ function ProjectNavigationCard({
   return (
     <a
       href={project.href}
-      className="group relative flex h-full min-h-48 flex-col justify-between overflow-hidden rounded-3xl border border-white/10 bg-white/[0.025] p-5 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/30 hover:bg-cyan-300/[0.045] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950 sm:p-6"
+      className="group relative flex h-full min-h-48 flex-col justify-between overflow-hidden rounded-3xl border border-white/10 bg-white/[0.025] p-5 transition duration-300 hover:-translate-y-1 hover:border-neutral-100/30 hover:bg-neutral-100/[0.045] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-neutral-950 sm:p-6"
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.07),transparent_19rem)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.07),transparent_19rem)]"
       />
 
       <div className="relative">
-        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-cyan-200">
+        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-white">
           {previous
             ? "Previous Case Study"
             : "Next Case Study"}
         </p>
 
-        <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+        <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-500">
           {project.eyebrow}
         </p>
 
@@ -57,12 +57,12 @@ function ProjectNavigationCard({
           {project.title}
         </h3>
 
-        <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-400">
+        <p className="mt-4 max-w-2xl text-sm leading-7 text-neutral-400">
           {project.description}
         </p>
       </div>
 
-      <span className="relative mt-6 inline-flex items-center gap-2 text-sm font-semibold text-cyan-100">
+      <span className="relative mt-6 inline-flex items-center gap-2 text-sm font-semibold text-neutral-100">
         {previous ? (
           <>
             <span className="transition-transform group-hover:-translate-x-0.5">

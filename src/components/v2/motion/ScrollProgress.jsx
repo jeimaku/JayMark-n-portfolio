@@ -39,7 +39,7 @@ export default function ScrollProgress() {
           style={{
             scaleX: smoothProgress,
           }}
-          className="h-full origin-left bg-gradient-to-r from-cyan-400 via-cyan-200 to-indigo-300 shadow-[0_0_16px_rgba(34,211,238,0.65)]"
+          className="h-full origin-left bg-gradient-to-r from-neutral-300 via-white to-neutral-400 shadow-[0_0_16px_rgba(255,255,255,0.2)]"
         />
       </div>
 
@@ -52,12 +52,12 @@ export default function ScrollProgress() {
           style={{
             scaleY: smoothProgress,
           }}
-          className="h-full origin-top bg-gradient-to-b from-cyan-400 via-cyan-200 to-indigo-300 shadow-[0_0_18px_rgba(34,211,238,0.55)]"
+          className="h-full origin-top bg-gradient-to-b from-neutral-300 via-white to-neutral-400 shadow-[0_0_18px_rgba(255,255,255,0.18)]"
         />
 
-        <div className="absolute -left-[3px] top-0 h-[7px] w-[7px] rounded-full border border-cyan-200/40 bg-slate-950" />
+        <div className="absolute -left-[3px] top-0 h-[7px] w-[7px] rounded-full border border-white/40 bg-neutral-950" />
 
-        <div className="absolute -bottom-[1px] -left-[3px] h-[7px] w-[7px] rounded-full border border-indigo-200/40 bg-slate-950" />
+        <div className="absolute -bottom-[1px] -left-[3px] h-[7px] w-[7px] rounded-full border border-neutral-300/40 bg-neutral-950" />
       </div>
     </>
   );

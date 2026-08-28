@@ -48,11 +48,11 @@ export default function ContactSection() {
         <Reveal>
           <Card className="p-0">
             <div className="relative overflow-hidden rounded-[1.75rem]">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.16),transparent_28rem)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.16),transparent_28rem)]" />
 
               <div className="relative z-10 grid gap-8 p-5 sm:p-6 md:p-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10 lg:p-10">
                 <div className="min-w-0">
-                  <div className="mb-6 inline-flex max-w-full items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200 sm:tracking-[0.28em]">
+                  <div className="mb-6 inline-flex max-w-full items-center gap-2 rounded-full border border-neutral-100/20 bg-neutral-100/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] text-white sm:tracking-[0.28em]">
                     <Sparkles size={14} />
                     Contact
                   </div>
@@ -92,12 +92,12 @@ export default function ContactSection() {
                     </Button>
                   </div>
 
-                  <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-slate-950/40 p-5">
-                    <p className="text-sm font-semibold uppercase tracking-[0.22em] text-cyan-200">
+                  <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-neutral-950/40 p-5">
+                    <p className="text-sm font-semibold uppercase tracking-[0.22em] text-white">
                       Current Focus
                     </p>
 
-                    <p className="mt-3 text-sm leading-7 text-slate-400">
+                    <p className="mt-3 text-sm leading-7 text-neutral-400">
                       I’m currently focused on improving my full-stack
                       development, IT systems, AI integration, and clean UI/UX
                       skills through practical projects and real workflow-based
@@ -120,15 +120,15 @@ export default function ContactSection() {
                             rel={
                               isExternal ? "noreferrer noopener" : undefined
                             }
-                            className="group block rounded-[1.5rem] border border-white/10 bg-white/[0.025] p-5 transition hover:border-cyan-300/30 hover:bg-white/[0.05]"
+                            className="group block rounded-[1.5rem] border border-white/10 bg-white/[0.025] p-5 transition hover:border-neutral-100/30 hover:bg-white/[0.05]"
                           >
                             <div className="flex items-start gap-4">
-                              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+                              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-neutral-100/20 bg-neutral-100/10 text-white">
                                 <Icon size={21} />
                               </div>
 
                               <div className="min-w-0">
-                                <p className="text-sm font-medium text-slate-500">
+                                <p className="text-sm font-medium text-neutral-500">
                                   {item.label}
                                 </p>
 
@@ -146,7 +146,7 @@ export default function ContactSection() {
                   <Reveal delay={0.2}>
                     <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.025] p-5">
                       <div className="flex items-start gap-3 sm:items-center">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-neutral-100/20 bg-neutral-100/10 text-white">
                           <MessageSquare size={21} />
                         </div>
 
@@ -154,7 +154,7 @@ export default function ContactSection() {
                           <p className="font-semibold text-white">
                             Professional Links
                           </p>
-                          <p className="mt-1 text-sm leading-6 text-slate-400">
+                          <p className="mt-1 text-sm leading-6 text-neutral-400">
                             Connect with me or review my work online.
                           </p>
                         </div>
@@ -173,7 +173,7 @@ export default function ContactSection() {
                       {profile.highlights.slice(0, 4).map((highlight) => (
                         <Badge
                           key={highlight}
-                          className="border-white/10 bg-white/[0.03] text-slate-200"
+                          className="border-white/10 bg-white/[0.03] text-neutral-200"
                         >
                           {highlight}
                         </Badge>

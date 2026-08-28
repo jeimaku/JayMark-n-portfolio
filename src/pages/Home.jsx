@@ -33,7 +33,7 @@ export default function Home() {
     <main
       id="main-content"
       tabIndex={-1}
-      className="min-h-screen bg-transparent text-slate-50 focus:outline-none"
+      className="min-h-screen bg-transparent text-neutral-50 focus:outline-none"
     >
       <HeroSection />
       <ProjectsSection />

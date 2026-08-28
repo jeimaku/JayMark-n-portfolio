@@ -14,7 +14,7 @@ export default function Footer() {
               {profile.name}
             </a>
 
-            <p className="mt-2 max-w-md text-sm leading-6 text-slate-400">
+            <p className="mt-2 max-w-md text-sm leading-6 text-neutral-400">
               {profile.headline}
             </p>
           </div>
@@ -25,7 +25,7 @@ export default function Footer() {
                 <a
                   key={link.label}
                   href={link.href}
-                  className="text-sm text-slate-400 transition hover:text-cyan-200"
+                  className="text-sm text-neutral-400 transition hover:text-white"
                 >
                   {link.label}
                 </a>
@@ -40,7 +40,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-white/10 pt-6 text-sm text-slate-500">
+        <div className="mt-8 border-t border-white/10 pt-6 text-sm text-neutral-500">
           © {currentYear} {profile.name}. Built with React.
         </div>
       </Container>

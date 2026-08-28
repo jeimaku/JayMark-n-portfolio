@@ -1,7 +1,7 @@
 const TONE_CLASSES = {
-  default: "bg-slate-950",
-  subtle: "bg-slate-950/95",
-  elevated: "bg-slate-900/[0.12]",
+  default: "bg-neutral-950",
+  subtle: "bg-neutral-950/95",
+  elevated: "bg-neutral-900/[0.12]",
 };
 
 export default function CaseStudySection({
@@ -31,7 +31,7 @@ export default function CaseStudySection({
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-px max-w-[90rem] bg-gradient-to-r from-transparent via-cyan-300/15 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-px max-w-[90rem] bg-gradient-to-r from-transparent via-neutral-100/15 to-transparent"
       />
 
       <div
@@ -48,10 +48,10 @@ export default function CaseStudySection({
             <div className="flex items-center gap-3">
               <span
                 aria-hidden="true"
-                className="h-px w-8 bg-cyan-300/50"
+                className="h-px w-8 bg-neutral-100/50"
               />
 
-              <p className="text-xs font-semibold uppercase tracking-[0.26em] text-cyan-200">
+              <p className="text-xs font-semibold uppercase tracking-[0.26em] text-white">
                 {eyebrow}
               </p>
             </div>
@@ -65,7 +65,7 @@ export default function CaseStudySection({
           </h2>
 
           {description ? (
-            <p className="mt-5 text-base leading-8 text-slate-400 sm:text-lg">
+            <p className="mt-5 text-base leading-8 text-neutral-400 sm:text-lg">
               {description}
             </p>
           ) : null}

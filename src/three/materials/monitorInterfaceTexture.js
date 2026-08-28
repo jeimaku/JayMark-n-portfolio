@@ -55,14 +55,14 @@ function drawMetricCard(
 ) {
   drawRoundedRect(context, x, y, width, height, 22);
 
-  context.fillStyle = "rgba(15, 23, 42, 0.92)";
+  context.fillStyle = "rgba(17, 17, 17, 0.92)";
   context.fill();
 
-  context.strokeStyle = "rgba(148, 163, 184, 0.18)";
+  context.strokeStyle = "rgba(163, 163, 163, 0.18)";
   context.lineWidth = 2;
   context.stroke();
 
-  context.fillStyle = "rgba(148, 163, 184, 0.82)";
+  context.fillStyle = "rgba(163, 163, 163, 0.82)";
   context.font = "600 22px Arial, sans-serif";
   context.fillText(label, x + 24, y + 38);
 
@@ -127,8 +127,8 @@ function drawNetworkGraph(context) {
       to.y
     );
 
-    gradient.addColorStop(0, "rgba(34, 211, 238, 0.72)");
-    gradient.addColorStop(1, "rgba(129, 140, 248, 0.4)");
+    gradient.addColorStop(0, "rgba(255, 255, 255, 0.72)");
+    gradient.addColorStop(1, "rgba(184, 184, 184, 0.4)");
 
     context.strokeStyle = gradient;
     context.beginPath();
@@ -140,13 +140,13 @@ function drawNetworkGraph(context) {
   nodes.forEach((node, index) => {
     context.beginPath();
     context.arc(node.x, node.y, node.radius + 5, 0, Math.PI * 2);
-    context.fillStyle = "rgba(34, 211, 238, 0.13)";
+    context.fillStyle = "rgba(255, 255, 255, 0.13)";
     context.fill();
 
     context.beginPath();
     context.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
     context.fillStyle =
-      index === 2 ? "#a5b4fc" : "#22d3ee";
+      index === 2 ? "#d4d4d4" : "#f5f5f5";
     context.fill();
   });
 }
@@ -159,15 +159,15 @@ function drawInterface(context, width, height) {
     height
   );
 
-  background.addColorStop(0, "#020617");
-  background.addColorStop(0.55, "#071426");
-  background.addColorStop(1, "#0b1f32");
+  background.addColorStop(0, "#050505");
+  background.addColorStop(0.55, "#101010");
+  background.addColorStop(1, "#181818");
 
   context.fillStyle = background;
   context.fillRect(0, 0, width, height);
 
   // Subtle technical grid.
-  context.strokeStyle = "rgba(34, 211, 238, 0.055)";
+  context.strokeStyle = "rgba(255, 255, 255, 0.055)";
   context.lineWidth = 1;
 
   for (let x = 0; x <= width; x += 48) {
@@ -194,18 +194,18 @@ function drawInterface(context, width, height) {
     360
   );
 
-  glow.addColorStop(0, "rgba(34, 211, 238, 0.24)");
-  glow.addColorStop(1, "rgba(34, 211, 238, 0)");
+  glow.addColorStop(0, "rgba(255, 255, 255, 0.24)");
+  glow.addColorStop(1, "rgba(255, 255, 255, 0)");
 
   context.fillStyle = glow;
   context.fillRect(0, 0, width, height);
 
   // Header.
-  context.fillStyle = "#67e8f9";
+  context.fillStyle = "#ffffff";
   context.font = "700 22px Arial, sans-serif";
   context.fillText("JAYMARK SYSTEMS CORE", 58, 66);
 
-  context.fillStyle = "rgba(148, 163, 184, 0.88)";
+  context.fillStyle = "rgba(163, 163, 163, 0.88)";
   context.font = "500 18px Arial, sans-serif";
   context.fillText(
     "FULL-STACK • AI • INFRASTRUCTURE",
@@ -231,7 +231,7 @@ function drawInterface(context, width, height) {
     height: 148,
     label: "WEB SYSTEMS",
     value: "04 ACTIVE",
-    accent: "#22d3ee",
+    accent: "#f5f5f5",
     progress: 0.86,
   });
 
@@ -242,7 +242,7 @@ function drawInterface(context, width, height) {
     height: 148,
     label: "AI SERVICES",
     value: "02 LINKED",
-    accent: "#818cf8",
+    accent: "#b8b8b8",
     progress: 0.72,
   });
 
@@ -259,14 +259,14 @@ function drawInterface(context, width, height) {
 
   // Lower left status panel.
   drawRoundedRect(context, 58, 322, 500, 190, 24);
-  context.fillStyle = "rgba(15, 23, 42, 0.88)";
+  context.fillStyle = "rgba(17, 17, 17, 0.88)";
   context.fill();
 
-  context.strokeStyle = "rgba(148, 163, 184, 0.16)";
+  context.strokeStyle = "rgba(163, 163, 163, 0.16)";
   context.lineWidth = 2;
   context.stroke();
 
-  context.fillStyle = "#e2e8f0";
+  context.fillStyle = "#e5e5e5";
   context.font = "700 22px Arial, sans-serif";
   context.fillText("LIVE SERVICE ACTIVITY", 86, 364);
 
@@ -287,8 +287,8 @@ function drawInterface(context, width, height) {
       392
     );
 
-    barGradient.addColorStop(0, "#0891b2");
-    barGradient.addColorStop(1, "#67e8f9");
+    barGradient.addColorStop(0, "#8e8e8e");
+    barGradient.addColorStop(1, "#ffffff");
 
     context.fillStyle = barGradient;
     drawRoundedRect(
@@ -304,21 +304,21 @@ function drawInterface(context, width, height) {
 
   // Lower right network panel.
   drawRoundedRect(context, 582, 322, 372, 190, 24);
-  context.fillStyle = "rgba(15, 23, 42, 0.88)";
+  context.fillStyle = "rgba(17, 17, 17, 0.88)";
   context.fill();
 
-  context.strokeStyle = "rgba(148, 163, 184, 0.16)";
+  context.strokeStyle = "rgba(163, 163, 163, 0.16)";
   context.lineWidth = 2;
   context.stroke();
 
-  context.fillStyle = "#e2e8f0";
+  context.fillStyle = "#e5e5e5";
   context.font = "700 22px Arial, sans-serif";
   context.fillText("CONNECTED WORKFLOW", 610, 364);
 
   drawNetworkGraph(context);
 
   // Bottom status line.
-  context.fillStyle = "rgba(148, 163, 184, 0.7)";
+  context.fillStyle = "rgba(163, 163, 163, 0.7)";
   context.font = "500 15px Arial, sans-serif";
   context.fillText(
     "TalkReady AI • Internal Systems • Network Operations",

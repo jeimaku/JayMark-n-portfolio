@@ -132,7 +132,7 @@ export default function ProjectsSection() {
 
           {/* Internship Systems — Primary Showcase */}
           <Reveal className="mt-12 lg:mt-14">
-            <div className="rounded-[2rem] border border-cyan-300/20 bg-cyan-300/[0.06] p-5 sm:p-6 lg:p-8">
+            <div className="rounded-[2rem] border border-neutral-100/20 bg-neutral-100/[0.06] p-5 sm:p-6 lg:p-8">
               <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <div className="max-w-3xl">
                   <Badge>
@@ -144,7 +144,7 @@ export default function ProjectsSection() {
                     Real company systems built during internship.
                   </h3>
 
-                  <p className="mt-5 text-sm leading-7 text-slate-400 sm:text-base md:text-lg md:leading-8">
+                  <p className="mt-5 text-sm leading-7 text-neutral-400 sm:text-base md:text-lg md:leading-8">
                     These systems were developed for actual company workflows,
                     including CRM pipeline tracking, virtual office management,
                     ticket support, and inventory monitoring. Because these were
@@ -154,11 +154,11 @@ export default function ProjectsSection() {
                 </div>
 
                 <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                  <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-5">
+                  <div className="rounded-2xl border border-white/10 bg-neutral-950/40 p-5">
                     <p className="text-3xl font-semibold text-white">
                       {internshipSystemPreviews.length}
                     </p>
-                    <p className="mt-1 text-xs uppercase tracking-[0.22em] text-slate-500">
+                    <p className="mt-1 text-xs uppercase tracking-[0.22em] text-neutral-500">
                       Systems Developed
                     </p>
                   </div>
@@ -212,13 +212,13 @@ export default function ProjectsSection() {
                             />
                           )}
 
-                          <div className="absolute inset-0 flex items-center justify-center bg-slate-950/20 opacity-100 transition group-hover:bg-slate-950/10">
-                            <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-slate-950/70 text-white shadow-2xl backdrop-blur">
+                          <div className="absolute inset-0 flex items-center justify-center bg-neutral-950/20 opacity-100 transition group-hover:bg-neutral-950/10">
+                            <div className="flex h-16 w-16 items-center justify-center rounded-full border border-white/20 bg-neutral-950/70 text-white shadow-2xl backdrop-blur">
                               <Play size={24} fill="currentColor" />
                             </div>
                           </div>
 
-                          <div className="absolute left-4 top-4 rounded-full border border-cyan-300/20 bg-slate-950/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100 backdrop-blur">
+                          <div className="absolute left-4 top-4 rounded-full border border-neutral-100/20 bg-neutral-950/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-100 backdrop-blur">
                             Click to expand
                           </div>
                         </div>
@@ -226,7 +226,7 @@ export default function ProjectsSection() {
                         <div className="p-5 sm:p-6">
                           <div className="flex flex-wrap gap-2">
                             <Badge>{system.category}</Badge>
-                            <Badge className="border-white/10 bg-white/[0.03] text-slate-200">
+                            <Badge className="border-white/10 bg-white/[0.03] text-neutral-200">
                               {system.type}
                             </Badge>
                           </div>
@@ -235,11 +235,11 @@ export default function ProjectsSection() {
                             {system.name}
                           </h4>
 
-                          <p className="mt-3 text-sm leading-7 text-cyan-100/80">
+                          <p className="mt-3 text-sm leading-7 text-neutral-100/80">
                             {system.tagline}
                           </p>
 
-                          <p className="mt-4 text-sm leading-7 text-slate-400">
+                          <p className="mt-4 text-sm leading-7 text-neutral-400">
                             {system.description}
                           </p>
 
@@ -248,7 +248,7 @@ export default function ProjectsSection() {
                               {system.keyFeatures.slice(0, 4).map((feature) => (
                                 <div
                                   key={feature}
-                                  className="rounded-2xl border border-white/10 bg-white/[0.025] p-3 text-sm leading-6 text-slate-300"
+                                  className="rounded-2xl border border-white/10 bg-white/[0.025] p-3 text-sm leading-6 text-neutral-300"
                                 >
                                   {feature}
                                 </div>
@@ -261,7 +261,7 @@ export default function ProjectsSection() {
                               {system.tech.slice(0, 5).map((tech) => (
                                 <Badge
                                   key={tech}
-                                  className="border-white/10 bg-white/[0.03] text-slate-200"
+                                  className="border-white/10 bg-white/[0.03] text-neutral-200"
                                 >
                                   {tech}
                                 </Badge>
@@ -283,11 +283,11 @@ export default function ProjectsSection() {
               <StaggerItem>
                 <Card className="flex h-full flex-col">
                   <div>
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-100/20 bg-neutral-100/10 text-white">
                       <Layers size={22} />
                     </div>
 
-                    <p className="mt-6 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+                    <p className="mt-6 text-sm font-semibold uppercase tracking-[0.25em] text-white">
                       Capstone Project
                     </p>
 
@@ -295,11 +295,11 @@ export default function ProjectsSection() {
                       {featuredProject.title}
                     </h3>
 
-                    <p className="mt-3 text-lg font-medium text-cyan-200">
+                    <p className="mt-3 text-lg font-medium text-white">
                       {featuredProject.subtitle}
                     </p>
 
-                    <p className="mt-5 text-sm leading-7 text-slate-400">
+                    <p className="mt-5 text-sm leading-7 text-neutral-400">
                       {featuredProject.description}
                     </p>
 
@@ -313,7 +313,7 @@ export default function ProjectsSection() {
                             <p className="break-safe text-xl font-semibold text-white">
                               {result.value}
                             </p>
-                            <p className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-500">
+                            <p className="mt-1 text-xs uppercase tracking-[0.18em] text-neutral-500">
                               {result.label}
                             </p>
                           </div>
@@ -328,7 +328,7 @@ export default function ProjectsSection() {
                           .map((highlight) => (
                             <div
                               key={highlight}
-                              className="rounded-2xl border border-white/10 bg-white/[0.025] p-4 text-sm leading-6 text-slate-300"
+                              className="rounded-2xl border border-white/10 bg-white/[0.025] p-4 text-sm leading-6 text-neutral-300"
                             >
                               {highlight}
                             </div>
@@ -340,7 +340,7 @@ export default function ProjectsSection() {
                       {featuredProject.tech.map((tech) => (
                         <Badge
                           key={tech}
-                          className="border-white/10 bg-white/[0.03] text-slate-200"
+                          className="border-white/10 bg-white/[0.03] text-neutral-200"
                         >
                           {tech}
                         </Badge>
@@ -390,7 +390,7 @@ export default function ProjectsSection() {
               <StaggerItem>
                 <Card className="h-full p-0">
                   <div className="relative h-full overflow-hidden rounded-[1.75rem]">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.16),transparent_28rem)]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.16),transparent_28rem)]" />
 
                     <div className="relative z-10 flex h-full flex-col p-5 sm:p-6">
                       <button
@@ -439,7 +439,7 @@ export default function ProjectsSection() {
                         </div>
                       )}
 
-                      <p className="mt-5 rounded-2xl border border-white/10 bg-white/[0.025] p-4 text-sm leading-6 text-slate-400">
+                      <p className="mt-5 rounded-2xl border border-white/10 bg-white/[0.025] p-4 text-sm leading-6 text-neutral-400">
                         Click any TalkReady preview to view it in a larger
                         in-page preview.
                       </p>
@@ -464,7 +464,7 @@ export default function ProjectsSection() {
                     Mobile app previews inside interactive phone mockups.
                   </h3>
 
-                  <p className="mt-5 text-sm leading-7 text-slate-400 sm:text-base md:text-lg md:leading-8">
+                  <p className="mt-5 text-sm leading-7 text-neutral-400 sm:text-base md:text-lg md:leading-8">
                     These mobile projects are displayed through autoplay phone
                     mockups so visitors can immediately see the app flow,
                     interface structure, and user experience without leaving the
@@ -473,11 +473,11 @@ export default function ProjectsSection() {
                 </div>
 
                 <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                  <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-5">
+                  <div className="rounded-2xl border border-white/10 bg-neutral-950/40 p-5">
                     <p className="text-3xl font-semibold text-white">
                       {mobileProjectPreviews.length}
                     </p>
-                    <p className="mt-1 text-xs uppercase tracking-[0.22em] text-slate-500">
+                    <p className="mt-1 text-xs uppercase tracking-[0.22em] text-neutral-500">
                       Mobile Projects
                     </p>
                   </div>
@@ -504,7 +504,7 @@ export default function ProjectsSection() {
                           <div className="min-w-0">
                             <div className="flex flex-wrap gap-2">
                               <Badge>{project.category}</Badge>
-                              <Badge className="border-white/10 bg-white/[0.03] text-slate-200">
+                              <Badge className="border-white/10 bg-white/[0.03] text-neutral-200">
                                 {project.type}
                               </Badge>
                             </div>
@@ -514,12 +514,12 @@ export default function ProjectsSection() {
                             </h4>
 
                             {project.subtitle && (
-                              <p className="mt-3 text-sm font-medium leading-6 text-cyan-200 sm:text-base">
+                              <p className="mt-3 text-sm font-medium leading-6 text-white sm:text-base">
                                 {project.subtitle}
                               </p>
                             )}
 
-                            <p className="mt-4 text-sm leading-7 text-slate-400">
+                            <p className="mt-4 text-sm leading-7 text-neutral-400">
                               {project.description}
                             </p>
 
@@ -530,7 +530,7 @@ export default function ProjectsSection() {
                                   .map((highlight) => (
                                     <div
                                       key={highlight}
-                                      className="rounded-2xl border border-white/10 bg-white/[0.025] p-3 text-sm leading-6 text-slate-300"
+                                      className="rounded-2xl border border-white/10 bg-white/[0.025] p-3 text-sm leading-6 text-neutral-300"
                                     >
                                       {highlight}
                                     </div>
@@ -543,7 +543,7 @@ export default function ProjectsSection() {
                                 {project.tech.map((tech) => (
                                   <Badge
                                     key={tech}
-                                    className="border-white/10 bg-white/[0.03] text-slate-200"
+                                    className="border-white/10 bg-white/[0.03] text-neutral-200"
                                   >
                                     {tech}
                                   </Badge>
@@ -573,7 +573,7 @@ export default function ProjectsSection() {
                               ))}
                             </div>
 
-                            <p className="mt-5 text-center text-xs uppercase tracking-[0.22em] text-slate-600">
+                            <p className="mt-5 text-center text-xs uppercase tracking-[0.22em] text-neutral-600">
                               Tap a phone preview to expand
                             </p>
                           </div>
@@ -600,7 +600,7 @@ export default function ProjectsSection() {
                     UI/UX designs and creative visuals made more visible.
                   </h3>
 
-                  <p className="mt-5 text-sm leading-7 text-slate-400 sm:text-base md:text-lg md:leading-8">
+                  <p className="mt-5 text-sm leading-7 text-neutral-400 sm:text-base md:text-lg md:leading-8">
                     This section highlights interface design, visual layout,
                     creative direction, and Photoshop-based outputs. UI/UX
                     designs are shown as larger previews, while Photoshop works
@@ -609,11 +609,11 @@ export default function ProjectsSection() {
                 </div>
 
                 <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                  <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-5">
+                  <div className="rounded-2xl border border-white/10 bg-neutral-950/40 p-5">
                     <p className="text-3xl font-semibold text-white">
                       {figmaDesigns.length + photoshopWorks.length}
                     </p>
-                    <p className="mt-1 text-xs uppercase tracking-[0.22em] text-slate-500">
+                    <p className="mt-1 text-xs uppercase tracking-[0.22em] text-neutral-500">
                       Design Works
                     </p>
                   </div>
@@ -656,7 +656,7 @@ export default function ProjectsSection() {
 
                         <div className="mt-6 flex flex-wrap gap-2">
                           <Badge>{project.category}</Badge>
-                          <Badge className="border-white/10 bg-white/[0.03] text-slate-200">
+                          <Badge className="border-white/10 bg-white/[0.03] text-neutral-200">
                             {project.type}
                           </Badge>
                         </div>
@@ -665,7 +665,7 @@ export default function ProjectsSection() {
                           {project.title}
                         </h4>
 
-                        <p className="mt-4 text-sm leading-7 text-slate-400">
+                        <p className="mt-4 text-sm leading-7 text-neutral-400">
                           {project.description}
                         </p>
 
@@ -674,7 +674,7 @@ export default function ProjectsSection() {
                             {project.tools.map((tool) => (
                               <Badge
                                 key={tool}
-                                className="border-white/10 bg-white/[0.03] text-slate-200"
+                                className="border-white/10 bg-white/[0.03] text-neutral-200"
                               >
                                 {tool}
                               </Badge>
@@ -684,7 +684,7 @@ export default function ProjectsSection() {
 
                         {project.gallery?.length > 0 && (
                           <div className="mt-6 border-t border-white/10 pt-6">
-                            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+                            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-neutral-500">
                               Design Screens
                             </p>
 
@@ -720,10 +720,10 @@ export default function ProjectsSection() {
               </StaggerContainer>
 
               {/* Photoshop Gallery */}
-              <div className="mt-8 rounded-[1.75rem] border border-white/10 bg-slate-950/35 p-5 sm:p-6">
+              <div className="mt-8 rounded-[1.75rem] border border-white/10 bg-neutral-950/35 p-5 sm:p-6">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                   <div>
-                    <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+                    <p className="text-sm font-semibold uppercase tracking-[0.25em] text-white">
                       Photoshop Works
                     </p>
 
@@ -732,7 +732,7 @@ export default function ProjectsSection() {
                     </h4>
                   </div>
 
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-neutral-500">
                     {photoshopWorks.length} artworks
                   </p>
                 </div>
@@ -752,7 +752,7 @@ export default function ProjectsSection() {
                         }
                         className="group block w-full text-left"
                       >
-                        <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-4 transition duration-300 group-hover:-translate-y-1 group-hover:border-cyan-300/30 group-hover:bg-white/[0.045]">
+                        <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-4 transition duration-300 group-hover:-translate-y-1 group-hover:border-neutral-100/30 group-hover:bg-white/[0.045]">
                           <MediaFrame
                             src={project.image}
                             alt={`${project.title} preview`}
@@ -760,7 +760,7 @@ export default function ProjectsSection() {
                           />
 
                           <div className="mt-4 flex flex-wrap gap-2">
-                            <Badge className="border-white/10 bg-white/[0.03] text-slate-200">
+                            <Badge className="border-white/10 bg-white/[0.03] text-neutral-200">
                               {project.category}
                             </Badge>
                           </div>
@@ -769,7 +769,7 @@ export default function ProjectsSection() {
                             {project.title}
                           </h5>
 
-                          <p className="mt-2 text-sm leading-6 text-slate-400">
+                          <p className="mt-2 text-sm leading-6 text-neutral-400">
                             {project.description}
                           </p>
                         </div>

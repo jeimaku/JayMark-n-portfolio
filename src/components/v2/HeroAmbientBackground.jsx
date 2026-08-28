@@ -17,8 +17,8 @@ const CONNECTION_DISTANCE = 140;
 const MAX_CONNECTIONS = 3;
 const MOBILE_FRAME_INTERVAL = 1000 / 30;
 
-const CYAN = "34, 211, 238";
-const CYAN_LINE = "103, 232, 249";
+const PARTICLE_COLOR = "214, 214, 214";
+const CONNECTION_COLOR = "112, 112, 112";
 
 function createParticle(width, height) {
   return {
@@ -91,7 +91,7 @@ function drawFrame(context, state) {
         context.beginPath();
         context.moveTo(source.x, source.y);
         context.lineTo(target.x, target.y);
-        context.strokeStyle = `rgba(${CYAN_LINE}, ${alpha})`;
+        context.strokeStyle = `rgba(${CONNECTION_COLOR}, ${alpha})`;
         context.lineWidth = 0.7;
         context.stroke();
         connections += 1;
@@ -108,7 +108,7 @@ function drawFrame(context, state) {
       0,
       Math.PI * 2
     );
-    context.fillStyle = `rgba(${CYAN}, ${particle.opacity})`;
+    context.fillStyle = `rgba(${PARTICLE_COLOR}, ${particle.opacity})`;
     context.fill();
   }
 }
@@ -286,18 +286,18 @@ export default function HeroAmbientBackground() {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
     >
-      <div className="absolute left-[8%] top-[20%] h-[28rem] w-[28rem] rounded-full bg-cyan-400/[0.045] blur-3xl" />
-      <div className="absolute right-[6%] top-[15%] h-[24rem] w-[24rem] rounded-full bg-indigo-400/[0.035] blur-3xl" />
-      <div className="absolute bottom-[10%] left-1/2 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-cyan-300/[0.028] blur-3xl" />
+      <div className="absolute left-[8%] top-[20%] h-[28rem] w-[28rem] rounded-full bg-neutral-300/[0.045] blur-3xl" />
+      <div className="absolute right-[6%] top-[15%] h-[24rem] w-[24rem] rounded-full bg-neutral-500/[0.035] blur-3xl" />
+      <div className="absolute bottom-[10%] left-1/2 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-neutral-100/[0.028] blur-3xl" />
 
-      <div className="absolute inset-0 opacity-[0.025] [background-image:linear-gradient(rgba(148,163,184,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.5)_1px,transparent_1px)] [background-size:64px_64px] [mask-image:radial-gradient(ellipse_80%_70%_at_50%_40%,black_30%,transparent_100%)]" />
+      <div className="absolute inset-0 opacity-[0.025] [background-image:linear-gradient(rgba(163,163,163,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(163,163,163,0.5)_1px,transparent_1px)] [background-size:64px_64px] [mask-image:radial-gradient(ellipse_80%_70%_at_50%_40%,black_30%,transparent_100%)]" />
 
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full motion-reduce:hidden"
       />
 
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_50%,transparent_0%,rgba(2,6,23,0.14)_55%,rgba(2,6,23,0.56)_100%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_75%_65%_at_50%_50%,transparent_0%,rgba(5,5,5,0.14)_55%,rgba(5,5,5,0.56)_100%)]" />
     </div>
   );
 }

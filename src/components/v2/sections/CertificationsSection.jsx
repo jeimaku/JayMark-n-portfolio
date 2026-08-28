@@ -173,12 +173,12 @@ function CertificateListItem({
         "transition duration-300",
         "focus-visible:outline-none",
         "focus-visible:ring-2",
-        "focus-visible:ring-cyan-200",
+        "focus-visible:ring-white",
         active
           ? [
-              "border-cyan-300/40",
-              "bg-cyan-300/[0.065]",
-              "shadow-[0_16px_45px_rgba(8,145,178,0.08)]",
+              "border-neutral-100/40",
+              "bg-neutral-100/[0.065]",
+              "shadow-[0_16px_45px_rgba(0,0,0,0.36)]",
             ].join(" ")
           : [
               "border-white/10",
@@ -196,7 +196,7 @@ function CertificateListItem({
           "w-px",
           "bg-gradient-to-b",
           "from-transparent",
-          "via-cyan-200/60",
+          "via-white/60",
           "to-transparent",
           "transition-opacity duration-300",
           active
@@ -210,9 +210,9 @@ function CertificateListItem({
           className={[
             "h-16 w-20 shrink-0",
             "overflow-hidden rounded-xl",
-            "border bg-slate-950",
+            "border bg-neutral-950",
             active
-              ? "border-cyan-300/25"
+              ? "border-neutral-100/25"
               : "border-white/10",
           ].join(" ")}
         >
@@ -232,8 +232,8 @@ function CertificateListItem({
               className={[
                 "font-mono text-[0.58rem]",
                 active
-                  ? "text-cyan-200"
-                  : "text-slate-700",
+                  ? "text-white"
+                  : "text-neutral-700",
               ].join(" ")}
             >
               {String(index + 1).padStart(
@@ -249,10 +249,10 @@ function CertificateListItem({
                 "transition duration-300",
                 active
                   ? [
-                      "bg-cyan-300",
-                      "shadow-[0_0_12px_rgba(34,211,238,0.7)]",
+                      "bg-neutral-100",
+                      "shadow-[0_0_12px_rgba(255,255,255,0.22)]",
                     ].join(" ")
-                  : "bg-slate-700",
+                  : "bg-neutral-700",
               ].join(" ")}
             />
           </div>
@@ -264,13 +264,13 @@ function CertificateListItem({
               "leading-5",
               active
                 ? "text-white"
-                : "text-slate-400 group-hover:text-slate-200",
+                : "text-neutral-400 group-hover:text-neutral-200",
             ].join(" ")}
           >
             {certificate.name}
           </p>
 
-          <p className="mt-1 text-[0.65rem] text-slate-600">
+          <p className="mt-1 text-[0.65rem] text-neutral-600">
             {certificate.category}
           </p>
         </div>
@@ -299,21 +299,21 @@ function CertificatePreview({
         "relative overflow-hidden",
         "rounded-[2rem] border",
         "border-white/10",
-        "bg-slate-950/45",
+        "bg-neutral-950/45",
         "shadow-[0_30px_100px_rgba(0,0,0,0.32)]",
         "focus-visible:outline-none",
         "focus-visible:ring-2",
-        "focus-visible:ring-cyan-200",
+        "focus-visible:ring-white",
       ].join(" ")}
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.085),transparent_30rem)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.085),transparent_30rem)]"
       />
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(99,102,241,0.055),transparent_28rem)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(163,163,163,0.055),transparent_28rem)]"
       />
 
       <div className="relative">
@@ -329,11 +329,11 @@ function CertificatePreview({
         >
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-cyan-300/20 bg-cyan-300/[0.07] px-3 py-1.5 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-cyan-100">
+              <span className="rounded-full border border-neutral-100/20 bg-neutral-100/[0.07] px-3 py-1.5 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-neutral-100">
                 Verified Credential
               </span>
 
-              <span className="rounded-full border border-white/10 bg-white/[0.025] px-3 py-1.5 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-slate-400">
+              <span className="rounded-full border border-white/10 bg-white/[0.025] px-3 py-1.5 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-neutral-400">
                 {certificate.year}
               </span>
             </div>
@@ -342,7 +342,7 @@ function CertificatePreview({
               {certificate.name}
             </h3>
 
-            <p className="mt-2 text-sm text-slate-500">
+            <p className="mt-2 text-sm text-neutral-500">
               {certificate.provider}
               {" · "}
               {certificate.category}
@@ -360,21 +360,21 @@ function CertificatePreview({
                 "rounded-full border",
                 "border-white/15",
                 "bg-white/[0.035]",
-                "text-slate-300",
+                "text-neutral-300",
                 "transition duration-300",
-                "hover:border-cyan-200/40",
-                "hover:bg-cyan-300/[0.08]",
+                "hover:border-white/40",
+                "hover:bg-neutral-100/[0.08]",
                 "hover:text-white",
                 "focus-visible:outline-none",
                 "focus-visible:ring-2",
-                "focus-visible:ring-cyan-200",
+                "focus-visible:ring-white",
               ].join(" ")}
             >
               <ArrowLeftIcon />
             </button>
 
             <div className="min-w-[6rem] text-center">
-              <p className="font-mono text-xs font-semibold text-cyan-100">
+              <p className="font-mono text-xs font-semibold text-neutral-100">
                 {String(
                   selectedIndex + 1
                 ).padStart(2, "0")}
@@ -384,7 +384,7 @@ function CertificatePreview({
                 ).padStart(2, "0")}
               </p>
 
-              <p className="mt-1 text-[0.56rem] font-semibold uppercase tracking-[0.14em] text-slate-600">
+              <p className="mt-1 text-[0.56rem] font-semibold uppercase tracking-[0.14em] text-neutral-600">
                 Credential
               </p>
             </div>
@@ -399,14 +399,14 @@ function CertificatePreview({
                 "rounded-full border",
                 "border-white/15",
                 "bg-white/[0.035]",
-                "text-slate-300",
+                "text-neutral-300",
                 "transition duration-300",
-                "hover:border-cyan-200/40",
-                "hover:bg-cyan-300/[0.08]",
+                "hover:border-white/40",
+                "hover:bg-neutral-100/[0.08]",
                 "hover:text-white",
                 "focus-visible:outline-none",
                 "focus-visible:ring-2",
-                "focus-visible:ring-cyan-200",
+                "focus-visible:ring-white",
               ].join(" ")}
             >
               <ArrowRightIcon />
@@ -508,10 +508,10 @@ function CertificatePreview({
                   "w-full overflow-hidden",
                   "rounded-2xl border",
                   "border-white/10",
-                  "bg-slate-900/40",
+                  "bg-neutral-900/40",
                   "focus-visible:outline-none",
                   "focus-visible:ring-2",
-                  "focus-visible:ring-cyan-200",
+                  "focus-visible:ring-white",
                 ].join(" ")}
               >
                 <img
@@ -523,7 +523,7 @@ function CertificatePreview({
                   className={[
                     "aspect-[16/10]",
                     "w-full object-contain",
-                    "bg-slate-950",
+                    "bg-neutral-950",
                     "transition duration-500",
                     "group-hover:scale-[1.01]",
                   ].join(" ")}
@@ -534,7 +534,7 @@ function CertificatePreview({
                   className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/[0.035]"
                 />
 
-                <div className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-slate-950/85 px-4 py-2 text-xs font-semibold text-white backdrop-blur">
+                <div className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-neutral-950/85 px-4 py-2 text-xs font-semibold text-white backdrop-blur">
                   <ExpandIcon />
 
                   View certificate
@@ -555,11 +555,11 @@ function CertificatePreview({
           ].join(" ")}
         >
           <div>
-            <p className="text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-slate-600">
+            <p className="text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-neutral-600">
               Credential category
             </p>
 
-            <p className="mt-1 text-sm font-medium text-slate-300">
+            <p className="mt-1 text-sm font-medium text-neutral-300">
               {certificate.category}
             </p>
           </div>
@@ -573,18 +573,18 @@ function CertificatePreview({
                 "inline-flex min-h-11",
                 "w-full items-center justify-center",
                 "gap-2 rounded-full",
-                "border border-cyan-300/25",
-                "bg-cyan-300/[0.07]",
+                "border border-neutral-100/25",
+                "bg-neutral-100/[0.07]",
                 "px-5 py-2.5",
                 "text-sm font-semibold",
-                "text-cyan-100",
+                "text-neutral-100",
                 "transition duration-300",
                 "hover:-translate-y-0.5",
-                "hover:border-cyan-200/45",
-                "hover:bg-cyan-300/[0.12]",
+                "hover:border-white/45",
+                "hover:bg-neutral-100/[0.12]",
                 "focus-visible:outline-none",
                 "focus-visible:ring-2",
-                "focus-visible:ring-cyan-200",
+                "focus-visible:ring-white",
                 "sm:w-auto",
               ].join(" ")}
             >
@@ -666,7 +666,7 @@ function CertificateLightbox({
       className={[
         "fixed inset-0 z-[120]",
         "flex items-center justify-center",
-        "bg-slate-950/92 p-4",
+        "bg-neutral-950/92 p-4",
         "backdrop-blur-xl",
         "sm:p-6",
       ].join(" ")}
@@ -705,7 +705,7 @@ function CertificateLightbox({
           "flex-col overflow-hidden",
           "rounded-[1.75rem]",
           "border border-white/10",
-          "bg-slate-950",
+          "bg-neutral-950",
           "shadow-[0_35px_120px_rgba(0,0,0,0.65)]",
         ].join(" ")}
       >
@@ -718,7 +718,7 @@ function CertificateLightbox({
           ].join(" ")}
         >
           <div className="min-w-0">
-            <p className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-cyan-200">
+            <p className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-white">
               Certificate Preview
             </p>
 
@@ -726,7 +726,7 @@ function CertificateLightbox({
               {certificate.name}
             </h3>
 
-            <p className="mt-1 text-xs text-slate-500">
+            <p className="mt-1 text-xs text-neutral-500">
               {certificate.provider}
             </p>
           </div>
@@ -743,13 +743,13 @@ function CertificateLightbox({
               "rounded-full border",
               "border-white/15",
               "bg-white/[0.035]",
-              "text-slate-300",
+              "text-neutral-300",
               "transition duration-300",
-              "hover:border-cyan-200/40",
+              "hover:border-white/40",
               "hover:text-white",
               "focus-visible:outline-none",
               "focus-visible:ring-2",
-              "focus-visible:ring-cyan-200",
+              "focus-visible:ring-white",
             ].join(" ")}
           >
             <CloseIcon />
@@ -775,14 +775,14 @@ function CertificateLightbox({
                 "inline-flex min-h-11",
                 "w-full items-center justify-center",
                 "gap-2 rounded-full",
-                "bg-cyan-300 px-5 py-2.5",
+                "bg-neutral-100 px-5 py-2.5",
                 "text-sm font-semibold",
-                "text-slate-950",
+                "text-neutral-950",
                 "transition duration-300",
-                "hover:bg-cyan-200",
+                "hover:bg-white",
                 "focus-visible:outline-none",
                 "focus-visible:ring-2",
-                "focus-visible:ring-cyan-200",
+                "focus-visible:ring-white",
                 "sm:w-auto",
               ].join(" ")}
             >
@@ -977,12 +977,12 @@ export default function CertificationsSection() {
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -left-48 top-[15%] -z-10 h-[32rem] w-[32rem] rounded-full bg-cyan-400/[0.06] blur-3xl"
+          className="pointer-events-none absolute -left-48 top-[15%] -z-10 h-[32rem] w-[32rem] rounded-full bg-neutral-300/[0.06] blur-3xl"
         />
 
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-48 bottom-[5%] -z-10 h-[30rem] w-[30rem] rounded-full bg-indigo-400/[0.055] blur-3xl"
+          className="pointer-events-none absolute -right-48 bottom-[5%] -z-10 h-[30rem] w-[30rem] rounded-full bg-neutral-500/[0.055] blur-3xl"
         />
 
         <Container>
@@ -1032,35 +1032,35 @@ export default function CertificationsSection() {
 
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
             <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-4">
-              <p className="font-mono text-2xl font-semibold text-cyan-100">
+              <p className="font-mono text-2xl font-semibold text-neutral-100">
                 {String(
                   certifications.length
                 ).padStart(2, "0")}
               </p>
 
-              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-neutral-500">
                 Certificates
               </p>
             </div>
 
             <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-4">
-              <p className="font-mono text-2xl font-semibold text-cyan-100">
+              <p className="font-mono text-2xl font-semibold text-neutral-100">
                 {String(
                   providerCount
                 ).padStart(2, "0")}
               </p>
 
-              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-neutral-500">
                 Credential provider
               </p>
             </div>
 
             <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-4">
-              <p className="font-mono text-2xl font-semibold text-cyan-100">
+              <p className="font-mono text-2xl font-semibold text-neutral-100">
                 {selectedCertificate.year}
               </p>
 
-              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+              <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-neutral-500">
                 Completion year
               </p>
             </div>
@@ -1147,7 +1147,7 @@ export default function CertificationsSection() {
             />
           </div>
 
-          <p className="mt-4 text-center text-xs leading-6 text-slate-600">
+          <p className="mt-4 text-center text-xs leading-6 text-neutral-600">
             Select a credential, use
             the arrows, drag the preview,
             or use the keyboard arrow

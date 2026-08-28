@@ -1,80 +1,16 @@
 import gradPic from "../assets/images/GradPic-640.jpg";
 
 export const aboutContent = {
-  title:
-    "Building practical systems across software and infrastructure.",
+  eyebrow: "About Me",
 
-  introduction:
-    "I approach technology from both sides: developing software that supports real workflows and solving the technical problems that keep those systems running.",
+  heading: "A little about me.",
+
+  paragraph:
+    "I'm Jay Mark, a full-stack developer who also enjoys hands-on IT work. I like building practical web applications, exploring AI-assisted tools, and understanding the systems behind the interfaces I create. My experience has given me the chance to work with both software and real-world infrastructure, and I'm still continuously learning as I build, experiment, and take on new challenges.",
 
   portrait: {
     src: gradPic,
     alt: "Jay Mark Apelado in graduation attire",
     objectPosition: "50% 25%",
   },
-
-  story: [
-    "I’m Jay Mark Apelado, an Information Technology graduate focused on full-stack development, AI-assisted platforms, and dependable technical systems.",
-
-    "My work includes web applications, administrative dashboards, databases, role-based workflows, and user-facing interfaces. I enjoy turning complicated requirements into systems that are easier to understand, operate, and maintain.",
-
-    "Alongside development, I bring hands-on experience in technical support and infrastructure. That broader perspective helps me consider not only how an application is built, but also how it will be deployed, supported, documented, and used in day-to-day operations.",
-  ],
-
-  statement:
-    "The goal is not only to make a system work, but to make it understandable, dependable, and genuinely useful.",
-
-  profileCard: {
-    title: "Personal System Profile",
-
-    status:
-      "Available for opportunities",
-
-    items: [
-      {
-        label: "Role",
-        value:
-          "Full-Stack Developer & IT Support Specialist",
-      },
-
-      {
-        label: "Primary Domain",
-        value:
-          "Web applications, internal systems, and digital workflows",
-      },
-
-      {
-        label: "Technical Strength",
-        value:
-          "Software development, infrastructure support, and system reliability",
-      },
-
-      {
-        label: "Approach",
-        value:
-          "Practical, iterative, and documentation-minded",
-      },
-    ],
-  },
-
-  approach: [
-    {
-      number: "01",
-      title: "Understand the workflow",
-      description:
-        "I begin by identifying the users, requirements, constraints, and real process the system needs to support.",
-    },
-    {
-      number: "02",
-      title: "Build for actual use",
-      description:
-        "I prioritize clear interfaces, reliable behavior, and features that solve concrete operational problems.",
-    },
-    {
-      number: "03",
-      title: "Keep it maintainable",
-      description:
-        "I structure projects so future improvements, troubleshooting, documentation, and handovers remain manageable.",
-    },
-  ],
 };

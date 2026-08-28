@@ -7,7 +7,7 @@ export const heroSceneContext = [
       "Web applications, dashboards, databases, administrative workflows, and internal systems built with modern frontend and backend technologies.",
     relatedWork: "View software projects",
     href: "/#projects",
-    accent: "#22d3ee",
+    accent: "#f5f5f5",
 
     /*
      * Position above the monitor.
@@ -27,7 +27,7 @@ export const heroSceneContext = [
       "TalkReady combines speech assessment, AI-assisted feedback, role-based learning workflows, and language-proficiency activities.",
     relatedWork: "View TalkReady",
     href: "/projects/talkready",
-    accent: "#a5b4fc",
+    accent: "#d4d4d4",
     position: [0.02, 1.74, 0.62],
   },
 
@@ -39,7 +39,7 @@ export const heroSceneContext = [
       "Network troubleshooting, device configuration, connectivity support, hardware diagnosis, and reliable day-to-day IT operations.",
     relatedWork: "View experience",
     href: "/#experience",
-    accent: "#34d399",
+    accent: "#a3a3a3",
     position: [-0.10, 1.43, 0.20],
   },
 
@@ -51,7 +51,7 @@ export const heroSceneContext = [
       "Windows Server, Active Directory, RAID configuration, infrastructure support, hardware maintenance, and operational reliability.",
     relatedWork: "View infrastructure experience",
     href: "/#experience",
-    accent: "#67e8f9",
+    accent: "#ffffff",
     position: [1.82, 1.82, -0.18],
   },
 ];

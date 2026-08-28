@@ -1,169 +1,208 @@
 import {
-  ArrowRight,
+  ArrowUpRight,
   Download,
   Mail,
   MapPin,
-  MessageSquare,
-  Send,
-  Sparkles,
 } from "lucide-react";
 
 import { motion } from "motion/react";
 
 import Container from "../../layout/Container";
 import Section from "../../layout/Section";
-import SectionHeading from "../../ui/SectionHeading";
 import SocialLink from "../../ui/SocialLink";
-
-import {
-  StaggerItem,
-  StaggerReveal,
-} from "../motion";
 
 import { profile } from "../../../data";
 
-import useContactMotion from "../../../hooks/useContactMotion";
+const EASE = [0.22, 1, 0.36, 1];
 
-const contactCards = [
-  {
-    label: "Personal Email",
-    value: profile.emails?.personal,
-    href: profile.emails?.personal
-      ? `mailto:${profile.emails.personal}`
-      : null,
-    icon: Mail,
+const reveal = {
+  hidden: {
+    opacity: 0,
+    y: 18,
   },
-  {
-    label: "Secondary Email",
-    value: profile.emails?.secondary,
-    href: profile.emails?.secondary
-      ? `mailto:${profile.emails.secondary}`
-      : null,
-    icon: Mail,
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: EASE,
+    },
   },
-  {
-    label: "Location",
-    value: profile.location,
-    href:
-      "https://maps.google.com/?q=Dasmarinas+City+Cavite",
-    icon: MapPin,
-  },
-].filter(
-  (item) =>
-    Boolean(item.value) &&
-    Boolean(item.href)
-);
+};
 
-function ContactCard({
-  item,
-  index,
-  allowComplexMotion,
-}) {
-  const Icon = item.icon;
+function Eyebrow() {
+  return (
+    <div className="flex items-center gap-3">
+      <span
+        aria-hidden="true"
+        className="h-px w-8 bg-white/35"
+      />
 
-  const isExternal =
-    item.href.startsWith("http");
+      <span className="text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-neutral-400">
+        Contact
+      </span>
+    </div>
+  );
+}
+
+function PrimaryEmail({ email }) {
+  if (!email) return null;
 
   return (
     <motion.a
-      href={item.href}
-      target={
-        isExternal
-          ? "_blank"
-          : undefined
-      }
-      rel={
-        isExternal
-          ? "noopener noreferrer"
-          : undefined
-      }
-      whileHover={
-        allowComplexMotion
-          ? {
-              x: 5,
-              scale: 1.006,
-            }
-          : undefined
-      }
+      href={`mailto:${email}`}
+      whileHover={{
+        x: 4,
+      }}
       transition={{
-        duration: 0.24,
-        ease: [0.22, 1, 0.36, 1],
+        duration: 0.22,
+        ease: EASE,
       }}
       className={[
         "group relative block",
-        "overflow-hidden rounded-[1.5rem]",
-        "border border-white/10",
-        "bg-white/[0.025]",
-        "p-5",
-        "transition duration-300",
-        "hover:border-cyan-300/30",
-        "hover:bg-white/[0.05]",
+        "border-b border-white/10",
+        "pb-5 sm:pb-6",
         "focus-visible:outline-none",
         "focus-visible:ring-2",
-        "focus-visible:ring-cyan-200",
+        "focus-visible:ring-white",
+        "focus-visible:ring-offset-4",
+        "focus-visible:ring-offset-black",
       ].join(" ")}
     >
-      <div
-        aria-hidden="true"
-        className={[
-          "pointer-events-none",
-          "absolute inset-y-0 left-0",
-          "w-px",
-          "bg-gradient-to-b",
-          "from-transparent",
-          "via-cyan-200/60",
-          "to-transparent",
-          "opacity-0",
-          "transition-opacity duration-300",
-          "group-hover:opacity-100",
-          "group-focus-visible:opacity-100",
-        ].join(" ")}
-      />
+      <span className="mb-3 block text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-neutral-500">
+        Primary email
+      </span>
 
-      <div className="relative flex items-start gap-4">
-        <div
+      <span className="flex items-end justify-between gap-5">
+        <span
           className={[
-            "flex h-12 w-12 shrink-0",
-            "items-center justify-center",
-            "rounded-2xl border",
-            "border-cyan-300/20",
-            "bg-cyan-300/10",
-            "text-cyan-200",
-            "transition duration-300",
-            "group-hover:border-cyan-200/40",
-            "group-hover:bg-cyan-300/[0.16]",
+            "min-w-0 break-all",
+            "text-xl font-medium tracking-[-0.025em]",
+            "text-white",
+            "sm:text-2xl",
+            "md:text-[1.75rem]",
+            "lg:text-[2rem]",
           ].join(" ")}
         >
-          <Icon
-            aria-hidden="true"
-            size={21}
-          />
-        </div>
+          {email}
+        </span>
 
-        <div className="min-w-0">
-          <div className="flex items-center gap-3">
-            <p className="text-sm font-medium text-slate-500">
-              {item.label}
-            </p>
+        <ArrowUpRight
+          aria-hidden="true"
+          size={24}
+          className={[
+            "mb-1 shrink-0",
+            "text-neutral-500",
+            "transition duration-300",
+            "group-hover:-translate-y-0.5",
+            "group-hover:translate-x-0.5",
+            "group-hover:text-white",
+          ].join(" ")}
+        />
+      </span>
 
-            <span className="font-mono text-[0.58rem] text-slate-700">
-              {String(index + 1).padStart(
-                2,
-                "0"
-              )}
-            </span>
-          </div>
-
-          <p className="break-safe mt-1 font-semibold leading-6 text-white">
-            {item.value}
-          </p>
-        </div>
-      </div>
+      <span
+        aria-hidden="true"
+        className={[
+          "absolute bottom-0 left-0",
+          "h-px w-0",
+          "bg-white",
+          "transition-[width]",
+          "duration-500",
+          "ease-out",
+          "group-hover:w-full",
+          "group-focus-visible:w-full",
+        ].join(" ")}
+      />
     </motion.a>
   );
 }
 
-function PrimaryContactActions({
+function SecondaryEmail({ email }) {
+  if (!email) return null;
+
+  return (
+    <div>
+      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-neutral-600">
+        Alternative
+      </p>
+
+      <a
+        href={`mailto:${email}`}
+        className={[
+          "mt-2 inline-flex items-center gap-2",
+          "text-sm text-neutral-400",
+          "transition-colors duration-200",
+          "hover:text-white",
+          "focus-visible:outline-none",
+          "focus-visible:ring-2",
+          "focus-visible:ring-white",
+          "focus-visible:ring-offset-4",
+          "focus-visible:ring-offset-black",
+        ].join(" ")}
+      >
+        <Mail
+          aria-hidden="true"
+          size={14}
+        />
+
+        <span className="break-all">
+          {email}
+        </span>
+      </a>
+    </div>
+  );
+}
+
+function LocationBlock({ location }) {
+  if (!location) return null;
+
+  return (
+    <div>
+      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-neutral-600">
+        Based in
+      </p>
+
+      <a
+        href="https://maps.google.com/?q=Dasmarinas+City+Cavite"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={[
+          "group mt-2 inline-flex items-start gap-2",
+          "text-sm leading-6 text-neutral-400",
+          "transition-colors duration-200",
+          "hover:text-white",
+          "focus-visible:outline-none",
+          "focus-visible:ring-2",
+          "focus-visible:ring-white",
+          "focus-visible:ring-offset-4",
+          "focus-visible:ring-offset-black",
+        ].join(" ")}
+      >
+        <MapPin
+          aria-hidden="true"
+          size={15}
+          className="mt-1 shrink-0"
+        />
+
+        <span>{location}</span>
+
+        <ArrowUpRight
+          aria-hidden="true"
+          size={13}
+          className={[
+            "mt-1 shrink-0",
+            "transition-transform duration-200",
+            "group-hover:-translate-y-px",
+            "group-hover:translate-x-px",
+          ].join(" ")}
+        />
+      </a>
+    </div>
+  );
+}
+
+function ContactActions({
   email,
   resumeUrl,
 }) {
@@ -176,28 +215,29 @@ function PrimaryContactActions({
             "group inline-flex min-h-12",
             "w-full items-center justify-center",
             "gap-2 rounded-full",
-            "bg-cyan-300",
-            "px-6 py-3",
-            "text-sm font-semibold",
-            "text-slate-950",
-            "shadow-[0_14px_38px_rgba(8,145,178,0.2)]",
+            "bg-white px-6 py-3",
+            "text-sm font-semibold text-black",
             "transition duration-300",
             "hover:-translate-y-0.5",
-            "hover:bg-cyan-200",
+            "hover:bg-neutral-200",
             "focus-visible:outline-none",
             "focus-visible:ring-2",
-            "focus-visible:ring-cyan-200",
+            "focus-visible:ring-white",
             "focus-visible:ring-offset-4",
-            "focus-visible:ring-offset-slate-950",
+            "focus-visible:ring-offset-black",
             "sm:w-auto",
           ].join(" ")}
         >
           Send Email
 
-          <Send
+          <ArrowUpRight
             aria-hidden="true"
             size={16}
-            className="transition-transform duration-300 group-hover:translate-x-0.5"
+            className={[
+              "transition-transform duration-300",
+              "group-hover:-translate-y-px",
+              "group-hover:translate-x-px",
+            ].join(" ")}
           />
         </a>
       ) : null}
@@ -210,93 +250,78 @@ function PrimaryContactActions({
           className={[
             "inline-flex min-h-12",
             "w-full items-center justify-center",
-            "gap-2 rounded-full border",
-            "border-white/15",
-            "bg-white/[0.035]",
+            "gap-2 rounded-full",
+            "border border-white/15",
             "px-6 py-3",
-            "text-sm font-semibold",
-            "text-white",
+            "text-sm font-semibold text-neutral-200",
             "transition duration-300",
             "hover:-translate-y-0.5",
-            "hover:border-cyan-200/40",
-            "hover:bg-cyan-300/[0.07]",
+            "hover:border-white/30",
+            "hover:bg-white/[0.04]",
+            "hover:text-white",
             "focus-visible:outline-none",
             "focus-visible:ring-2",
-            "focus-visible:ring-cyan-200",
+            "focus-visible:ring-white",
             "focus-visible:ring-offset-4",
-            "focus-visible:ring-offset-slate-950",
+            "focus-visible:ring-offset-black",
             "sm:w-auto",
           ].join(" ")}
         >
-          View Resume
+          View Résumé
 
           <Download
             aria-hidden="true"
-            size={16}
+            size={15}
           />
         </a>
       ) : null}
+    </div>
+  );
+}
 
-      <a
-        href="#projects"
-        className={[
-          "group inline-flex min-h-12",
-          "w-full items-center justify-center",
-          "gap-2 rounded-full border",
-          "border-transparent",
-          "px-5 py-3",
-          "text-sm font-semibold",
-          "text-slate-300",
-          "transition duration-300",
-          "hover:border-white/10",
-          "hover:bg-white/[0.035]",
-          "hover:text-white",
-          "focus-visible:outline-none",
-          "focus-visible:ring-2",
-          "focus-visible:ring-cyan-200",
-          "sm:w-auto",
-        ].join(" ")}
-      >
-        View Work
+function ProfessionalLinks({ links }) {
+  if (!links.length) return null;
 
-        <ArrowRight
-          aria-hidden="true"
-          size={16}
-          className="transition-transform duration-300 group-hover:translate-x-0.5"
-        />
-      </a>
+  return (
+    <div>
+      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-neutral-600">
+        Elsewhere
+      </p>
+
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        {links.map((link) => (
+          <div
+            key={link.label}
+            className="group flex items-center gap-2"
+          >
+            <SocialLink link={link} />
+
+            <span className="hidden text-xs font-medium text-neutral-500 transition-colors duration-200 group-hover:text-neutral-300 sm:inline">
+              {link.label}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
 export default function ContactSection() {
-  const {
-    sectionRef,
-
-    shellStyle,
-    leftPanelStyle,
-    rightPanelStyle,
-    glowStyle,
-    lineStyle,
-
-    allowEntranceMotion,
-    allowComplexMotion,
-  } = useContactMotion();
-
   const primaryEmail =
     profile.emails?.personal ?? null;
+
+  const secondaryEmail =
+    profile.emails?.secondary ?? null;
 
   const resumeUrl =
     profile.resume?.primary ?? null;
 
+  const location =
+    profile.location ?? null;
+
   const contactLinks =
     Array.isArray(profile.contactLinks)
       ? profile.contactLinks
-      : [];
-
-  const highlights =
-    Array.isArray(profile.highlights)
-      ? profile.highlights.slice(0, 4)
       : [];
 
   return (
@@ -304,371 +329,123 @@ export default function ContactSection() {
       id="contact"
       spacing="compact"
       optimize={false}
-      className="relative pb-20 sm:pb-24 lg:pb-28"
+      className="relative pb-20 pt-8 sm:pb-24 lg:pb-28"
     >
-      <div
-        ref={sectionRef}
-        data-contact-motion-scene=""
-        className="relative isolate overflow-hidden"
-      >
+      <Container>
         <motion.div
-          aria-hidden="true"
-          style={glowStyle}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{
+            once: true,
+            amount: 0.12,
+          }}
           className={[
-            "pointer-events-none",
-            "absolute -right-40 top-[8%]",
-            "-z-20 h-[34rem] w-[34rem]",
-            "rounded-full",
-            "bg-cyan-400/[0.09]",
-            "blur-3xl",
-            "will-change-transform",
+            "relative",
+            "border-y border-white/[0.08]",
+            "py-12 sm:py-16 lg:py-20",
           ].join(" ")}
-        />
-
-        <div
-          aria-hidden="true"
-          className={[
-            "pointer-events-none",
-            "absolute inset-0 -z-30",
-            "opacity-[0.025]",
-            "[background-image:linear-gradient(",
-            "rgba(148,163,184,0.45)_1px,",
-            "transparent_1px),",
-            "linear-gradient(90deg,",
-            "rgba(148,163,184,0.45)_1px,",
-            "transparent_1px)]",
-            "[background-size:72px_72px]",
-          ].join("")}
-        />
-
-        <Container>
-          <motion.div
-            style={shellStyle}
+        >
+          {/* subtle top highlight */}
+          <div
+            aria-hidden="true"
             className={[
-              "relative overflow-hidden",
-              "rounded-[2rem]",
-              "border border-white/10",
-              "bg-white/[0.025]",
-              "shadow-[0_34px_110px_rgba(0,0,0,0.32)]",
-              "will-change-transform",
+              "pointer-events-none",
+              "absolute left-0 top-[-1px]",
+              "h-px w-24",
+              "bg-gradient-to-r",
+              "from-white/60 to-transparent",
             ].join(" ")}
-          >
-            <div
-              aria-hidden="true"
-              className={[
-                "pointer-events-none",
-                "absolute inset-0",
-                "bg-[radial-gradient(",
-                "circle_at_top_right,",
-                "rgba(34,211,238,0.15),",
-                "transparent_30rem)]",
-              ].join("")}
-            />
+          />
 
-            <div
-              aria-hidden="true"
-              className={[
-                "pointer-events-none",
-                "absolute inset-0",
-                "rounded-[inherit]",
-                "ring-1 ring-inset",
-                "ring-white/[0.025]",
-              ].join(" ")}
-            />
-
+          <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 xl:gap-28">
+            {/* LEFT */}
             <motion.div
-              aria-hidden="true"
-              style={lineStyle}
-              className={[
-                "pointer-events-none",
-                "absolute inset-x-6 bottom-0",
-                "h-px origin-center",
-                "bg-gradient-to-r",
-                "from-transparent",
-                "via-cyan-200/70",
-                "to-transparent",
-                "shadow-[0_0_22px_rgba(34,211,238,0.4)]",
-              ].join(" ")}
-            />
+              variants={reveal}
+              className="max-w-xl"
+            >
+              <Eyebrow />
 
-            <div className="relative z-10 grid gap-8 p-5 sm:p-7 md:p-9 lg:grid-cols-[0.92fr_1.08fr] lg:gap-12 lg:p-12">
-              {/* Left contact introduction */}
-              <motion.div
-                style={leftPanelStyle}
-                className="min-w-0 will-change-transform"
+              <h2
+                className={[
+                  "mt-6",
+                  "max-w-[10ch]",
+                  "text-[clamp(2.5rem,5vw,5.25rem)]",
+                  "font-semibold",
+                  "leading-[0.94]",
+                  "tracking-[-0.055em]",
+                  "text-white",
+                ].join(" ")}
               >
-                <motion.div
-                  initial={
-                    allowEntranceMotion
-                      ? {
-                          opacity: 0,
-                          y: 26,
-                          filter:
-                            "blur(5px)",
-                        }
-                      : false
-                  }
-                  whileInView={
-                    allowEntranceMotion
-                      ? {
-                          opacity: 1,
-                          y: 0,
-                          filter:
-                            "blur(0px)",
-                        }
-                      : undefined
-                  }
-                  viewport={{
-                    once: true,
-                    amount: 0.16,
-                  }}
-                  transition={{
-                    duration: 0.75,
-                    ease: [
-                      0.22,
-                      1,
-                      0.36,
-                      1,
-                    ],
-                  }}
-                >
-                  <div
-                    className={[
-                      "mb-6 inline-flex",
-                      "max-w-full items-center",
-                      "gap-2 rounded-full border",
-                      "border-cyan-300/20",
-                      "bg-cyan-300/10",
-                      "px-4 py-2",
-                      "text-xs font-semibold",
-                      "uppercase tracking-[0.22em]",
-                      "text-cyan-200",
-                      "sm:tracking-[0.28em]",
-                    ].join(" ")}
-                  >
-                    <Sparkles
+                Let&apos;s build something worth using.
+              </h2>
+
+              <p
+                className={[
+                  "mt-7 max-w-lg",
+                  "text-sm leading-7",
+                  "text-neutral-400",
+                  "sm:text-base sm:leading-8",
+                ].join(" ")}
+              >
+                If you&apos;d like to discuss a project,
+                an opportunity, or simply connect, feel
+                free to reach out.
+              </p>
+
+              <ContactActions
+                email={primaryEmail}
+                resumeUrl={resumeUrl}
+              />
+            </motion.div>
+
+            {/* RIGHT */}
+            <motion.div
+              variants={reveal}
+              transition={{
+                delay: 0.08,
+              }}
+              className="flex min-w-0 flex-col justify-between"
+            >
+              <div>
+                <p className="mb-7 text-[0.65rem] font-semibold uppercase tracking-[0.26em] text-neutral-500">
+                  Get in touch
+                </p>
+
+                <PrimaryEmail
+                  email={primaryEmail}
+                />
+
+                <div className="mt-7 grid gap-7 sm:grid-cols-2">
+                  <SecondaryEmail
+                    email={secondaryEmail}
+                  />
+
+                  <LocationBlock
+                    location={location}
+                  />
+                </div>
+              </div>
+
+              <div className="mt-12 border-t border-white/[0.07] pt-6">
+                <div className="flex flex-col gap-7 sm:flex-row sm:items-end sm:justify-between">
+                  <ProfessionalLinks
+                    links={contactLinks}
+                  />
+
+                  <div className="flex items-center gap-2 text-xs text-neutral-500">
+                    <span
                       aria-hidden="true"
-                      size={14}
+                      className="h-1.5 w-1.5 rounded-full bg-emerald-400"
                     />
 
-                    Contact
+                    Available for opportunities
                   </div>
-
-                  <SectionHeading
-                    title="Let’s build something practical and meaningful."
-                    description="Interested in reviewing my work, discussing a project, or connecting professionally? You can reach me through email, GitHub, or LinkedIn."
-                  />
-
-                  <PrimaryContactActions
-                    email={primaryEmail}
-                    resumeUrl={resumeUrl}
-                  />
-                </motion.div>
-
-                <motion.div
-                  initial={
-                    allowEntranceMotion
-                      ? {
-                          opacity: 0,
-                          y: 28,
-                          scale: 0.985,
-                        }
-                      : false
-                  }
-                  whileInView={
-                    allowEntranceMotion
-                      ? {
-                          opacity: 1,
-                          y: 0,
-                          scale: 1,
-                        }
-                      : undefined
-                  }
-                  viewport={{
-                    once: true,
-                    amount: 0.2,
-                  }}
-                  transition={{
-                    duration: 0.7,
-                    delay: 0.08,
-                    ease: [
-                      0.22,
-                      1,
-                      0.36,
-                      1,
-                    ],
-                  }}
-                  className={[
-                    "relative mt-8 overflow-hidden",
-                    "rounded-[1.5rem]",
-                    "border border-white/10",
-                    "bg-slate-950/40",
-                    "p-5 sm:p-6",
-                  ].join(" ")}
-                >
-                  <div
-                    aria-hidden="true"
-                    className={[
-                      "absolute left-0 top-0",
-                      "h-full w-px",
-                      "bg-gradient-to-b",
-                      "from-cyan-300/60",
-                      "via-cyan-200/10",
-                      "to-transparent",
-                    ].join(" ")}
-                  />
-
-                  <p className="text-sm font-semibold uppercase tracking-[0.22em] text-cyan-200">
-                    Current Focus
-                  </p>
-
-                  <p className="mt-3 text-sm leading-7 text-slate-400">
-                    I’m currently focused on improving
-                    my full-stack development, IT
-                    systems, AI integration, and clean
-                    UI/UX skills through practical
-                    projects and real workflow-based
-                    systems.
-                  </p>
-                </motion.div>
-              </motion.div>
-
-              {/* Right contact details */}
-              <motion.div
-                style={rightPanelStyle}
-                className="min-w-0 space-y-5 will-change-transform"
-              >
-                <StaggerReveal className="grid gap-4">
-                  {contactCards.map(
-                    (item, index) => (
-                      <StaggerItem
-                        key={item.label}
-                      >
-                        <ContactCard
-                          item={item}
-                          index={index}
-                          allowComplexMotion={
-                            allowComplexMotion
-                          }
-                        />
-                      </StaggerItem>
-                    )
-                  )}
-                </StaggerReveal>
-
-                <motion.div
-                  initial={
-                    allowEntranceMotion
-                      ? {
-                          opacity: 0,
-                          y: 28,
-                          scale: 0.985,
-                        }
-                      : false
-                  }
-                  whileInView={
-                    allowEntranceMotion
-                      ? {
-                          opacity: 1,
-                          y: 0,
-                          scale: 1,
-                        }
-                      : undefined
-                  }
-                  viewport={{
-                    once: true,
-                    amount: 0.18,
-                  }}
-                  transition={{
-                    duration: 0.68,
-                    delay: 0.14,
-                    ease: [
-                      0.22,
-                      1,
-                      0.36,
-                      1,
-                    ],
-                  }}
-                  className={[
-                    "rounded-[1.5rem]",
-                    "border border-white/10",
-                    "bg-white/[0.025]",
-                    "p-5",
-                  ].join(" ")}
-                >
-                  <div className="flex items-start gap-3 sm:items-center">
-                    <div
-                      className={[
-                        "flex h-12 w-12 shrink-0",
-                        "items-center justify-center",
-                        "rounded-2xl border",
-                        "border-cyan-300/20",
-                        "bg-cyan-300/10",
-                        "text-cyan-200",
-                      ].join(" ")}
-                    >
-                      <MessageSquare
-                        aria-hidden="true"
-                        size={21}
-                      />
-                    </div>
-
-                    <div className="min-w-0">
-                      <p className="font-semibold text-white">
-                        Professional Links
-                      </p>
-
-                      <p className="mt-1 text-sm leading-6 text-slate-400">
-                        Connect with me or review my
-                        work online.
-                      </p>
-                    </div>
-                  </div>
-
-                  {contactLinks.length > 0 ? (
-                    <div className="mt-5 flex flex-wrap gap-3">
-                      {contactLinks.map(
-                        (link) => (
-                          <SocialLink
-                            key={link.label}
-                            link={link}
-                          />
-                        )
-                      )}
-                    </div>
-                  ) : null}
-                </motion.div>
-
-                {highlights.length > 0 ? (
-                  <StaggerReveal className="flex flex-wrap gap-2">
-                    {highlights.map(
-                      (highlight) => (
-                        <StaggerItem
-                          key={highlight}
-                          className="inline-flex"
-                        >
-                          <span
-                            className={[
-                              "inline-flex rounded-full",
-                              "border border-white/10",
-                              "bg-white/[0.03]",
-                              "px-3 py-1.5",
-                              "text-xs font-semibold",
-                              "leading-5 text-slate-200",
-                            ].join(" ")}
-                          >
-                            {highlight}
-                          </span>
-                        </StaggerItem>
-                      )
-                    )}
-                  </StaggerReveal>
-                ) : null}
-              </motion.div>
-            </div>
-          </motion.div>
-        </Container>
-      </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+      </Container>
     </Section>
   );
 }

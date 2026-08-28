@@ -157,12 +157,12 @@ export default function CaseStudyMediaLightbox({
           onClose();
         }
       }}
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/90 p-3 backdrop-blur-md sm:p-6"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-neutral-950/90 p-3 backdrop-blur-md sm:p-6"
     >
-      <div className="relative flex max-h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-3xl border border-white/15 bg-slate-950 shadow-[0_35px_110px_rgba(0,0,0,0.65)]">
+      <div className="relative flex max-h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-3xl border border-white/15 bg-neutral-950 shadow-[0_35px_110px_rgba(0,0,0,0.65)]">
         <div className="flex items-start justify-between gap-5 border-b border-white/10 px-4 py-4 sm:px-6">
           <div className="min-w-0">
-            <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-cyan-200">
+            <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-white">
               Media Preview
             </p>
 
@@ -181,7 +181,7 @@ export default function CaseStudyMediaLightbox({
             type="button"
             onClick={onClose}
             aria-label="Close media viewer"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-slate-300 transition hover:border-cyan-300/30 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-neutral-300 transition hover:border-neutral-100/30 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <CloseIcon />
           </button>
@@ -219,7 +219,7 @@ export default function CaseStudyMediaLightbox({
         {media.caption ? (
           <p
             id={descriptionId}
-            className="border-t border-white/10 px-4 py-4 text-xs leading-6 text-slate-400 sm:px-6"
+            className="border-t border-white/10 px-4 py-4 text-xs leading-6 text-neutral-400 sm:px-6"
           >
             {media.caption}
           </p>

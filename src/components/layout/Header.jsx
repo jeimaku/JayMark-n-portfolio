@@ -37,12 +37,12 @@ const HEADER_NAVIGATION =
 
 function BrandMark() {
   return (
-    <span className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/25 bg-cyan-300/[0.08] text-sm font-bold text-cyan-100 shadow-[0_10px_30px_rgba(8,145,178,0.14)] transition duration-300 group-hover:border-cyan-200/45 group-hover:bg-cyan-300/[0.13]">
+    <span className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-neutral-100/25 bg-neutral-100/[0.08] text-sm font-bold text-neutral-100 shadow-[0_10px_30px_rgba(0,0,0,0.4)] transition duration-300 group-hover:border-white/45 group-hover:bg-neutral-100/[0.13]">
       {profile.initials}
 
       <span
         aria-hidden="true"
-        className="absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full border-2 border-slate-950 bg-emerald-400"
+        className="absolute -right-0.5 -top-0.5 flex h-3 w-3 items-center justify-center rounded-full border-2 border-neutral-950 bg-emerald-400"
       >
         <span className="h-1.5 w-1.5 animate-ping rounded-full bg-emerald-300 opacity-60 motion-reduce:animate-none" />
       </span>
@@ -99,8 +99,8 @@ function DesktopNavigation({
                 active
                   ? "text-white"
                   : [
-                      "text-slate-500",
-                      "hover:text-slate-200",
+                      "text-neutral-500",
+                      "hover:text-neutral-200",
                     ].join(" "),
               ].join(" ")}
             >
@@ -117,9 +117,9 @@ function DesktopNavigation({
                     "absolute inset-0",
                     "-z-10 rounded-xl",
                     "border",
-                    "border-cyan-300/20",
-                    "bg-cyan-300/[0.085]",
-                    "shadow-[0_8px_24px_rgba(8,145,178,0.1)]",
+                    "border-neutral-100/20",
+                    "bg-neutral-100/[0.085]",
+                    "shadow-[0_8px_24px_rgba(0,0,0,0.36)]",
                   ].join(" ")}
                 />
               ) : null}
@@ -131,10 +131,10 @@ function DesktopNavigation({
                   "transition-colors",
                   "2xl:inline",
                   active
-                    ? "text-cyan-200"
+                    ? "text-white"
                     : [
-                        "text-slate-700",
-                        "group-hover:text-slate-500",
+                        "text-neutral-700",
+                        "group-hover:text-neutral-500",
                       ].join(" "),
                 ].join(" ")}
               >
@@ -150,7 +150,7 @@ function DesktopNavigation({
               {active ? (
                 <span
                   aria-hidden="true"
-                  className="absolute bottom-1 left-1/2 h-0.5 w-3 -translate-x-1/2 rounded-full bg-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.7)]"
+                  className="absolute bottom-1 left-1/2 h-0.5 w-3 -translate-x-1/2 rounded-full bg-neutral-100 shadow-[0_0_8px_rgba(255,255,255,0.22)]"
                 />
               ) : null}
             </a>
@@ -199,7 +199,7 @@ function MobileNavigation({
         "w-full",
         "rounded-[1.5rem]",
         "border border-white/10",
-        "bg-slate-950/95",
+        "bg-neutral-950/95",
         "p-3",
         "shadow-[0_30px_90px_rgba(0,0,0,0.5)]",
         "backdrop-blur-2xl",
@@ -208,13 +208,13 @@ function MobileNavigation({
     >
       <div className="flex items-center justify-between gap-4 border-b border-white/[0.07] px-2 pb-3">
         <div>
-          <p className="text-[0.58rem] font-semibold uppercase tracking-[0.2em] text-cyan-200">
+          <p className="text-[0.58rem] font-semibold uppercase tracking-[0.2em] text-white">
             Navigation
           </p>
 
-          <p className="mt-1 text-xs text-slate-600">
+          <p className="mt-1 text-xs text-neutral-600">
             Current section:{" "}
-            <span className="text-slate-300">
+            <span className="text-neutral-300">
               {
                 HEADER_NAVIGATION.find(
                   (item) =>
@@ -236,13 +236,13 @@ function MobileNavigation({
             "rounded-full border",
             "border-white/10",
             "bg-white/[0.025]",
-            "text-slate-400",
+            "text-neutral-400",
             "transition",
-            "hover:border-cyan-300/35",
+            "hover:border-neutral-100/35",
             "hover:text-white",
             "focus-visible:outline-none",
             "focus-visible:ring-2",
-            "focus-visible:ring-cyan-200",
+            "focus-visible:ring-white",
           ].join(" ")}
         >
           <X size={18} />
@@ -283,11 +283,11 @@ function MobileNavigation({
                   "transition duration-300",
                   "focus-visible:outline-none",
                   "focus-visible:ring-2",
-                  "focus-visible:ring-cyan-200",
+                  "focus-visible:ring-white",
                   active
                     ? [
-                        "border-cyan-300/30",
-                        "bg-cyan-300/[0.075]",
+                        "border-neutral-100/30",
+                        "bg-neutral-100/[0.075]",
                       ].join(" ")
                     : [
                         "border-white/[0.07]",
@@ -302,8 +302,8 @@ function MobileNavigation({
                     "block font-mono",
                     "text-[0.56rem]",
                     active
-                      ? "text-cyan-200"
-                      : "text-slate-700",
+                      ? "text-white"
+                      : "text-neutral-700",
                   ].join(" ")}
                 >
                   {String(
@@ -318,8 +318,8 @@ function MobileNavigation({
                     active
                       ? "text-white"
                       : [
-                          "text-slate-400",
-                          "group-hover:text-slate-200",
+                          "text-neutral-400",
+                          "group-hover:text-neutral-200",
                         ].join(" "),
                   ].join(" ")}
                 >
@@ -329,7 +329,7 @@ function MobileNavigation({
                 {active ? (
                   <span
                     aria-hidden="true"
-                    className="absolute bottom-0 left-4 right-4 h-px bg-gradient-to-r from-cyan-300 to-transparent"
+                    className="absolute bottom-0 left-4 right-4 h-px bg-gradient-to-r from-neutral-100 to-transparent"
                   />
                 ) : null}
               </a>
@@ -352,15 +352,15 @@ function MobileNavigation({
             "min-h-12 w-full",
             "items-center justify-center",
             "gap-2 rounded-xl",
-            "bg-cyan-300",
+            "bg-neutral-100",
             "px-5 py-3",
             "text-sm font-semibold",
-            "text-slate-950",
+            "text-neutral-950",
             "transition duration-300",
-            "hover:bg-cyan-200",
+            "hover:bg-white",
             "focus-visible:outline-none",
             "focus-visible:ring-2",
-            "focus-visible:ring-cyan-200",
+            "focus-visible:ring-white",
           ].join(" ")}
         >
           Start a conversation
@@ -518,13 +518,13 @@ export default function Header() {
             isScrolled
               ? [
                   "border-white/12",
-                  "bg-slate-950/90",
+                  "bg-neutral-950/90",
                   "shadow-[0_18px_55px_rgba(0,0,0,0.36)]",
                   "backdrop-blur-2xl",
                 ].join(" ")
               : [
                   "border-white/[0.08]",
-                  "bg-slate-950/65",
+                  "bg-neutral-950/65",
                   "shadow-[0_14px_45px_rgba(0,0,0,0.22)]",
                   "backdrop-blur-xl",
                 ].join(" "),
@@ -532,7 +532,7 @@ export default function Header() {
         >
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_left,rgba(34,211,238,0.075),transparent_24rem)]"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_left,rgba(255,255,255,0.075),transparent_24rem)]"
           />
 
           <div
@@ -555,7 +555,7 @@ export default function Header() {
               "rounded-xl",
               "focus-visible:outline-none",
               "focus-visible:ring-2",
-              "focus-visible:ring-cyan-200",
+              "focus-visible:ring-white",
             ].join(" ")}
           >
             <BrandMark />
@@ -565,7 +565,7 @@ export default function Header() {
                 {profile.name}
               </span>
 
-              <span className="mt-0.5 block text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-slate-600">
+              <span className="mt-0.5 block text-[0.58rem] font-semibold uppercase tracking-[0.18em] text-neutral-600">
                 Developer Portfolio
               </span>
             </span>
@@ -607,18 +607,18 @@ export default function Header() {
                 "min-h-10 items-center",
                 "justify-center gap-2",
                 "rounded-full",
-                "bg-cyan-300",
+                "bg-neutral-100",
                 "px-4 py-2",
                 "text-xs font-semibold",
-                "text-slate-950",
-                "shadow-[0_10px_30px_rgba(8,145,178,0.18)]",
+                "text-neutral-950",
+                "shadow-[0_10px_30px_rgba(0,0,0,0.42)]",
                 "transition duration-300",
                 "hover:-translate-y-0.5",
-                "hover:bg-cyan-200",
-                "hover:shadow-[0_14px_36px_rgba(8,145,178,0.25)]",
+                "hover:bg-white",
+                "hover:shadow-[0_14px_36px_rgba(0,0,0,0.5)]",
                 "focus-visible:outline-none",
                 "focus-visible:ring-2",
-                "focus-visible:ring-cyan-200",
+                "focus-visible:ring-white",
                 "xl:inline-flex",
               ].join(" ")}
             >
@@ -654,11 +654,11 @@ export default function Header() {
                 "bg-white/[0.025]",
                 "text-white",
                 "transition duration-300",
-                "hover:border-cyan-300/40",
-                "hover:bg-cyan-300/[0.07]",
+                "hover:border-neutral-100/40",
+                "hover:bg-neutral-100/[0.07]",
                 "focus-visible:outline-none",
                 "focus-visible:ring-2",
-                "focus-visible:ring-cyan-200",
+                "focus-visible:ring-white",
                 "xl:hidden",
               ].join(" ")}
             >
@@ -687,10 +687,10 @@ export default function Header() {
                 "absolute inset-0",
                 "origin-left",
                 "bg-gradient-to-r",
-                "from-cyan-400",
-                "via-cyan-200",
-                "to-indigo-300",
-                "shadow-[0_0_12px_rgba(34,211,238,0.55)]",
+                "from-neutral-300",
+                "via-white",
+                "to-neutral-400",
+                "shadow-[0_0_12px_rgba(255,255,255,0.18)]",
               ].join(" ")}
             />
           </div>

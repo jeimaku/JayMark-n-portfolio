@@ -45,12 +45,12 @@ const displayedCertifications = certifications;
               description="A collection of training achievements that support my background in web development, IT support, networking, servers, mobile development, and technopreneurship."
             />
 
-            <div className="mt-8 rounded-[1.75rem] border border-cyan-300/20 bg-cyan-300/10 p-5 sm:p-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/25 bg-slate-950/50 text-cyan-200">
+            <div className="mt-8 rounded-[1.75rem] border border-neutral-100/20 bg-neutral-100/10 p-5 sm:p-6">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-100/25 bg-neutral-950/50 text-white">
                 <Award size={22} />
               </div>
 
-              <p className="mt-5 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+              <p className="mt-5 text-sm font-semibold uppercase tracking-[0.25em] text-white">
                 Credential Focus
               </p>
 
@@ -58,27 +58,27 @@ const displayedCertifications = certifications;
                 Strengthening the technical foundation behind my projects.
               </p>
 
-              <p className="mt-4 text-sm leading-7 text-slate-400">
+              <p className="mt-4 text-sm leading-7 text-neutral-400">
                 These certifications show my continuous learning across core IT
                 areas, from computer systems and networks to mobile applications
                 and web development.
               </p>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+                <div className="rounded-2xl border border-white/10 bg-neutral-950/40 p-4">
                   <p className="break-safe text-2xl font-semibold text-white">
                     {certifications.length}
                   </p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-500">
+                  <p className="mt-1 text-xs uppercase tracking-[0.2em] text-neutral-500">
                     Total Certificates
                   </p>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+                <div className="rounded-2xl border border-white/10 bg-neutral-950/40 p-4">
                   <p className="break-safe text-2xl font-semibold text-white">
                     TESDA
                   </p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-500">
+                  <p className="mt-1 text-xs uppercase tracking-[0.2em] text-neutral-500">
                     Provider
                   </p>
                 </div>
@@ -102,11 +102,11 @@ const displayedCertifications = certifications;
                       />
 
                       <div className="flex items-start justify-between gap-4">
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-neutral-100/20 bg-neutral-100/10 text-white">
                           <Icon size={22} />
                         </div>
 
-                        <Badge className="border-white/10 bg-white/[0.03] text-slate-200">
+                        <Badge className="border-white/10 bg-white/[0.03] text-neutral-200">
                           {certification.year}
                         </Badge>
                       </div>
@@ -117,7 +117,7 @@ const displayedCertifications = certifications;
                         {certification.name}
                       </h3>
 
-                      <p className="mt-4 break-safe text-sm leading-6 text-slate-400">
+                      <p className="mt-4 break-safe text-sm leading-6 text-neutral-400">
                         {certification.provider}
                       </p>
 

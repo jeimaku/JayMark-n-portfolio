@@ -14,11 +14,11 @@ export default function CaseStudyTechList({
       {technologies.map((technology) => (
         <li
           key={technology}
-          className="inline-flex min-h-9 items-center gap-2 rounded-full border border-white/10 bg-white/[0.025] px-3.5 py-2 text-xs font-medium text-slate-300"
+          className="inline-flex min-h-9 items-center gap-2 rounded-full border border-white/10 bg-white/[0.025] px-3.5 py-2 text-xs font-medium text-neutral-300"
         >
           <span
             aria-hidden="true"
-            className="h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300 shadow-[0_0_9px_rgba(34,211,238,0.8)]"
+            className="h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-100 shadow-[0_0_9px_rgba(255,255,255,0.24)]"
           />
 
           {technology}

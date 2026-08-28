@@ -296,12 +296,12 @@ function InformationCard({
         "transition-colors duration-300",
         active
           ? [
-              "border-cyan-300/30",
-              "bg-cyan-300/[0.045]",
+              "border-neutral-100/30",
+              "bg-neutral-100/[0.045]",
             ].join(" ")
           : [
               "border-white/10",
-              "hover:border-cyan-300/20",
+              "hover:border-neutral-100/20",
               "hover:bg-white/[0.04]",
             ].join(" "),
       ].join(" ")}
@@ -310,7 +310,7 @@ function InformationCard({
         aria-hidden="true"
         className={[
           "pointer-events-none absolute inset-0",
-          "bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.075),transparent_18rem)]",
+          "bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.075),transparent_18rem)]",
           active
             ? "opacity-100"
             : "opacity-55",
@@ -348,7 +348,7 @@ function InformationCard({
           "h-px origin-left",
           "bg-gradient-to-r",
           "from-transparent",
-          "via-cyan-300/55",
+          "via-neutral-100/55",
           "to-transparent",
         ].join(" ")}
       />
@@ -357,7 +357,7 @@ function InformationCard({
         <div className="flex items-start justify-between gap-5">
           <div>
             {eyebrow ? (
-              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-cyan-200">
+              <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-white">
                 {eyebrow}
               </p>
             ) : null}
@@ -374,12 +374,12 @@ function InformationCard({
                 ? {
                     scale: 1.12,
                     color:
-                      "rgba(103,232,249,0.95)",
+                      "rgba(245,245,245,0.95)",
                   }
                 : {
                     scale: 1,
                     color:
-                      "rgba(71,85,105,1)",
+                      "rgba(82,82,82,1)",
                   }
             }
             transition={{
@@ -392,7 +392,7 @@ function InformationCard({
           </motion.span>
         </div>
 
-        <p className="mt-4 text-sm leading-7 text-slate-400">
+        <p className="mt-4 text-sm leading-7 text-neutral-400">
           {description}
         </p>
       </div>
@@ -437,15 +437,15 @@ function WorkflowCapabilities({
             className={[
               "flex gap-3 rounded-xl",
               "border border-white/10",
-              "bg-slate-950/35",
+              "bg-neutral-950/35",
               "px-4 py-3",
               "text-xs leading-6",
-              "text-slate-300",
+              "text-neutral-300",
             ].join(" ")}
           >
             <span
               aria-hidden="true"
-              className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300"
+              className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-100"
             />
 
             {capability}
@@ -563,18 +563,18 @@ function RoleJourney({
   return (
     <div className="grid gap-8 lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-12">
       <aside className="lg:sticky lg:top-28 lg:self-start">
-        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950/45 p-4 backdrop-blur-xl sm:p-5">
+        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/45 p-4 backdrop-blur-xl sm:p-5">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.09),transparent_18rem)]"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.09),transparent_18rem)]"
           />
 
           <div className="relative">
-            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-cyan-200">
+            <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-white">
               Platform Journey
             </p>
 
-            <p className="mt-3 text-sm leading-6 text-slate-500">
+            <p className="mt-3 text-sm leading-6 text-neutral-500">
               Follow how TalkReady changes
               for each primary user role.
             </p>
@@ -604,7 +604,7 @@ function RoleJourney({
                       : 0.5,
                   ease: MOTION_EASE,
                 }}
-                className="absolute left-[0.95rem] top-4 w-px bg-gradient-to-b from-cyan-300 to-indigo-300 shadow-[0_0_14px_rgba(34,211,238,0.5)]"
+                className="absolute left-[0.95rem] top-4 w-px bg-gradient-to-b from-neutral-100 to-neutral-400 shadow-[0_0_14px_rgba(255,255,255,0.16)]"
               />
 
               <div
@@ -641,9 +641,9 @@ function RoleJourney({
                           "transition duration-300",
                           "focus-visible:outline-none",
                           "focus-visible:ring-2",
-                          "focus-visible:ring-cyan-200",
+                          "focus-visible:ring-white",
                           active
-                            ? "bg-cyan-300/[0.07]"
+                            ? "bg-neutral-100/[0.07]"
                             : "hover:bg-white/[0.035]",
                         ].join(" ")}
                       >
@@ -658,16 +658,16 @@ function RoleJourney({
                             "transition duration-300",
                             active
                               ? [
-                                  "border-cyan-100",
-                                  "bg-cyan-300",
-                                  "text-slate-950",
-                                  "shadow-[0_0_20px_rgba(34,211,238,0.55)]",
+                                  "border-neutral-100",
+                                  "bg-neutral-100",
+                                  "text-neutral-950",
+                                  "shadow-[0_0_20px_rgba(255,255,255,0.18)]",
                                 ].join(" ")
                               : [
                                   "border-white/15",
-                                  "bg-slate-950",
-                                  "text-slate-600",
-                                  "group-hover:border-cyan-300/30",
+                                  "bg-neutral-950",
+                                  "text-neutral-600",
+                                  "group-hover:border-neutral-100/30",
                                 ].join(" "),
                           ].join(" ")}
                         >
@@ -687,7 +687,7 @@ function RoleJourney({
                               "transition-colors",
                               active
                                 ? "text-white"
-                                : "text-slate-400 group-hover:text-slate-200",
+                                : "text-neutral-400 group-hover:text-neutral-200",
                             ].join(" ")}
                           >
                             {
@@ -695,7 +695,7 @@ function RoleJourney({
                             }
                           </span>
 
-                          <span className="mt-1 block text-xs text-slate-600">
+                          <span className="mt-1 block text-xs text-neutral-600">
                             {
                               workflow.id
                             }
@@ -789,9 +789,9 @@ function RoleJourney({
                     "transition-colors duration-500",
                     active
                       ? [
-                          "border-cyan-300/30",
-                          "bg-cyan-300/[0.045]",
-                          "shadow-[0_30px_90px_rgba(8,145,178,0.08)]",
+                          "border-neutral-100/30",
+                          "bg-neutral-100/[0.045]",
+                          "shadow-[0_30px_90px_rgba(0,0,0,0.48)]",
                         ].join(" ")
                       : [
                           "border-white/10",
@@ -804,7 +804,7 @@ function RoleJourney({
                     className={[
                       "pointer-events-none",
                       "absolute inset-0",
-                      "bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_25rem)]",
+                      "bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent_25rem)]",
                       active
                         ? "opacity-100"
                         : "opacity-35",
@@ -814,13 +814,13 @@ function RoleJourney({
 
                   <div
                     aria-hidden="true"
-                    className="absolute left-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-cyan-300/45 to-transparent"
+                    className="absolute left-0 top-0 h-full w-px bg-gradient-to-b from-transparent via-neutral-100/45 to-transparent"
                   />
 
                   <div className="relative w-full">
                     <div className="flex flex-wrap items-start justify-between gap-5">
                       <div>
-                        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-cyan-200">
+                        <p className="text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-white">
                           {
                             workflow.label
                           }
@@ -849,7 +849,7 @@ function RoleJourney({
                           ease:
                             MOTION_EASE,
                         }}
-                        className="font-mono text-xs text-cyan-200"
+                        className="font-mono text-xs text-white"
                       >
                         {
                           workflow.number
@@ -857,7 +857,7 @@ function RoleJourney({
                       </motion.span>
                     </div>
 
-                    <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base">
+                    <p className="mt-5 max-w-3xl text-sm leading-7 text-neutral-400 sm:text-base">
                       {
                         workflow.description
                       }
@@ -917,11 +917,11 @@ function RoleJourney({
                                   key={
                                     capability
                                   }
-                                  className="flex gap-3 rounded-xl border border-white/[0.07] bg-slate-950/20 px-4 py-3 text-xs leading-6 text-slate-500"
+                                  className="flex gap-3 rounded-xl border border-white/[0.07] bg-neutral-950/20 px-4 py-3 text-xs leading-6 text-neutral-500"
                                 >
                                   <span
                                     aria-hidden="true"
-                                    className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-700"
+                                    className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-neutral-700"
                                   />
 
                                   {
@@ -983,14 +983,14 @@ function HighlightCard({
       }}
       className="flex gap-4 rounded-2xl border border-white/10 bg-white/[0.025] p-4 sm:p-5"
     >
-      <span className="font-mono text-xs text-cyan-300/70">
+      <span className="font-mono text-xs text-neutral-100/70">
         {String(index + 1).padStart(
           2,
           "0"
         )}
       </span>
 
-      <p className="text-sm leading-7 text-slate-300">
+      <p className="text-sm leading-7 text-neutral-300">
         {highlight}
       </p>
     </motion.li>
@@ -1037,7 +1037,7 @@ function ImplementationFlow({
           "-translate-y-1/2",
           "bg-gradient-to-r",
           "from-transparent",
-          "via-cyan-300/35",
+          "via-neutral-100/35",
           "to-transparent",
           "md:block",
         ].join(" ")}
@@ -1269,9 +1269,9 @@ function TalkReadyGallery({
       aria-label={`${title} interface gallery`}
       tabIndex={0}
       onKeyDown={handleKeyDown}
-      className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+      className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
     >
-      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950/50">
+      <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-neutral-950/50">
         <AnimatePresence
           initial={false}
           mode="popLayout"
@@ -1349,7 +1349,7 @@ function TalkReadyGallery({
                 })
               }
               aria-label={`Open ${selectedItem.alt} in a larger viewer`}
-              className="block w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-cyan-200"
+              className="block w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white"
             >
               <CaseStudyMediaFrame
                 src={
@@ -1382,14 +1382,14 @@ function TalkReadyGallery({
                 "items-center justify-center",
                 "rounded-full border",
                 "border-white/15",
-                "bg-slate-950/80",
+                "bg-neutral-950/80",
                 "text-white backdrop-blur",
                 "transition duration-300",
-                "hover:border-cyan-200/40",
-                "hover:bg-cyan-300/10",
+                "hover:border-white/40",
+                "hover:bg-neutral-100/10",
                 "focus-visible:outline-none",
                 "focus-visible:ring-2",
-                "focus-visible:ring-cyan-200",
+                "focus-visible:ring-white",
               ].join(" ")}
             >
               <ArrowLeftIcon />
@@ -1406,14 +1406,14 @@ function TalkReadyGallery({
                 "items-center justify-center",
                 "rounded-full border",
                 "border-white/15",
-                "bg-slate-950/80",
+                "bg-neutral-950/80",
                 "text-white backdrop-blur",
                 "transition duration-300",
-                "hover:border-cyan-200/40",
-                "hover:bg-cyan-300/10",
+                "hover:border-white/40",
+                "hover:bg-neutral-100/10",
                 "focus-visible:outline-none",
                 "focus-visible:ring-2",
-                "focus-visible:ring-cyan-200",
+                "focus-visible:ring-white",
               ].join(" ")}
             >
               <ArrowRightIcon />
@@ -1422,11 +1422,11 @@ function TalkReadyGallery({
         ) : null}
 
         <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-center justify-between gap-4 p-4">
-          <span className="rounded-full border border-white/10 bg-slate-950/75 px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-slate-300 backdrop-blur">
+          <span className="rounded-full border border-white/10 bg-neutral-950/75 px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-neutral-300 backdrop-blur">
             Interface Browser
           </span>
 
-          <span className="rounded-full border border-cyan-300/15 bg-slate-950/75 px-3 py-1.5 font-mono text-[0.62rem] text-cyan-100 backdrop-blur">
+          <span className="rounded-full border border-neutral-100/15 bg-neutral-950/75 px-3 py-1.5 font-mono text-[0.62rem] text-neutral-100 backdrop-blur">
             {String(
               selectedIndex + 1
             ).padStart(2, "0")}
@@ -1440,7 +1440,7 @@ function TalkReadyGallery({
 
       {mediaItems.length > 1 ? (
         <>
-          <p className="mt-3 text-center text-xs text-slate-600">
+          <p className="mt-3 text-center text-xs text-neutral-600">
             Drag the preview, use the
             arrows, or select a thumbnail.
           </p>
@@ -1479,15 +1479,15 @@ function TalkReadyGallery({
                     className={[
                       "relative overflow-hidden",
                       "rounded-xl border",
-                      "bg-slate-950",
+                      "bg-neutral-950",
                       "transition duration-300",
                       "focus-visible:outline-none",
                       "focus-visible:ring-2",
-                      "focus-visible:ring-cyan-200",
+                      "focus-visible:ring-white",
                       selected
                         ? [
-                            "border-cyan-300/70",
-                            "shadow-[0_0_20px_rgba(34,211,238,0.12)]",
+                            "border-neutral-100/70",
+                            "shadow-[0_0_20px_rgba(255,255,255,0.12)]",
                           ].join(" ")
                         : [
                             "border-white/10",
@@ -1520,7 +1520,7 @@ function TalkReadyGallery({
                         "absolute inset-0",
                         "ring-1 ring-inset",
                         selected
-                          ? "ring-cyan-200/35"
+                          ? "ring-white/35"
                           : "ring-white/[0.025]",
                       ].join(" ")}
                     />
@@ -1540,7 +1540,7 @@ function MissingTalkReadyProject() {
     <CaseStudyLayout projectLabel="TalkReady Case Study">
       <section className="mx-auto flex min-h-[70vh] w-full max-w-3xl items-center px-4 py-20 sm:px-6">
         <div className="w-full rounded-3xl border border-white/10 bg-white/[0.025] p-7 text-center sm:p-10">
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-white">
             Project data unavailable
           </p>
 
@@ -1549,11 +1549,11 @@ function MissingTalkReadyProject() {
             loaded.
           </h1>
 
-          <p className="mt-4 text-sm leading-7 text-slate-400">
+          <p className="mt-4 text-sm leading-7 text-neutral-400">
             Check that the centralized
             project data still contains an
             entry with the ID
-            <code className="mx-1 rounded bg-white/[0.05] px-1.5 py-0.5 text-cyan-100">
+            <code className="mx-1 rounded bg-white/[0.05] px-1.5 py-0.5 text-neutral-100">
               talkready
             </code>
             .
@@ -1561,7 +1561,7 @@ function MissingTalkReadyProject() {
 
           <a
             href="/#projects"
-            className="mt-7 inline-flex min-h-11 items-center justify-center rounded-full bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950"
+            className="mt-7 inline-flex min-h-11 items-center justify-center rounded-full bg-neutral-100 px-5 py-3 text-sm font-semibold text-neutral-950"
           >
             Return to projects
           </a>
@@ -1708,10 +1708,10 @@ export default function TalkReadyCaseStudyV2() {
           "z-[100] h-[2px]",
           "origin-left",
           "bg-gradient-to-r",
-          "from-cyan-400",
-          "via-cyan-200",
-          "to-indigo-300",
-          "shadow-[0_0_16px_rgba(34,211,238,0.55)]",
+          "from-neutral-300",
+          "via-white",
+          "to-neutral-400",
+          "shadow-[0_0_16px_rgba(255,255,255,0.18)]",
         ].join(" ")}
       />
 
@@ -1810,7 +1810,7 @@ export default function TalkReadyCaseStudyV2() {
                     "left-0 z-20 w-1/3",
                     "bg-gradient-to-r",
                     "from-transparent",
-                    "via-cyan-200/10",
+                    "via-white/10",
                     "to-transparent",
                     "blur-xl",
                   ].join(" ")}
@@ -1830,7 +1830,7 @@ export default function TalkReadyCaseStudyV2() {
                     })
                   }
                   aria-label={`Open ${project.title} platform preview`}
-                  className="block w-full rounded-3xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+                  className="block w-full rounded-3xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                 >
                   <CaseStudyMediaFrame
                     src={
@@ -2037,7 +2037,7 @@ export default function TalkReadyCaseStudyV2() {
             }}
             className="mt-10 rounded-3xl border border-white/10 bg-white/[0.025] p-5 sm:p-6"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white">
               Technology Stack
             </p>
 
@@ -2148,7 +2148,7 @@ export default function TalkReadyCaseStudyV2() {
               delay: 0.08,
               ease: MOTION_EASE,
             }}
-            className="relative overflow-hidden rounded-3xl border border-cyan-300/15 bg-cyan-300/[0.045] p-5 sm:p-6"
+            className="relative overflow-hidden rounded-3xl border border-neutral-100/15 bg-neutral-100/[0.045] p-5 sm:p-6"
           >
             <motion.div
               aria-hidden="true"
@@ -2174,16 +2174,16 @@ export default function TalkReadyCaseStudyV2() {
                 delay: 0.28,
                 ease: MOTION_EASE,
               }}
-              className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-cyan-200/10 to-transparent blur-xl"
+              className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-transparent via-white/10 to-transparent blur-xl"
             />
 
             <div className="relative">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white">
                 Product Principle
               </p>
 
               <blockquote className="mt-4">
-                <p className="text-lg font-medium leading-8 tracking-[-0.015em] text-cyan-50">
+                <p className="text-lg font-medium leading-8 tracking-[-0.015em] text-neutral-50">
                   “AI feedback should
                   support the learning
                   process, not make the
@@ -2238,7 +2238,7 @@ export default function TalkReadyCaseStudyV2() {
         <div className="mt-6">
           <a
             href="/#contact"
-            className="inline-flex min-h-12 w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.035] px-6 py-3 text-sm font-semibold text-white transition hover:border-cyan-200/40 hover:bg-cyan-300/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950 sm:w-auto"
+            className="inline-flex min-h-12 w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.035] px-6 py-3 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-neutral-100/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-neutral-950 sm:w-auto"
           >
             Discuss a Project
           </a>

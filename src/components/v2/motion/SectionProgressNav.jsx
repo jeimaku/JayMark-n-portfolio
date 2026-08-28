@@ -95,14 +95,14 @@ export default function SectionProgressNav() {
                     "justify-end gap-3",
                     "focus-visible:outline-none",
                     "focus-visible:ring-2",
-                    "focus-visible:ring-cyan-200",
+                    "focus-visible:ring-white",
                   ].join(" ")}
                 >
                   <span
                     className={[
                       "rounded-full",
                       "border border-white/10",
-                      "bg-slate-950/75",
+                      "bg-neutral-950/75",
                       "px-2.5 py-1",
                       "text-[0.6rem]",
                       "font-semibold uppercase",
@@ -112,12 +112,12 @@ export default function SectionProgressNav() {
                       active
                         ? [
                             "translate-x-0",
-                            "text-cyan-100",
+                            "text-neutral-100",
                             "opacity-100",
                           ].join(" ")
                         : [
                             "translate-x-2",
-                            "text-slate-500",
+                            "text-neutral-500",
                             "opacity-0",
                             "group-hover:translate-x-0",
                             "group-hover:opacity-100",
@@ -158,14 +158,14 @@ export default function SectionProgressNav() {
                       "transition duration-300",
                       active
                         ? [
-                            "border-cyan-100/80",
-                            "bg-cyan-300",
-                            "shadow-[0_0_16px_rgba(34,211,238,0.75)]",
+                            "border-neutral-100/80",
+                            "bg-neutral-100",
+                            "shadow-[0_0_16px_rgba(255,255,255,0.24)]",
                           ].join(" ")
                         : [
                             "border-white/20",
-                            "bg-slate-950",
-                            "group-hover:border-cyan-200/50",
+                            "bg-neutral-950",
+                            "group-hover:border-white/50",
                           ].join(" "),
                     ].join(" ")}
                   >
@@ -173,8 +173,8 @@ export default function SectionProgressNav() {
                       className={[
                         "h-1 w-1 rounded-full",
                         active
-                          ? "bg-slate-950"
-                          : "bg-slate-600",
+                          ? "bg-neutral-950"
+                          : "bg-neutral-600",
                       ].join(" ")}
                     />
                   </motion.span>

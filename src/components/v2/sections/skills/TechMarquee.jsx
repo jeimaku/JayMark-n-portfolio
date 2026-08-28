@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const LOOP_REPETITIONS = 4;
+
 function getInitials(name) {
   return name
     .split(/\s+/)
@@ -20,7 +22,7 @@ function TechnologyLogo({ technology, primary }) {
           "font-mono font-bold leading-none",
           primary ? "text-xl sm:text-2xl" : "text-base sm:text-lg",
         ].join(" ")}
-        style={{ color: technology.brandColor ?? "#67E8F9" }}
+        style={{ color: technology.brandColor ?? "#FFFFFF" }}
       >
         {getInitials(technology.name)}
       </span>
@@ -39,75 +41,73 @@ function TechnologyLogo({ technology, primary }) {
   );
 }
 
-function TechnologyTile({
+function TechnologyItem({
   technology,
   primary,
   duplicated = false,
   staticLayout = false,
 }) {
-  const accent = technology.brandColor ?? "#67E8F9";
-
   return (
     <li
       aria-hidden={duplicated || undefined}
       className={[
-        "group shrink-0",
-        staticLayout ? "" : "mr-3 sm:mr-4",
-        primary
-          ? "w-[8.75rem] sm:w-[10.5rem]"
-          : "w-[8rem] sm:w-[9.25rem]",
+        "flex shrink-0 items-center gap-3",
+        staticLayout
+          ? "min-w-0"
+          : primary
+            ? "mr-10 w-[12rem] sm:mr-14 sm:w-[14rem]"
+            : "mr-8 w-[9.5rem] sm:mr-12 sm:w-[11.5rem]",
       ].join(" ")}
     >
-      <div
+      <span
         className={[
-          "relative flex h-full flex-col items-center justify-center",
-          "overflow-hidden border bg-slate-950/60 px-3 text-center",
-          "transition duration-300 ease-out",
-          "group-hover:-translate-y-1 group-hover:bg-slate-900/80",
-          primary
-            ? "min-h-[10.25rem] rounded-2xl py-5 sm:min-h-[11.75rem] sm:py-6"
-            : "min-h-[8.25rem] rounded-xl py-4 sm:min-h-[9.25rem] sm:py-5",
+          "flex shrink-0 items-center justify-center",
+          primary ? "h-10 w-10 sm:h-12 sm:w-12" : "h-7 w-7 sm:h-8 sm:w-8",
         ].join(" ")}
-        style={{
-          borderColor: `${accent}38`,
-          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.04), 0 0 28px ${accent}0B`,
-        }}
       >
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{
-            background: `radial-gradient(circle at 50% 22%, ${accent}26, transparent 58%)`,
-          }}
-        />
+        <TechnologyLogo technology={technology} primary={primary} />
+      </span>
 
+      <span className="min-w-0">
         <span
           className={[
-            "relative flex items-center justify-center",
-            "transition duration-300 ease-out group-hover:-translate-y-1.5 group-hover:scale-110",
-            primary
-              ? "h-14 w-14 sm:h-[4.5rem] sm:w-[4.5rem]"
-              : "h-10 w-10 sm:h-12 sm:w-12",
-          ].join(" ")}
-        >
-          <TechnologyLogo technology={technology} primary={primary} />
-        </span>
-
-        <span
-          className={[
-            "relative mt-4 block font-semibold tracking-[-0.02em] text-white",
-            primary ? "text-sm sm:mt-5 sm:text-base" : "text-xs sm:text-sm",
+            "block truncate font-medium tracking-[-0.02em] text-neutral-100",
+            primary ? "text-sm sm:text-base" : "text-xs sm:text-sm",
           ].join(" ")}
         >
           {technology.name}
         </span>
 
-        <span
-          aria-hidden="true"
-          className="absolute inset-x-6 bottom-0 h-px scale-x-0 bg-gradient-to-r from-transparent via-white/80 to-transparent transition-transform duration-300 group-hover:scale-x-100"
-        />
-      </div>
+        {primary && technology.role ? (
+          <span className="mt-0.5 block truncate text-[0.62rem] uppercase tracking-[0.16em] text-neutral-500">
+            {technology.role}
+          </span>
+        ) : null}
+      </span>
     </li>
+  );
+}
+
+function LaneLabel({ lane, fullBleed }) {
+  return (
+    <div
+      className={[
+        "mb-3 flex items-center gap-3",
+        fullBleed
+          ? "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8"
+          : "",
+      ].join(" ")}
+    >
+      <span className="font-mono text-[0.62rem] font-semibold tracking-[0.18em] text-neutral-600">
+        {lane.index}
+      </span>
+
+      <span aria-hidden="true" className="h-px w-5 bg-white/15" />
+
+      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-neutral-400">
+        {lane.label}
+      </p>
+    </div>
   );
 }
 
@@ -115,7 +115,8 @@ function MarqueeLane({
   lane,
   technologyById,
   primary,
-  prefersReducedMotion,
+  staticLayout,
+  fullBleed,
 }) {
   const laneTechnologies = lane.technologyIds
     .map((id) => technologyById.get(id))
@@ -132,31 +133,31 @@ function MarqueeLane({
       : "skills-marquee-track--left",
   ].join(" ");
 
+  const repeatedTechnologies = Array.from(
+    { length: LOOP_REPETITIONS * 2 },
+    (_, repeatIndex) =>
+      laneTechnologies.map((technology) => ({
+        technology,
+        duplicated: repeatIndex > 0,
+        repeatIndex,
+      }))
+  ).flat();
+
+  const staticListClass = [
+    "flex flex-wrap items-center gap-x-8 gap-y-5",
+    fullBleed
+      ? "mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8"
+      : "",
+  ].join(" ");
+
   return (
     <div className="skills-marquee-row relative min-w-0">
-      <div className="mb-3 flex items-center justify-between gap-4 px-1">
-        <div className="flex min-w-0 items-center gap-3">
-          <span className="font-mono text-[0.65rem] font-semibold tracking-[0.2em] text-cyan-300/70">
-            {lane.index}
-          </span>
+      <LaneLabel lane={lane} fullBleed={fullBleed} />
 
-          <p className="truncate text-[0.66rem] font-semibold uppercase tracking-[0.2em] text-slate-400 sm:text-xs">
-            {lane.label}
-          </p>
-        </div>
-
-        <span className="hidden font-mono text-[0.62rem] uppercase tracking-[0.16em] text-slate-600 sm:block">
-          {lane.direction === "right" ? "Signal →" : "← Signal"}
-        </span>
-      </div>
-
-      {prefersReducedMotion ? (
-        <ul
-          aria-label={lane.label}
-          className="flex flex-wrap gap-3 sm:gap-4"
-        >
+      {staticLayout ? (
+        <ul aria-label={lane.label} className={staticListClass}>
           {laneTechnologies.map((technology) => (
-            <TechnologyTile
+            <TechnologyItem
               key={technology.id}
               technology={technology}
               primary={primary}
@@ -165,39 +166,26 @@ function MarqueeLane({
           ))}
         </ul>
       ) : (
-        <div className="relative overflow-hidden">
+        <div className="overflow-hidden">
           <ul
             aria-label={lane.label}
             className={trackClass}
-            style={{ "--marquee-duration": `${lane.duration}s` }}
+            style={{
+              "--marquee-duration":
+                String(lane.duration * LOOP_REPETITIONS) + "s",
+            }}
           >
-            {laneTechnologies.map((technology) => (
-              <TechnologyTile
-                key={`${technology.id}-first`}
-                technology={technology}
-                primary={primary}
-              />
-            ))}
-
-            {laneTechnologies.map((technology) => (
-              <TechnologyTile
-                key={`${technology.id}-duplicate`}
-                technology={technology}
-                primary={primary}
-                duplicated
-              />
-            ))}
+            {repeatedTechnologies.map(
+              ({ technology, duplicated, repeatIndex }) => (
+                <TechnologyItem
+                  key={technology.id + "-" + repeatIndex}
+                  technology={technology}
+                  primary={primary}
+                  duplicated={duplicated}
+                />
+              )
+            )}
           </ul>
-
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 left-0 w-7 bg-gradient-to-r from-slate-950 via-slate-950/75 to-transparent sm:w-14"
-          />
-
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-y-0 right-0 w-7 bg-gradient-to-l from-slate-950 via-slate-950/75 to-transparent sm:w-14"
-          />
         </div>
       )}
     </div>
@@ -208,14 +196,20 @@ export default function TechMarquee({
   lanes = [],
   technologyById,
   primary = false,
-  prefersReducedMotion = false,
+  staticLayout = false,
+  fullBleed = false,
   ariaLabel = "Technology marquee",
 }) {
   return (
     <div
       role="region"
       aria-label={ariaLabel}
-      className="space-y-6 sm:space-y-7"
+      className={[
+        "space-y-8 sm:space-y-10",
+        fullBleed
+          ? "relative left-1/2 w-[100dvw] -translate-x-1/2"
+          : "",
+      ].join(" ")}
     >
       {lanes.map((lane) => (
         <MarqueeLane
@@ -223,7 +217,8 @@ export default function TechMarquee({
           lane={lane}
           technologyById={technologyById}
           primary={primary}
-          prefersReducedMotion={prefersReducedMotion}
+          staticLayout={staticLayout}
+          fullBleed={fullBleed}
         />
       ))}
     </div>

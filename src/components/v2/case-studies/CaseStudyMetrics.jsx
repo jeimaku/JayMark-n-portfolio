@@ -18,7 +18,7 @@ export default function CaseStudyMetrics({
         >
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.07),transparent_15rem)]"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.07),transparent_15rem)]"
           />
 
           <div className="relative">
@@ -26,12 +26,12 @@ export default function CaseStudyMetrics({
               {item.value}
             </p>
 
-            <p className="mt-2 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-slate-500">
+            <p className="mt-2 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-neutral-500">
               {item.label}
             </p>
 
             {item.description ? (
-              <p className="mt-3 text-xs leading-6 text-slate-400">
+              <p className="mt-3 text-xs leading-6 text-neutral-400">
                 {item.description}
               </p>
             ) : null}

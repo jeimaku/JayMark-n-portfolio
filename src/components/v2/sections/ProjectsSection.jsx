@@ -126,13 +126,13 @@ function ProjectPreview({
             ease: [0.22, 1, 0.36, 1],
           },
         }}
-        className={`group relative block w-full overflow-hidden rounded-[1.35rem] border text-left shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950 sm:rounded-[1.75rem] ${
+        className={`group relative block w-full overflow-hidden rounded-[1.35rem] border text-left shadow-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-neutral-950 sm:rounded-[1.75rem] ${
           isActive
-            ? "border-cyan-200/35 bg-slate-900 shadow-cyan-950/40"
-            : "border-white/15 bg-slate-900/90 shadow-black/50 hover:border-cyan-200/40"
+            ? "border-white/35 bg-neutral-900 shadow-neutral-950/40"
+            : "border-white/15 bg-neutral-900/90 shadow-black/50 hover:border-white/40"
         }`}
       >
-        <div className="relative aspect-[16/10] overflow-hidden bg-slate-900">
+        <div className="relative aspect-[16/10] overflow-hidden bg-neutral-900">
           {isVideoPreview && isActive ? (
             <LazyVideo
               src={project.media.video}
@@ -171,12 +171,12 @@ function ProjectPreview({
 
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/5 to-transparent"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-neutral-950/5 to-transparent"
           />
 
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 sm:p-5">
             <div className="min-w-0">
-              <p className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-cyan-200/80">
+              <p className="font-mono text-[0.62rem] uppercase tracking-[0.22em] text-white/80">
                 {project.tabNumber} / {mediaType}
               </p>
               <p className="mt-1 truncate text-sm font-semibold text-white sm:text-base">
@@ -185,11 +185,11 @@ function ProjectPreview({
             </div>
 
             {isActive ? (
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 bg-slate-950/70 text-cyan-100 backdrop-blur-sm">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 bg-neutral-950/70 text-neutral-100 backdrop-blur-sm">
                 <Maximize2 size={15} aria-hidden="true" />
               </span>
             ) : (
-              <span className="hidden shrink-0 text-xs font-semibold text-slate-200 sm:block">
+              <span className="hidden shrink-0 text-xs font-semibold text-neutral-200 sm:block">
                 Select
               </span>
             )}
@@ -197,14 +197,14 @@ function ProjectPreview({
         </div>
 
         {isActive ? (
-          <div className="flex items-center justify-between border-t border-white/10 bg-slate-950/85 px-4 py-3 text-xs text-slate-400 sm:px-5">
+          <div className="flex items-center justify-between border-t border-white/10 bg-neutral-950/85 px-4 py-3 text-xs text-neutral-400 sm:px-5">
             <span className="flex items-center gap-2">
-              <Play size={13} className="text-cyan-300" aria-hidden="true" />
+              <Play size={13} className="text-neutral-100" aria-hidden="true" />
               {project.media?.type === "gallery"
                 ? `${preview.label} view`
                 : "Live system preview"}
             </span>
-            <span className="hidden text-slate-500 sm:inline">
+            <span className="hidden text-neutral-500 sm:inline">
               Click to inspect
             </span>
           </div>
@@ -221,7 +221,7 @@ function ProjectScreenSelector({ project, activeScreenIndex, onSelect }) {
 
   return (
     <div className="mt-4 flex flex-wrap items-center gap-2">
-      <span className="mr-1 text-[0.63rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
+      <span className="mr-1 text-[0.63rem] font-semibold uppercase tracking-[0.2em] text-neutral-500">
         Screens
       </span>
       {screens.map((screen, index) => (
@@ -231,10 +231,10 @@ function ProjectScreenSelector({ project, activeScreenIndex, onSelect }) {
           onClick={() => onSelect(index)}
           aria-label={`Show ${project.title} ${screen.label}`}
           aria-pressed={activeScreenIndex === index}
-          className={`rounded-md border px-2.5 py-1.5 text-xs transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 ${
+          className={`rounded-md border px-2.5 py-1.5 text-xs transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
             activeScreenIndex === index
-              ? "border-cyan-200/40 bg-cyan-300/10 text-cyan-100"
-              : "border-white/10 text-slate-400 hover:border-white/25 hover:text-slate-200"
+              ? "border-white/40 bg-neutral-100/10 text-neutral-100"
+              : "border-white/10 text-neutral-400 hover:border-white/25 hover:text-neutral-200"
           }`}
         >
           {screen.label}
@@ -254,12 +254,12 @@ function ProjectDetails({
   return (
     <div className="mt-9 grid gap-8 border-t border-white/10 pt-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12">
       <div className="min-w-0">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200/75">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs font-semibold uppercase tracking-[0.2em] text-white/75">
           <span>{project.category}</span>
-          <span aria-hidden="true" className="text-slate-700">
+          <span aria-hidden="true" className="text-neutral-700">
             /
           </span>
-          <span className="font-mono text-slate-500">
+          <span className="font-mono text-neutral-500">
             {project.tabNumber} / {String(projectCount).padStart(2, "0")}
           </span>
         </div>
@@ -280,31 +280,31 @@ function ProjectDetails({
             <h3 className="max-w-4xl text-2xl font-semibold leading-tight tracking-[-0.035em] text-white sm:text-3xl lg:text-4xl">
               {project.title}
             </h3>
-            <p className="mt-3 max-w-3xl text-base leading-7 text-slate-400">
+            <p className="mt-3 max-w-3xl text-base leading-7 text-neutral-400">
               {project.subtitle}
             </p>
-            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-neutral-300">
               {project.solution}
             </p>
 
             <dl className="mt-6 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-3">
               <div>
-                <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-neutral-500">
                   Role
                 </dt>
-                <dd className="mt-1.5 text-sm text-slate-200">{project.role}</dd>
+                <dd className="mt-1.5 text-sm text-neutral-200">{project.role}</dd>
               </div>
               <div>
-                <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-neutral-500">
                   Built
                 </dt>
-                <dd className="mt-1.5 text-sm text-slate-200">{project.year}</dd>
+                <dd className="mt-1.5 text-sm text-neutral-200">{project.year}</dd>
               </div>
               <div className="col-span-2 sm:col-span-1">
-                <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
+                <dt className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-neutral-500">
                   With
                 </dt>
-                <dd className="mt-1.5 flex flex-wrap gap-x-2 gap-y-1 text-sm text-slate-200">
+                <dd className="mt-1.5 flex flex-wrap gap-x-2 gap-y-1 text-sm text-neutral-200">
                   {project.tech.slice(0, 4).map((technology) => (
                     <span key={technology}>{technology}</span>
                   ))}
@@ -321,18 +321,18 @@ function ProjectDetails({
             type="button"
             onClick={onPrevious}
             aria-label="Previous project"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.03] text-slate-200 transition hover:border-cyan-200/45 hover:bg-cyan-300/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.03] text-neutral-200 transition hover:border-white/45 hover:bg-neutral-100/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <ArrowLeft size={17} aria-hidden="true" />
           </button>
-          <span className="min-w-16 text-center font-mono text-xs text-slate-500">
-            <span className="text-cyan-200">{project.tabNumber}</span> / {String(projectCount).padStart(2, "0")}
+          <span className="min-w-16 text-center font-mono text-xs text-neutral-500">
+            <span className="text-white">{project.tabNumber}</span> / {String(projectCount).padStart(2, "0")}
           </span>
           <button
             type="button"
             onClick={onNext}
             aria-label="Next project"
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.03] text-slate-200 transition hover:border-cyan-200/45 hover:bg-cyan-300/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.03] text-neutral-200 transition hover:border-white/45 hover:bg-neutral-100/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <ArrowRight size={17} aria-hidden="true" />
           </button>
@@ -342,7 +342,7 @@ function ProjectDetails({
           {project.links?.caseStudy ? (
             <a
               href={project.links.caseStudy}
-              className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-cyan-300 px-5 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-cyan-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-slate-950"
+              className="group inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-neutral-100 px-5 py-2.5 text-sm font-semibold text-neutral-950 transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-neutral-950"
             >
               View Case Study
               <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
@@ -354,7 +354,7 @@ function ProjectDetails({
               href={project.links.live}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-white/15 bg-white/[0.035] px-4 py-2.5 text-sm font-semibold text-white transition hover:border-cyan-200/40 hover:bg-cyan-300/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-white/15 bg-white/[0.035] px-4 py-2.5 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-neutral-100/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               Live Platform
               <ExternalLink size={14} aria-hidden="true" />
@@ -367,7 +367,7 @@ function ProjectDetails({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`View ${project.title} GitHub repository`}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-white/15 bg-white/[0.035] text-slate-300 transition hover:border-cyan-200/40 hover:bg-cyan-300/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-md border border-white/15 bg-white/[0.035] text-neutral-300 transition hover:border-white/40 hover:bg-neutral-100/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
             >
               <Code2 size={16} aria-hidden="true" />
             </a>
@@ -449,15 +449,15 @@ export default function ProjectsSection() {
       aria-labelledby="projects-heading"
       tabIndex={-1}
       onKeyDown={handleKeyDown}
-      className="relative isolate scroll-mt-20 overflow-hidden bg-slate-950/78 py-20 sm:py-28"
+      className="relative isolate scroll-mt-20 overflow-hidden bg-neutral-950/78 py-20 sm:py-28"
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-24 -z-10 h-px bg-gradient-to-r from-transparent via-cyan-200/20 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-24 -z-10 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-[30rem] w-[min(76rem,92vw)] -translate-x-1/2 rounded-full bg-cyan-400/[0.045] blur-3xl"
+        className="pointer-events-none absolute left-1/2 top-1/3 -z-10 h-[30rem] w-[min(76rem,92vw)] -translate-x-1/2 rounded-full bg-neutral-300/[0.045] blur-3xl"
       />
 
       <Container>
@@ -469,7 +469,7 @@ export default function ProjectsSection() {
             description="Explore the interfaces, workflows, and tools behind projects built for learning, operations, client management, and IT support."
           />
 
-          <p className="max-w-xs text-sm leading-6 text-slate-500 lg:pb-1 lg:text-right">
+          <p className="max-w-xs text-sm leading-6 text-neutral-500 lg:pb-1 lg:text-right">
             Select a preview to bring it forward. The collection stays in your hands.
           </p>
         </div>
@@ -496,10 +496,10 @@ export default function ProjectsSection() {
             </div>
 
             <div className="mt-5 flex items-center justify-between gap-4 md:hidden">
-              <span className="text-[0.63rem] font-semibold uppercase tracking-[0.2em] text-slate-500">
+              <span className="text-[0.63rem] font-semibold uppercase tracking-[0.2em] text-neutral-500">
                 More projects
               </span>
-              <span className="font-mono text-xs text-slate-500">Swipe or select</span>
+              <span className="font-mono text-xs text-neutral-500">Swipe or select</span>
             </div>
 
             <div
@@ -520,9 +520,9 @@ export default function ProjectsSection() {
                     aria-selected={isActive}
                     aria-label={`Select ${project.title}`}
                     onClick={() => selectProject(index)}
-                    className={`w-40 shrink-0 snap-start overflow-hidden rounded-lg border text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 ${
+                    className={`w-40 shrink-0 snap-start overflow-hidden rounded-lg border text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
                       isActive
-                        ? "border-cyan-200/45 bg-cyan-300/10"
+                        ? "border-white/45 bg-neutral-100/10"
                         : "border-white/10 bg-white/[0.025]"
                     }`}
                   >
@@ -533,7 +533,7 @@ export default function ProjectsSection() {
                       decoding="async"
                       className="aspect-[16/10] w-full object-cover object-top"
                     />
-                    <span className="block truncate px-3 py-2 text-xs font-medium text-slate-200">
+                    <span className="block truncate px-3 py-2 text-xs font-medium text-neutral-200">
                       {project.shortName}
                     </span>
                   </button>
@@ -564,15 +564,15 @@ export default function ProjectsSection() {
                     aria-label={`Select project ${index + 1}: ${project.title}`}
                     aria-current={index === safeActiveIndex ? "true" : undefined}
                     onClick={() => selectProject(index)}
-                    className={`h-1.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 ${
+                    className={`h-1.5 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
                       index === safeActiveIndex
-                        ? "w-10 bg-cyan-300"
-                        : "w-4 bg-slate-700 hover:bg-slate-500"
+                        ? "w-10 bg-neutral-100"
+                        : "w-4 bg-neutral-700 hover:bg-neutral-500"
                     }`}
                   />
                 ))}
               </div>
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-neutral-600">
                 Focus the gallery and use the arrow keys to move through the work.
               </p>
             </div>

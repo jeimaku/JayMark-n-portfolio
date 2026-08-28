@@ -11,15 +11,13 @@ import useMotionRuntime from "./useMotionRuntime";
 export default function useSkillsMotion() {
   const {
     allowEntranceMotion,
-    allowScrollLinkedMotion,
-    allowComplexMotion,
+    isMobile,
     prefersReducedMotion,
   } = useMotionRuntime();
 
   return {
     allowEntranceMotion,
-    allowScrollLinkedMotion,
-    allowComplexMotion,
+    isMobile,
     prefersReducedMotion,
   };
 }

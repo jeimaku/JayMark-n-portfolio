@@ -2,11 +2,11 @@ import { cn } from "../../lib/utils";
 
 const variants = {
   primary:
-    "bg-cyan-300 text-slate-950 hover:bg-cyan-200 shadow-[0_0_32px_rgba(34,211,238,0.18)]",
+    "bg-neutral-100 text-neutral-950 hover:bg-white shadow-[0_12px_30px_rgba(0,0,0,0.42)]",
   secondary:
-    "border border-white/15 bg-white/[0.03] text-white hover:border-cyan-300/50 hover:bg-white/[0.07]",
+    "border border-white/15 bg-white/[0.03] text-white hover:border-neutral-100/50 hover:bg-white/[0.07]",
   ghost:
-    "text-slate-300 hover:bg-white/[0.06] hover:text-white",
+    "text-neutral-300 hover:bg-white/[0.06] hover:text-white",
 };
 
 const sizes = {
@@ -28,7 +28,7 @@ export default function Button({
 }) {
   const classes = cn(
     "group inline-flex max-w-full items-center justify-center gap-2 rounded-full text-center font-semibold tracking-tight transition duration-300",
-    "focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950",
+    "focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-100 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950",
     variants[variant],
     sizes[size],
     className

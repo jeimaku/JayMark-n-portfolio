@@ -10,7 +10,7 @@ export default function HeroStaticFallback({
     useState(false);
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-slate-950">
+    <div className="relative h-full w-full overflow-hidden bg-neutral-950">
       {!imageFailed ? (
         <img
           src={FALLBACK_IMAGE}
@@ -23,7 +23,7 @@ export default function HeroStaticFallback({
       ) : (
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-[radial-gradient(circle_at_55%_45%,rgba(34,211,238,0.14),transparent_26rem)]"
+          className="absolute inset-0 bg-[radial-gradient(circle_at_55%_45%,rgba(255,255,255,0.14),transparent_26rem)]"
         />
       )}
 
@@ -32,7 +32,7 @@ export default function HeroStaticFallback({
       </p>
 
       <div className="pointer-events-none absolute bottom-4 right-4 hidden lg:flex">
-        <p className="max-w-xs rounded-full border border-white/10 bg-slate-950/80 px-4 py-2 text-center text-xs leading-5 text-slate-300 backdrop-blur">
+        <p className="max-w-xs rounded-full border border-white/10 bg-neutral-950/80 px-4 py-2 text-center text-xs leading-5 text-neutral-300 backdrop-blur">
           {message}
         </p>
       </div>

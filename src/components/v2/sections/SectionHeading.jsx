@@ -38,10 +38,10 @@ export default function SectionHeading({
         <div className="flex items-center gap-3">
           <span
             aria-hidden="true"
-            className="h-px w-8 bg-cyan-300/50"
+            className="h-px w-8 bg-neutral-100/50"
           />
 
-          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-cyan-200">
+          <p className="text-xs font-semibold uppercase tracking-[0.26em] text-white">
             {eyebrow}
           </p>
         </div>
@@ -55,7 +55,7 @@ export default function SectionHeading({
       </h2>
 
       {description ? (
-        <p className="mt-5 text-base leading-8 text-slate-400 sm:text-lg">
+        <p className="mt-5 text-base leading-8 text-neutral-400 sm:text-lg">
           {description}
         </p>
       ) : null}

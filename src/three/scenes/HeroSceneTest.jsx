@@ -13,7 +13,7 @@ const HDRI_PATH =
 export default function HeroSceneTest() {
   return (
     <>
-      <color attach="background" args={["#020617"]} />
+      <color attach="background" args={["#050505"]} />
 
       <ambientLight intensity={0.25} />
 

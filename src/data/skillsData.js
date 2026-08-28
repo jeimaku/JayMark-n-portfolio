@@ -610,7 +610,7 @@ export const itSupportCapabilities = [
     id: "hardware",
     label: "Hardware",
     icon: "hardware",
-    accent: "#67E8F9",
+    accent: "#F5F5F5",
     status: "Field diagnostics",
     skills: [
       "Hardware troubleshooting",
@@ -622,7 +622,7 @@ export const itSupportCapabilities = [
     id: "networking",
     label: "Networking",
     icon: "networking",
-    accent: "#A5B4FC",
+    accent: "#B8B8B8",
     status: "Network layer",
     skills: [
       "Network fundamentals",
@@ -636,7 +636,7 @@ export const itSupportCapabilities = [
     id: "systems",
     label: "Systems",
     icon: "systems",
-    accent: "#6EE7B7",
+    accent: "#A3A3A3",
     status: "System administration",
     skills: [
       "Software troubleshooting",

@@ -47,11 +47,11 @@ function ExternalLinkIcon() {
 function MetadataItem({ label, value }) {
   return (
     <li className="border-t border-white/10 py-4 first:border-t-0 first:pt-0 sm:border-l sm:border-t-0 sm:py-0 sm:pl-5 first:sm:border-l-0 first:sm:pl-0">
-      <p className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-slate-500">
+      <p className="text-[0.62rem] font-semibold uppercase tracking-[0.18em] text-neutral-500">
         {label}
       </p>
 
-      <p className="mt-2 text-sm font-medium leading-6 text-slate-200">
+      <p className="mt-2 text-sm font-medium leading-6 text-neutral-200">
         {value}
       </p>
     </li>
@@ -76,16 +76,16 @@ export default function CaseStudyHero({
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
       >
-        <div className="absolute left-[4%] top-[12%] h-96 w-96 rounded-full bg-cyan-400/[0.055] blur-3xl" />
+        <div className="absolute left-[4%] top-[12%] h-96 w-96 rounded-full bg-neutral-300/[0.055] blur-3xl" />
 
-        <div className="absolute right-[5%] top-[8%] h-[30rem] w-[30rem] rounded-full bg-indigo-400/[0.04] blur-3xl" />
+        <div className="absolute right-[5%] top-[8%] h-[30rem] w-[30rem] rounded-full bg-neutral-500/[0.04] blur-3xl" />
 
-        <div className="absolute inset-0 opacity-[0.03] [background-image:linear-gradient(rgba(148,163,184,0.45)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.45)_1px,transparent_1px)] [background-size:72px_72px]" />
+        <div className="absolute inset-0 opacity-[0.03] [background-image:linear-gradient(rgba(163,163,163,0.45)_1px,transparent_1px),linear-gradient(90deg,rgba(163,163,163,0.45)_1px,transparent_1px)] [background-size:72px_72px]" />
       </div>
 
       <div className="mx-auto grid w-full max-w-[90rem] gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[0.88fr_1.12fr] lg:items-center lg:gap-14 lg:px-10 lg:py-24 xl:gap-20">
         <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-cyan-200">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white">
             {eyebrow}
           </p>
 
@@ -97,12 +97,12 @@ export default function CaseStudyHero({
           </h1>
 
           {subtitle ? (
-            <p className="mt-5 max-w-2xl text-xl font-medium leading-tight text-cyan-100 sm:text-2xl">
+            <p className="mt-5 max-w-2xl text-xl font-medium leading-tight text-neutral-100 sm:text-2xl">
               {subtitle}
             </p>
           ) : null}
 
-          <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+          <p className="mt-6 max-w-2xl text-base leading-8 text-neutral-300 sm:text-lg">
             {summary}
           </p>
 
@@ -132,13 +132,13 @@ export default function CaseStudyHero({
                       "text-sm font-semibold transition",
                       "focus-visible:outline-none",
                       "focus-visible:ring-2",
-                      "focus-visible:ring-cyan-200",
+                      "focus-visible:ring-white",
                       "focus-visible:ring-offset-4",
-                      "focus-visible:ring-offset-slate-950",
+                      "focus-visible:ring-offset-neutral-950",
                       "sm:w-auto",
                       primary
-                        ? "bg-cyan-300 text-slate-950 hover:bg-cyan-200"
-                        : "border border-white/15 bg-white/[0.035] text-white hover:border-cyan-200/40 hover:bg-cyan-300/[0.06]",
+                        ? "bg-neutral-100 text-neutral-950 hover:bg-white"
+                        : "border border-white/15 bg-white/[0.035] text-white hover:border-white/40 hover:bg-neutral-100/[0.06]",
                     ].join(" ")}
                   >
                     {action.label}

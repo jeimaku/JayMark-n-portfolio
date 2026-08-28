@@ -67,7 +67,7 @@ export default function CreativeWorkSection() {
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[28rem] w-[min(72rem,96vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/[0.045] blur-3xl"
+        className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[28rem] w-[min(72rem,96vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-neutral-100/[0.045] blur-3xl"
       />
 
       <Container className="max-w-[90rem]">

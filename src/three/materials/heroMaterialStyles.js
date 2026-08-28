@@ -68,7 +68,7 @@ function updateStandardMaterial(
 function styleDesk({ material }) {
   if (material.name === "DarkWood") {
     updateStandardMaterial(material, {
-      color: "#0f172a",
+      color: "#111111",
       roughness: 0.48,
       metalness: 0.22,
     });
@@ -78,7 +78,7 @@ function styleDesk({ material }) {
 
   if (material.name === "Wood") {
     updateStandardMaterial(material, {
-      color: "#1e293b",
+      color: "#202020",
       roughness: 0.52,
       metalness: 0.16,
     });
@@ -88,7 +88,7 @@ function styleDesk({ material }) {
 function styleMonitor({ material }) {
   if (material.name === "metalDark") {
     updateStandardMaterial(material, {
-      color: "#111827",
+      color: "#171717",
       roughness: 0.3,
       metalness: 0.62,
     });
@@ -105,8 +105,8 @@ function styleMonitor({ material }) {
     material.emissiveMap = null;
 
     updateStandardMaterial(material, {
-      color: "#020617",
-      emissive: "#020617",
+      color: "#050505",
+      emissive: "#050505",
       emissiveIntensity: 0.08,
       roughness: 0.24,
       metalness: 0.12,
@@ -123,8 +123,8 @@ function styleMicrophone({ material }) {
   // Original red illuminated ring.
   if (color === "b90c18" || emissive === "ff0000") {
     updateStandardMaterial(material, {
-      color: "#22d3ee",
-      emissive: "#0891b2",
+      color: "#f5f5f5",
+      emissive: "#8e8e8e",
       emissiveIntensity: 1.2,
       roughness: 0.25,
       metalness: 0.5,
@@ -136,7 +136,7 @@ function styleMicrophone({ material }) {
   // Lighter metallic microphone parts.
   if (color === "9c9c9c") {
     updateStandardMaterial(material, {
-      color: "#64748b",
+      color: "#767676",
       roughness: 0.24,
       metalness: 0.72,
     });
@@ -146,7 +146,7 @@ function styleMicrophone({ material }) {
 
   // Remaining microphone body materials.
   updateStandardMaterial(material, {
-    color: color === "000000" ? "#020617" : "#111827",
+    color: color === "000000" ? "#050505" : "#171717",
     roughness: 0.36,
     metalness: 0.5,
   });
@@ -158,7 +158,7 @@ function styleRouter({ material }) {
   switch (color) {
     case "424242":
       updateStandardMaterial(material, {
-        color: "#111827",
+        color: "#171717",
         roughness: 0.4,
         metalness: 0.34,
       });
@@ -166,7 +166,7 @@ function styleRouter({ material }) {
 
     case "b4b4b4":
       updateStandardMaterial(material, {
-        color: "#334155",
+        color: "#3a3a3a",
         roughness: 0.42,
         metalness: 0.32,
       });
@@ -174,7 +174,7 @@ function styleRouter({ material }) {
 
     case "161616":
       updateStandardMaterial(material, {
-        color: "#020617",
+        color: "#050505",
         roughness: 0.4,
         metalness: 0.4,
       });
@@ -205,8 +205,8 @@ function styleRouter({ material }) {
     // Wi-Fi symbol.
     case "167fe7":
       updateStandardMaterial(material, {
-        color: "#22d3ee",
-        emissive: "#0891b2",
+        color: "#f5f5f5",
+        emissive: "#8e8e8e",
         emissiveIntensity: 1.15,
         roughness: 0.28,
         metalness: 0.25,
@@ -229,7 +229,7 @@ function styleServer({ material }) {
 
   // Convert the large white server door into dark transparent glass.
   updateStandardMaterial(material, {
-    color: "#0f172a",
+    color: "#111111",
     roughness: 0.16,
     metalness: 0.22,
     opacity: 0.28,

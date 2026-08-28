@@ -51,7 +51,7 @@ export default function SocialPreview() {
         h-[630px]
         w-[1200px]
         overflow-hidden
-        bg-[#020617]
+        bg-[#050505]
         text-white
       "
     >
@@ -68,12 +68,12 @@ export default function SocialPreview() {
           backgroundImage: `
             linear-gradient(
               to right,
-              #67e8f9 1px,
+              #ffffff 1px,
               transparent 1px
             ),
             linear-gradient(
               to bottom,
-              #67e8f9 1px,
+              #ffffff 1px,
               transparent 1px
             )
           `,
@@ -93,12 +93,12 @@ export default function SocialPreview() {
           background: `
             radial-gradient(
               ellipse 45% 60% at 22% 50%,
-              rgba(34,211,238,0.12),
+              rgba(255,255,255,0.12),
               transparent 70%
             ),
             radial-gradient(
               ellipse 35% 55% at 85% 50%,
-              rgba(34,211,238,0.10),
+              rgba(255,255,255,0.10),
               transparent 70%
             )
           `,
@@ -121,7 +121,7 @@ export default function SocialPreview() {
               h-1
               w-1
               rounded-full
-              bg-cyan-300/50
+              bg-neutral-100/50
             "
             style={{
               left: `${x}%`,
@@ -173,15 +173,15 @@ export default function SocialPreview() {
               gap-2
               rounded-full
               border
-              border-cyan-300/20
-              bg-cyan-300/[0.05]
+              border-neutral-100/20
+              bg-neutral-100/[0.05]
               px-4
               py-2
               font-mono
               text-xs
               uppercase
               tracking-[0.22em]
-              text-cyan-200
+              text-white
             "
           >
             <span
@@ -219,7 +219,7 @@ export default function SocialPreview() {
               text-sm
               uppercase
               tracking-[0.32em]
-              text-cyan-300
+              text-neutral-100
             "
           >
             Full-Stack Developer · IT Support Specialist
@@ -233,7 +233,7 @@ export default function SocialPreview() {
               max-w-xl
               text-lg
               leading-relaxed
-              text-slate-400
+              text-neutral-400
             "
           >
             Building reliable systems,
@@ -257,7 +257,7 @@ export default function SocialPreview() {
                 className="
                   rounded-full
                   border
-                  border-cyan-300/20
+                  border-neutral-100/20
                   bg-white/[0.03]
                   px-4
                   py-2
@@ -265,7 +265,7 @@ export default function SocialPreview() {
                   text-xs
                   uppercase
                   tracking-[0.16em]
-                  text-slate-300
+                  text-neutral-300
                 "
               >
                 {tech}
@@ -285,7 +285,7 @@ export default function SocialPreview() {
             rounded-3xl
             border
             border-white/[0.10]
-            bg-slate-950/70
+            bg-neutral-950/70
             p-6
             shadow-2xl
             backdrop-blur
@@ -311,7 +311,7 @@ export default function SocialPreview() {
                   text-xs
                   uppercase
                   tracking-[0.3em]
-                  text-cyan-300
+                  text-neutral-100
                 "
               >
                 jaymark.dev
@@ -321,7 +321,7 @@ export default function SocialPreview() {
                 className="
                   mt-2
                   text-xs
-                  text-slate-500
+                  text-neutral-500
                 "
               >
                 System overview
@@ -362,7 +362,7 @@ export default function SocialPreview() {
                 <span
                   className="
                     text-sm
-                    text-slate-400
+                    text-neutral-400
                   "
                 >
                   {item.label}
@@ -373,7 +373,7 @@ export default function SocialPreview() {
                   className="
                     font-mono
                     text-sm
-                    text-cyan-300
+                    text-neutral-100
                   "
                 >
                   {item.value}
@@ -391,8 +391,8 @@ export default function SocialPreview() {
               mt-7
               rounded-2xl
               border
-              border-cyan-300/10
-              bg-cyan-300/[0.03]
+              border-neutral-100/10
+              bg-neutral-100/[0.03]
               p-4
             "
           >
@@ -403,7 +403,7 @@ export default function SocialPreview() {
                 text-[0.65rem]
                 uppercase
                 tracking-[0.25em]
-                text-slate-500
+                text-neutral-500
               "
             >
               Active Stack
@@ -428,7 +428,7 @@ export default function SocialPreview() {
                     px-3
                     py-1
                     text-xs
-                    text-slate-300
+                    text-neutral-300
                   "
                 >
                   {item}

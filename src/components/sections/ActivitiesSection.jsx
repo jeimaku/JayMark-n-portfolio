@@ -53,12 +53,12 @@ export default function ActivitiesSection() {
                 description="Beyond software development, I have also worked on video editing, photography, event coverage, and creative media outputs for academic and campus activities."
               />
 
-              <div className="mt-8 rounded-[1.75rem] border border-cyan-300/20 bg-cyan-300/10 p-5 sm:p-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/25 bg-slate-950/50 text-cyan-200">
+              <div className="mt-8 rounded-[1.75rem] border border-neutral-100/20 bg-neutral-100/10 p-5 sm:p-6">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-100/25 bg-neutral-950/50 text-white">
                   <Sparkles size={22} />
                 </div>
 
-                <p className="mt-5 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+                <p className="mt-5 text-sm font-semibold uppercase tracking-[0.25em] text-white">
                   Creative Side
                 </p>
 
@@ -66,25 +66,25 @@ export default function ActivitiesSection() {
                   Design, storytelling, and visual communication.
                 </p>
 
-                <p className="mt-4 text-sm leading-7 text-slate-400">
+                <p className="mt-4 text-sm leading-7 text-neutral-400">
                   These activities show the creative side of my academic journey,
                   including editing, photography, organization content, and event
                   documentation.
                 </p>
 
                 <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+                  <div className="rounded-2xl border border-white/10 bg-neutral-950/40 p-4">
                     <p className="text-2xl font-semibold text-white">
                       {activities.length}
                     </p>
-                    <p className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-500">
+                    <p className="mt-1 text-xs uppercase tracking-[0.2em] text-neutral-500">
                       Activities
                     </p>
                   </div>
 
-                  <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
+                  <div className="rounded-2xl border border-white/10 bg-neutral-950/40 p-4">
                     <p className="text-2xl font-semibold text-white">Media</p>
-                    <p className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-500">
+                    <p className="mt-1 text-xs uppercase tracking-[0.2em] text-neutral-500">
                       Focus
                     </p>
                   </div>
@@ -113,8 +113,8 @@ export default function ActivitiesSection() {
                               className="aspect-[16/10] rounded-2xl"
                             />
 
-                            <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-slate-950/10 transition group-hover:bg-slate-950/20">
-                              <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-slate-950/70 text-white shadow-2xl backdrop-blur">
+                            <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-neutral-950/10 transition group-hover:bg-neutral-950/20">
+                              <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-neutral-950/70 text-white shadow-2xl backdrop-blur">
                                 {hasVideo ? (
                                   <Play size={22} fill="currentColor" />
                                 ) : (
@@ -123,7 +123,7 @@ export default function ActivitiesSection() {
                               </div>
                             </div>
 
-                            <div className="absolute left-4 top-4 rounded-full border border-cyan-300/20 bg-slate-950/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-100 backdrop-blur">
+                            <div className="absolute left-4 top-4 rounded-full border border-neutral-100/20 bg-neutral-950/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-neutral-100 backdrop-blur">
                               {hasVideo ? "Play in page" : "View in page"}
                             </div>
                           </button>
@@ -132,18 +132,18 @@ export default function ActivitiesSection() {
                             <div className="flex flex-wrap items-center gap-2">
                               <Badge>{activity.type}</Badge>
 
-                              <Badge className="gap-2 border-white/10 bg-white/[0.03] text-slate-200">
+                              <Badge className="gap-2 border-white/10 bg-white/[0.03] text-neutral-200">
                                 <Calendar size={13} />
                                 {activity.date}
                               </Badge>
 
-                              <Badge className="border-white/10 bg-white/[0.03] text-slate-200">
+                              <Badge className="border-white/10 bg-white/[0.03] text-neutral-200">
                                 0{index + 1}
                               </Badge>
                             </div>
 
                             <div className="mt-5 flex items-start gap-4">
-                              <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200 sm:flex">
+                              <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-neutral-100/20 bg-neutral-100/10 text-white sm:flex">
                                 <Icon size={22} />
                               </div>
 
@@ -152,14 +152,14 @@ export default function ActivitiesSection() {
                                   {activity.title}
                                 </h3>
 
-                                <p className="mt-4 text-sm leading-7 text-slate-400 md:text-base">
+                                <p className="mt-4 text-sm leading-7 text-neutral-400 md:text-base">
                                   {activity.caption}
                                 </p>
                               </div>
                             </div>
 
                             {activity.credits && (
-                              <p className="mt-5 break-safe rounded-2xl border border-white/10 bg-white/[0.025] p-4 text-sm leading-6 text-slate-300">
+                              <p className="mt-5 break-safe rounded-2xl border border-white/10 bg-white/[0.025] p-4 text-sm leading-6 text-neutral-300">
                                 {activity.credits}
                               </p>
                             )}

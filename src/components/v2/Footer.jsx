@@ -59,7 +59,7 @@ export default function Footer() {
       className={[
         "relative isolate overflow-hidden",
         "border-t border-white/[0.08]",
-        "bg-slate-950/80",
+        "bg-neutral-950/80",
         "py-10 sm:py-12",
       ].join(" ")}
     >
@@ -73,7 +73,7 @@ export default function Footer() {
           "h-[30rem] w-[min(70rem,95vw)]",
           "-translate-x-1/2",
           "rounded-full",
-          "bg-cyan-400/[0.08]",
+          "bg-neutral-300/[0.08]",
           "blur-3xl",
           "will-change-transform",
         ].join(" ")}
@@ -86,8 +86,8 @@ export default function Footer() {
           "absolute inset-0 -z-30",
           "bg-gradient-to-b",
           "from-transparent",
-          "via-slate-950/82",
-          "to-slate-950/90",
+          "via-neutral-950/82",
+          "to-neutral-950/90",
         ].join(" ")}
       />
 
@@ -108,16 +108,16 @@ export default function Footer() {
                   "text-lg font-semibold",
                   "tracking-tight text-white",
                   "transition duration-300",
-                  "hover:text-cyan-100",
+                  "hover:text-neutral-100",
                   "focus-visible:outline-none",
                   "focus-visible:ring-2",
-                  "focus-visible:ring-cyan-200",
+                  "focus-visible:ring-white",
                 ].join(" ")}
               >
                 {profile.name}
               </a>
 
-              <p className="mt-3 max-w-lg text-sm leading-7 text-slate-400">
+              <p className="mt-3 max-w-lg text-sm leading-7 text-neutral-400">
                 {profile.headline}
               </p>
 
@@ -127,12 +127,12 @@ export default function Footer() {
                   "group mt-6 inline-flex",
                   "items-center gap-2",
                   "text-sm font-semibold",
-                  "text-cyan-200",
+                  "text-white",
                   "transition duration-300",
-                  "hover:text-cyan-100",
+                  "hover:text-neutral-100",
                   "focus-visible:outline-none",
                   "focus-visible:ring-2",
-                  "focus-visible:ring-cyan-200",
+                  "focus-visible:ring-white",
                 ].join(" ")}
               >
                 Back to top
@@ -158,12 +158,12 @@ export default function Footer() {
                         key={link.label}
                         href={link.href}
                         className={[
-                          "text-sm text-slate-400",
+                          "text-sm text-neutral-400",
                           "transition duration-300",
-                          "hover:text-cyan-200",
+                          "hover:text-white",
                           "focus-visible:outline-none",
                           "focus-visible:ring-2",
-                          "focus-visible:ring-cyan-200",
+                          "focus-visible:ring-white",
                         ].join(" ")}
                       >
                         {link.label}
@@ -198,14 +198,14 @@ export default function Footer() {
                 "absolute inset-x-0 top-0",
                 "h-px origin-left",
                 "bg-gradient-to-r",
-                "from-cyan-300/70",
-                "via-cyan-200/30",
+                "from-neutral-100/70",
+                "via-white/30",
                 "to-transparent",
-                "shadow-[0_0_16px_rgba(34,211,238,0.25)]",
+                "shadow-[0_0_16px_rgba(255,255,255,0.09)]",
               ].join(" ")}
             />
 
-            <div className="flex flex-col gap-3 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-3 text-sm text-neutral-500 sm:flex-row sm:items-center sm:justify-between">
               <p>
                 © {currentYear} {profile.name}.
                 All rights reserved.

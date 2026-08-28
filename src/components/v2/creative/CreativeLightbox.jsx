@@ -214,7 +214,7 @@ export default function CreativeLightbox({
             }
           }}
           onKeyDown={handleDialogKeyDown}
-          className="fixed inset-0 z-[130] flex items-center justify-center bg-slate-950/92 p-3 backdrop-blur-xl sm:p-6"
+          className="fixed inset-0 z-[130] flex items-center justify-center bg-neutral-950/92 p-3 backdrop-blur-xl sm:p-6"
         >
           <motion.section
             initial={
@@ -233,11 +233,11 @@ export default function CreativeLightbox({
               ease: [0.22, 1, 0.36, 1],
             }}
             onClick={(event) => event.stopPropagation()}
-            className="relative flex max-h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-[1.75rem] border border-white/15 bg-slate-950 shadow-[0_35px_120px_rgba(0,0,0,0.7)]"
+            className="relative flex max-h-[94vh] w-full max-w-6xl flex-col overflow-hidden rounded-[1.75rem] border border-white/15 bg-neutral-950 shadow-[0_35px_120px_rgba(0,0,0,0.7)]"
           >
             <header className="flex items-start justify-between gap-5 border-b border-white/10 px-4 py-4 sm:px-6">
               <div className="min-w-0">
-                <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-cyan-200">
+                <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-white">
                   {activeImage.category ?? "Artwork"}
                 </p>
 
@@ -254,7 +254,7 @@ export default function CreativeLightbox({
                 type="button"
                 onClick={requestClose}
                 aria-label="Close artwork viewer"
-                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-slate-300 transition hover:border-cyan-300/35 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.035] text-neutral-300 transition hover:border-neutral-100/35 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
                 <X size={19} aria-hidden="true" />
               </button>
@@ -290,7 +290,7 @@ export default function CreativeLightbox({
                 onClick={() => navigateToIndex(activeIndex - 1)}
                 disabled={!canNavigatePrevious}
                 aria-label="View previous artwork"
-                className="absolute left-5 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-slate-950/75 text-white shadow-lg shadow-black/30 backdrop-blur transition hover:border-cyan-200/50 hover:bg-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 disabled:pointer-events-none disabled:opacity-30 sm:left-7"
+                className="absolute left-5 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-neutral-950/75 text-white shadow-lg shadow-black/30 backdrop-blur transition hover:border-white/50 hover:bg-neutral-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:pointer-events-none disabled:opacity-30 sm:left-7"
               >
                 <ChevronLeft size={21} aria-hidden="true" />
               </button>
@@ -300,7 +300,7 @@ export default function CreativeLightbox({
                 onClick={() => navigateToIndex(activeIndex + 1)}
                 disabled={!canNavigateNext}
                 aria-label="View next artwork"
-                className="absolute right-5 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-slate-950/75 text-white shadow-lg shadow-black/30 backdrop-blur transition hover:border-cyan-200/50 hover:bg-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 disabled:pointer-events-none disabled:opacity-30 sm:right-7"
+                className="absolute right-5 top-1/2 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-neutral-950/75 text-white shadow-lg shadow-black/30 backdrop-blur transition hover:border-white/50 hover:bg-neutral-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white disabled:pointer-events-none disabled:opacity-30 sm:right-7"
               >
                 <ChevronRight size={21} aria-hidden="true" />
               </button>
@@ -308,14 +308,14 @@ export default function CreativeLightbox({
 
             <footer
               id={metadataId}
-              className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-white/10 px-4 py-3 text-xs text-slate-400 sm:px-6"
+              className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-white/10 px-4 py-3 text-xs text-neutral-400 sm:px-6"
             >
               <span>{activeImage.group ?? "Selected work"}</span>
-              <span aria-hidden="true" className="text-slate-600">
+              <span aria-hidden="true" className="text-neutral-600">
                 /
               </span>
               <span>{activeImage.category ?? "Artwork"}</span>
-              <span aria-hidden="true" className="text-slate-600">
+              <span aria-hidden="true" className="text-neutral-600">
                 /
               </span>
               <span>

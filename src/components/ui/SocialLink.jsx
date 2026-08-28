@@ -21,7 +21,7 @@ export default function SocialLink({ link, className = "" }) {
       aria-label={link.label}
       className={
         className ||
-        "flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-slate-400 transition hover:border-cyan-300/40 hover:bg-cyan-300/10 hover:text-cyan-200"
+        "flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-neutral-400 transition hover:border-neutral-100/40 hover:bg-neutral-100/10 hover:text-white"
       }
     >
       <Icon size={18} />

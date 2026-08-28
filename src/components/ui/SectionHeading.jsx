@@ -12,7 +12,7 @@ export default function SectionHeading({
   return (
     <div className={cn("max-w-3xl", alignment, className)}>
       {eyebrow && (
-        <p className="mb-4 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-cyan-300 sm:text-xs sm:tracking-[0.35em]">
+        <p className="mb-4 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-neutral-100 sm:text-xs sm:tracking-[0.35em]">
           {eyebrow}
         </p>
       )}
@@ -22,7 +22,7 @@ export default function SectionHeading({
       </h2>
 
       {description && (
-        <p className="mt-5 text-base leading-7 text-slate-400 md:text-lg">
+        <p className="mt-5 text-base leading-7 text-neutral-400 md:text-lg">
           {description}
         </p>
       )}

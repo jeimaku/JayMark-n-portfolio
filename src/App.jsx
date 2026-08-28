@@ -77,7 +77,7 @@ export default function App() {
 
   return (
     <SmoothScrollProvider>
-      <div className="relative min-h-screen bg-slate-950 text-slate-50">
+      <div className="relative min-h-screen bg-[var(--color-bg)] text-[var(--color-text-primary)]">
         {/*
          * The application itself renders immediately
          * underneath the loader.

@@ -31,7 +31,7 @@ export default function HeroWorkspaceScene({
 
   return (
     <>
-      <color attach="background" args={["#020617"]} />
+      <color attach="background" args={["#050505"]} />
 
       {useEnvironment ? (
         <Suspense fallback={null}>
@@ -50,8 +50,8 @@ export default function HeroWorkspaceScene({
       />
 
       <hemisphereLight
-        color="#dbeafe"
-        groundColor="#020617"
+        color="#e5e5e5"
+        groundColor="#050505"
         intensity={quality === "low" ? 0.9 : 0.7}
       />
 
@@ -68,7 +68,7 @@ export default function HeroWorkspaceScene({
             intensity={3.5}
             distance={7}
             decay={2}
-            color="#22d3ee"
+            color="#f5f5f5"
           />
 
           <pointLight
@@ -76,7 +76,7 @@ export default function HeroWorkspaceScene({
             intensity={2}
             distance={6}
             decay={2}
-            color="#818cf8"
+            color="#b8b8b8"
           />
         </>
       ) : null}

@@ -181,7 +181,7 @@ export default function MonitorAssembly({
           screen.centerY,
           screenZ - 0.28,
         ]}
-        color="#22d3ee"
+        color="#f5f5f5"
         intensity={0.32}
         distance={1.8}
         decay={2}

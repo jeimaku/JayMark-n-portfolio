@@ -1,9 +1,9 @@
 import SectionDivider from "./SectionDivider";
 
 const TONE_CLASSES = {
-  default: "bg-slate-950/78",
-  subtle: "bg-slate-950/74",
-  elevated: "bg-slate-900/[0.12]",
+  default: "bg-neutral-950/78",
+  subtle: "bg-neutral-950/74",
+  elevated: "bg-neutral-900/[0.12]",
 };
 
 export default function PageSection({

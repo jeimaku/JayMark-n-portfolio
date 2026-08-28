@@ -27,12 +27,12 @@ export default function EducationSection() {
               description="My education shaped my foundation in programming, systems, databases, mobile development, web applications, and AI-powered project development."
             />
 
-            <div className="mt-8 rounded-[1.75rem] border border-cyan-300/20 bg-cyan-300/10 p-5 sm:p-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/25 bg-slate-950/50 text-cyan-200">
+            <div className="mt-8 rounded-[1.75rem] border border-neutral-100/20 bg-neutral-100/10 p-5 sm:p-6">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-100/25 bg-neutral-950/50 text-white">
                 <Sparkles size={22} />
               </div>
 
-              <p className="mt-5 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+              <p className="mt-5 text-sm font-semibold uppercase tracking-[0.25em] text-white">
                 Academic Focus
               </p>
 
@@ -40,7 +40,7 @@ export default function EducationSection() {
                 From ICT fundamentals to full-stack and mobile development.
               </p>
 
-              <p className="mt-4 text-sm leading-7 text-slate-400">
+              <p className="mt-4 text-sm leading-7 text-neutral-400">
                 My academic journey helped me build a strong technical base,
                 starting from programming and databases, then growing into
                 modern web, mobile, AI, and software project development.
@@ -57,7 +57,7 @@ export default function EducationSection() {
                   <Card>
                     <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
                       <div className="flex min-w-0 flex-col gap-5 sm:flex-row">
-                        <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-cyan-300/20 bg-white p-2 text-cyan-200">
+                        <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-neutral-100/20 bg-white p-2 text-white">
                           {item.logo ? (
                             <img
                               src={item.logo}
@@ -74,7 +74,7 @@ export default function EducationSection() {
                           <div className="flex flex-wrap gap-2">
                             <Badge>{item.status}</Badge>
 
-                            <Badge className="border-white/10 bg-white/[0.03] text-slate-200">
+                            <Badge className="border-white/10 bg-white/[0.03] text-neutral-200">
                               {item.year}
                             </Badge>
                           </div>
@@ -83,33 +83,33 @@ export default function EducationSection() {
                             {item.level}
                           </h3>
 
-                          <p className="mt-2 break-safe text-sm font-medium text-cyan-200 sm:text-base">
+                          <p className="mt-2 break-safe text-sm font-medium text-white sm:text-base">
                             {item.degree}
                           </p>
 
                           {item.specialization && (
-                            <p className="mt-2 break-safe text-sm leading-6 text-slate-300">
+                            <p className="mt-2 break-safe text-sm leading-6 text-neutral-300">
                               Specialization: {item.specialization}
                             </p>
                           )}
 
-                          <p className="mt-3 break-safe text-sm leading-6 text-slate-500">
+                          <p className="mt-3 break-safe text-sm leading-6 text-neutral-500">
                             {item.school}
                           </p>
                         </div>
                       </div>
 
-                      <span className="text-xs font-semibold text-slate-600 xl:shrink-0">
+                      <span className="text-xs font-semibold text-neutral-600 xl:shrink-0">
                         0{index + 1}
                       </span>
                     </div>
 
-                    <p className="mt-7 text-sm leading-7 text-slate-400 md:text-base">
+                    <p className="mt-7 text-sm leading-7 text-neutral-400 md:text-base">
                       {item.description}
                     </p>
 
                     <div className="mt-7">
-                      <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">
+                      <p className="text-sm font-semibold uppercase tracking-[0.22em] text-neutral-500">
                         Achievements
                       </p>
 
@@ -117,7 +117,7 @@ export default function EducationSection() {
                         {item.achievements.map((achievement) => (
                           <Badge
                             key={achievement}
-                            className="border-white/10 bg-white/[0.03] text-slate-200"
+                            className="border-white/10 bg-white/[0.03] text-neutral-200"
                           >
                             {achievement}
                           </Badge>
@@ -126,7 +126,7 @@ export default function EducationSection() {
                     </div>
 
                     <div className="mt-7">
-                      <p className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">
+                      <p className="text-sm font-semibold uppercase tracking-[0.22em] text-neutral-500">
                         Skills Developed
                       </p>
 
@@ -134,7 +134,7 @@ export default function EducationSection() {
                         {item.skills.slice(0, 8).map((skill) => (
                           <div
                             key={skill}
-                            className="break-safe rounded-2xl border border-white/10 bg-white/[0.025] p-4 text-sm leading-6 text-slate-300"
+                            className="break-safe rounded-2xl border border-white/10 bg-white/[0.025] p-4 text-sm leading-6 text-neutral-300"
                           >
                             {skill}
                           </div>

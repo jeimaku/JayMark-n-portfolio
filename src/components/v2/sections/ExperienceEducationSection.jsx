@@ -245,7 +245,7 @@ function ExperienceBadge({
   }
 
   return (
-    <span className="inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/[0.07] px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-cyan-100">
+    <span className="inline-flex rounded-full border border-neutral-100/20 bg-neutral-100/[0.07] px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-neutral-100">
       {children}
     </span>
   );
@@ -265,8 +265,8 @@ function ExperienceMeta({
       ].join(" ")}
     >
       {item.organization ? (
-        <div className="flex items-start gap-2 text-sm leading-6 text-slate-400">
-          <BuildingIcon className="mt-1 h-4 w-4 shrink-0 text-cyan-200/75" />
+        <div className="flex items-start gap-2 text-sm leading-6 text-neutral-400">
+          <BuildingIcon className="mt-1 h-4 w-4 shrink-0 text-white/75" />
 
           <span>
             {item.organization}
@@ -275,15 +275,15 @@ function ExperienceMeta({
       ) : null}
 
       {item.period ? (
-        <div className="flex items-start gap-2 text-sm leading-6 text-slate-500">
-          <CalendarIcon className="mt-1 h-4 w-4 shrink-0 text-slate-500" />
+        <div className="flex items-start gap-2 text-sm leading-6 text-neutral-500">
+          <CalendarIcon className="mt-1 h-4 w-4 shrink-0 text-neutral-500" />
 
           <span>{item.period}</span>
         </div>
       ) : null}
 
       {!compact ? (
-        <p className="font-mono text-xs text-slate-700">
+        <p className="font-mono text-xs text-neutral-700">
           Entry{" "}
           {String(index + 1).padStart(
             2,
@@ -317,8 +317,8 @@ function ExperienceHighlights({
             key={highlight}
             className="h-full"
           >
-            <li className="flex h-full gap-3 rounded-2xl border border-white/10 bg-slate-950/35 p-4 text-sm leading-6 text-slate-300">
-              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-cyan-300/20 bg-cyan-300/[0.07] text-cyan-200">
+            <li className="flex h-full gap-3 rounded-2xl border border-white/10 bg-neutral-950/35 p-4 text-sm leading-6 text-neutral-300">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-neutral-100/20 bg-neutral-100/[0.07] text-white">
                 <CheckIcon className="h-3 w-3" />
               </span>
 
@@ -433,13 +433,13 @@ function ExperienceCard({
           duration: 0.25,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5 shadow-[0_22px_70px_rgba(0,0,0,0.22)] transition duration-300 hover:border-cyan-300/25 hover:bg-white/[0.045] sm:p-6"
+        className="group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.03] p-5 shadow-[0_22px_70px_rgba(0,0,0,0.22)] transition duration-300 hover:border-neutral-100/25 hover:bg-white/[0.045] sm:p-6"
       >
         <div
           aria-hidden="true"
           className={[
             "pointer-events-none absolute inset-0",
-            "bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.085),transparent_20rem)]",
+            "bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.085),transparent_20rem)]",
             active
               ? "opacity-100"
               : "opacity-35",
@@ -451,7 +451,7 @@ function ExperienceCard({
           aria-hidden="true"
           className={[
             "pointer-events-none absolute inset-x-0 top-0 h-px",
-            "bg-gradient-to-r from-transparent via-cyan-200/50 to-transparent",
+            "bg-gradient-to-r from-transparent via-white/50 to-transparent",
             active
               ? "opacity-100"
               : "opacity-0",
@@ -486,10 +486,10 @@ function ExperienceCard({
                 "items-center justify-center",
                 "rounded-2xl border",
                 active
-                  ? "border-cyan-200/35 bg-cyan-300/[0.14] text-cyan-100"
+                  ? "border-white/35 bg-neutral-100/[0.14] text-neutral-100"
                   : completed
-                    ? "border-cyan-300/20 bg-cyan-300/[0.08] text-cyan-200"
-                    : "border-white/10 bg-white/[0.035] text-slate-500",
+                    ? "border-neutral-100/20 bg-neutral-100/[0.08] text-white"
+                    : "border-white/10 bg-white/[0.035] text-neutral-500",
                 "transition duration-500",
               ].join(" ")}
             >
@@ -504,7 +504,7 @@ function ExperienceCard({
           />
 
           {item.description ? (
-            <p className="mt-5 text-sm leading-7 text-slate-400 sm:text-base">
+            <p className="mt-5 text-sm leading-7 text-neutral-400 sm:text-base">
               {item.description}
             </p>
           ) : null}
@@ -530,10 +530,10 @@ function ExperienceCard({
           className={[
             "flex h-7 w-7 items-center justify-center rounded-full border",
             active
-              ? "border-cyan-200 bg-cyan-300 text-slate-950 shadow-[0_0_22px_rgba(34,211,238,0.55)]"
+              ? "border-white bg-neutral-100 text-neutral-950 shadow-[0_0_22px_rgba(255,255,255,0.18)]"
               : completed
-                ? "border-cyan-300/40 bg-cyan-300/[0.12] text-cyan-200"
-                : "border-white/15 bg-slate-950 text-slate-600",
+                ? "border-neutral-100/40 bg-neutral-100/[0.12] text-white"
+                : "border-white/15 bg-neutral-950 text-neutral-600",
             "transition duration-500",
           ].join(" ")}
         >
@@ -569,10 +569,10 @@ function ExperienceCard({
             "relative z-10 mt-8 flex h-10 w-10",
             "items-center justify-center rounded-full border",
             active
-              ? "border-cyan-100 bg-cyan-300 text-slate-950 shadow-[0_0_28px_rgba(34,211,238,0.62)]"
+              ? "border-neutral-100 bg-neutral-100 text-neutral-950 shadow-[0_0_28px_rgba(255,255,255,0.2)]"
               : completed
-                ? "border-cyan-300/40 bg-cyan-300/[0.12] text-cyan-100"
-                : "border-white/15 bg-slate-950 text-slate-600",
+                ? "border-neutral-100/40 bg-neutral-100/[0.12] text-neutral-100"
+                : "border-white/15 bg-neutral-950 text-neutral-600",
             "transition duration-500",
           ].join(" ")}
         >
@@ -605,7 +605,7 @@ function EducationAchievement({
   achievement,
 }) {
   return (
-    <li className="inline-flex rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 text-xs font-semibold leading-5 text-slate-300">
+    <li className="inline-flex rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 text-xs font-semibold leading-5 text-neutral-300">
       {achievement}
     </li>
   );
@@ -703,16 +703,16 @@ function EducationCard({
           duration: 0.25,
           ease: [0.22, 1, 0.36, 1],
         }}
-        className="group relative h-full overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] p-5 shadow-[0_28px_80px_rgba(0,0,0,0.22)] transition duration-300 hover:border-cyan-300/25 hover:bg-white/[0.045] sm:p-7"
+        className="group relative h-full overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] p-5 shadow-[0_28px_80px_rgba(0,0,0,0.22)] transition duration-300 hover:border-neutral-100/25 hover:bg-white/[0.045] sm:p-7"
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.075),transparent_22rem)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(163,163,163,0.075),transparent_22rem)]"
         />
 
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-indigo-200/35 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-neutral-300/35 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         />
 
         <div className="relative">
@@ -736,11 +736,11 @@ function EducationCard({
                   className="h-full w-full object-contain"
                 />
               ) : (
-                <EducationIcon className="h-8 w-8 text-cyan-200" />
+                <EducationIcon className="h-8 w-8 text-white" />
               )}
             </motion.div>
 
-            <span className="font-mono text-xs text-slate-700">
+            <span className="font-mono text-xs text-neutral-700">
               {String(index + 1).padStart(
                 2,
                 "0"
@@ -749,7 +749,7 @@ function EducationCard({
           </div>
 
           {item.status ? (
-            <span className="mt-6 inline-flex rounded-full border border-indigo-300/20 bg-indigo-300/[0.07] px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-indigo-100">
+            <span className="mt-6 inline-flex rounded-full border border-neutral-400/20 bg-neutral-400/[0.07] px-3 py-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.16em] text-neutral-100">
               {item.status}
             </span>
           ) : null}
@@ -762,13 +762,13 @@ function EducationCard({
 
           {item.degree &&
           item.degree !== item.level ? (
-            <p className="mt-3 text-base font-medium leading-7 text-cyan-100/90">
+            <p className="mt-3 text-base font-medium leading-7 text-neutral-100/90">
               {item.degree}
             </p>
           ) : null}
 
           {item.specialization ? (
-            <p className="mt-2 text-sm leading-6 text-slate-300">
+            <p className="mt-2 text-sm leading-6 text-neutral-300">
               Specialization:{" "}
               {item.specialization}
             </p>
@@ -776,15 +776,15 @@ function EducationCard({
 
           <div className="mt-5 space-y-2 border-y border-white/10 py-5">
             {item.school ? (
-              <div className="flex items-start gap-3 text-sm leading-6 text-slate-300">
-                <BuildingIcon className="mt-1 h-4 w-4 shrink-0 text-cyan-200/75" />
+              <div className="flex items-start gap-3 text-sm leading-6 text-neutral-300">
+                <BuildingIcon className="mt-1 h-4 w-4 shrink-0 text-white/75" />
 
                 <span>{item.school}</span>
               </div>
             ) : null}
 
             {item.year ? (
-              <div className="flex items-start gap-3 text-sm leading-6 text-slate-500">
+              <div className="flex items-start gap-3 text-sm leading-6 text-neutral-500">
                 <CalendarIcon className="mt-1 h-4 w-4 shrink-0" />
 
                 <span>{item.year}</span>
@@ -793,7 +793,7 @@ function EducationCard({
           </div>
 
           {item.description ? (
-            <p className="mt-5 text-sm leading-7 text-slate-400">
+            <p className="mt-5 text-sm leading-7 text-neutral-400">
               {item.description}
             </p>
           ) : null}
@@ -857,18 +857,18 @@ export default function ExperienceEducationSection() {
       <motion.div
         aria-hidden="true"
         style={primaryGlowStyle}
-        className="pointer-events-none absolute -left-40 top-[8%] -z-20 h-[34rem] w-[34rem] rounded-full bg-cyan-400/[0.07] blur-3xl will-change-transform"
+        className="pointer-events-none absolute -left-40 top-[8%] -z-20 h-[34rem] w-[34rem] rounded-full bg-neutral-300/[0.07] blur-3xl will-change-transform"
       />
 
       <motion.div
         aria-hidden="true"
         style={secondaryGlowStyle}
-        className="pointer-events-none absolute -right-44 bottom-[5%] -z-20 h-[34rem] w-[34rem] rounded-full bg-indigo-400/[0.075] blur-3xl will-change-transform"
+        className="pointer-events-none absolute -right-44 bottom-[5%] -z-20 h-[34rem] w-[34rem] rounded-full bg-neutral-500/[0.075] blur-3xl will-change-transform"
       />
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-30 opacity-[0.025] [background-image:linear-gradient(rgba(148,163,184,0.45)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.45)_1px,transparent_1px)] [background-size:72px_72px]"
+        className="pointer-events-none absolute inset-0 -z-30 opacity-[0.025] [background-image:linear-gradient(rgba(163,163,163,0.45)_1px,transparent_1px),linear-gradient(90deg,rgba(163,163,163,0.45)_1px,transparent_1px)] [background-size:72px_72px]"
       />
 
       {/* Experience */}
@@ -900,7 +900,7 @@ export default function ExperienceEducationSection() {
               <motion.div
                 aria-hidden="true"
                 style={timelineStyle}
-                className="absolute bottom-8 left-[1.85rem] top-8 w-px origin-top bg-gradient-to-b from-cyan-300 via-cyan-200/80 to-indigo-300 shadow-[0_0_16px_rgba(34,211,238,0.45)] lg:hidden"
+                className="absolute bottom-8 left-[1.85rem] top-8 w-px origin-top bg-gradient-to-b from-neutral-100 via-white/80 to-neutral-400 shadow-[0_0_16px_rgba(255,255,255,0.15)] lg:hidden"
               />
 
               {/* Desktop timeline base */}
@@ -912,7 +912,7 @@ export default function ExperienceEducationSection() {
               <motion.div
                 aria-hidden="true"
                 style={timelineStyle}
-                className="absolute bottom-8 left-1/2 top-8 hidden w-px origin-top -translate-x-1/2 bg-gradient-to-b from-cyan-300 via-cyan-200/80 to-indigo-300 shadow-[0_0_18px_rgba(34,211,238,0.5)] lg:block"
+                className="absolute bottom-8 left-1/2 top-8 hidden w-px origin-top -translate-x-1/2 bg-gradient-to-b from-neutral-100 via-white/80 to-neutral-400 shadow-[0_0_18px_rgba(255,255,255,0.16)] lg:block"
               />
 
               <ol className="relative grid gap-10 sm:gap-12 lg:gap-16">
@@ -948,7 +948,7 @@ export default function ExperienceEducationSection() {
               </ol>
             </div>
           ) : (
-            <div className="mt-12 rounded-3xl border border-white/10 bg-white/[0.025] p-6 text-sm leading-7 text-slate-400">
+            <div className="mt-12 rounded-3xl border border-white/10 bg-white/[0.025] p-6 text-sm leading-7 text-neutral-400">
               No featured experience entries are currently available.
             </div>
           )}
@@ -963,14 +963,14 @@ export default function ExperienceEducationSection() {
         aria-hidden="true"
         className="relative mx-auto h-20 w-full max-w-[90rem] px-4 sm:px-6 lg:h-28 lg:px-10"
       >
-        <div className="absolute left-1/2 top-0 h-12 w-px -translate-x-1/2 bg-gradient-to-b from-cyan-300/55 to-transparent lg:h-16" />
+        <div className="absolute left-1/2 top-0 h-12 w-px -translate-x-1/2 bg-gradient-to-b from-neutral-100/55 to-transparent lg:h-16" />
 
         <motion.div
           style={educationBridgeStyle}
-          className="absolute inset-x-4 top-12 h-px origin-center bg-gradient-to-r from-transparent via-indigo-200/60 to-transparent shadow-[0_0_20px_rgba(129,140,248,0.35)] sm:inset-x-6 lg:inset-x-10 lg:top-16"
+          className="absolute inset-x-4 top-12 h-px origin-center bg-gradient-to-r from-transparent via-neutral-300/60 to-transparent shadow-[0_0_20px_rgba(184,184,184,0.35)] sm:inset-x-6 lg:inset-x-10 lg:top-16"
         />
 
-        <div className="absolute left-1/2 top-[2.45rem] flex h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full border border-indigo-300/20 bg-slate-950 text-indigo-200 lg:top-[3.45rem]">
+        <div className="absolute left-1/2 top-[2.45rem] flex h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full border border-neutral-400/20 bg-neutral-950 text-neutral-300 lg:top-[3.45rem]">
           <BookIcon />
         </div>
       </div>
@@ -1047,7 +1047,7 @@ export default function ExperienceEducationSection() {
               )}
             </div>
           ) : (
-            <div className="mt-12 rounded-3xl border border-white/10 bg-white/[0.025] p-6 text-sm leading-7 text-slate-400">
+            <div className="mt-12 rounded-3xl border border-white/10 bg-white/[0.025] p-6 text-sm leading-7 text-neutral-400">
               No education entries are currently available.
             </div>
           )}

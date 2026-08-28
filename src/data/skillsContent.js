@@ -28,7 +28,7 @@ export const skillsContent = {
       title: "Frontend and Application Development",
       description:
         "Creating responsive interfaces and reusable application structures that turn operational requirements into clear user workflows.",
-      accent: "#22d3ee",
+      accent: "#f5f5f5",
       skills: [
         "React",
         "JavaScript",
@@ -48,7 +48,7 @@ export const skillsContent = {
       title: "Application Logic, Data, and Automation",
       description:
         "Connecting interfaces to authentication, databases, administrative processes, dashboards, and automated reporting workflows.",
-      accent: "#67e8f9",
+      accent: "#ffffff",
       skills: [
         "Firebase Authentication",
         "Cloud Firestore",
@@ -69,7 +69,7 @@ export const skillsContent = {
       title: "AI-Assisted Product Features",
       description:
         "Designing structured AI-supported experiences that assist users while keeping outputs understandable, reviewable, and connected to a real workflow.",
-      accent: "#a5b4fc",
+      accent: "#d4d4d4",
       skills: [
         "Prompt Design",
         "Structured AI Feedback",
@@ -87,7 +87,7 @@ export const skillsContent = {
       title: "IT Support and Infrastructure",
       description:
         "Diagnosing technical issues and supporting the hardware, network, and server environments required for reliable daily operations.",
-      accent: "#34d399",
+      accent: "#a3a3a3",
       skills: [
         "Windows Support",
         "Network Troubleshooting",
@@ -107,7 +107,7 @@ export const skillsContent = {
       title: "Development Workflow and Documentation",
       description:
         "Maintaining structured project workflows through version control, testing, deployment preparation, troubleshooting, and clear technical documentation.",
-      accent: "#fbbf24",
+      accent: "#8e8e8e",
       wide: true,
       skills: [
         "Git",

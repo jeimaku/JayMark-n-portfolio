@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 const EASE = [0.22, 1, 0.36, 1];
 
 function InfrastructureIcon({ type }) {
-  const iconClass = "h-7 w-7";
+  const iconClass = "h-6 w-6";
 
   if (type === "networking") {
     return (
@@ -90,92 +90,46 @@ function InfrastructureIcon({ type }) {
   );
 }
 
-function ConsoleModule({ capability, index, allowMotion }) {
-  const accent = capability.accent ?? "#67E8F9";
+function CapabilityBlock({ capability, index, allowMotion }) {
+  const accent = capability.accent ?? "#F5F5F5";
 
   return (
     <motion.article
-      initial={
-        allowMotion
-          ? { opacity: 0, y: 18, filter: "blur(4px)" }
-          : false
-      }
-      whileInView={
-        allowMotion
-          ? { opacity: 1, y: 0, filter: "blur(0px)" }
-          : undefined
-      }
-      whileHover={
-        allowMotion
-          ? { y: -4, transition: { duration: 0.24, ease: EASE } }
-          : undefined
-      }
+      initial={allowMotion ? { opacity: 0, y: 12 } : false}
+      whileInView={allowMotion ? { opacity: 1, y: 0 } : undefined}
       viewport={{ once: true, amount: 0.2 }}
       transition={{
-        delay: index * 0.08,
-        duration: 0.55,
+        delay: allowMotion ? index * 0.06 : 0,
+        duration: allowMotion ? 0.45 : 0,
         ease: EASE,
       }}
-      className="group relative min-w-0 overflow-hidden border border-white/[0.09] bg-slate-950/55 p-5 transition-colors duration-300 hover:border-white/[0.18] sm:p-6"
-      style={{ boxShadow: `inset 0 1px 0 ${accent}12` }}
+      className="min-w-0 px-1 py-8 sm:px-2 md:px-8"
     >
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-px"
-        style={{ backgroundColor: accent }}
-      />
+      <span
+        className="flex h-9 w-9 items-center justify-center"
+        style={{ color: accent }}
+      >
+        <InfrastructureIcon type={capability.icon} />
+      </span>
 
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100"
-        style={{ backgroundColor: `${accent}2B` }}
-      />
+      <h4 className="mt-5 text-xl font-semibold tracking-[-0.035em] text-white">
+        {capability.label}
+      </h4>
 
-      <div className="relative">
-        <div className="flex items-start justify-between gap-4">
-          <span
-            className="flex h-12 w-12 shrink-0 items-center justify-center border bg-slate-900/90"
-            style={{
-              borderColor: `${accent}55`,
-              color: accent,
-              boxShadow: `0 0 24px ${accent}14`,
-            }}
+      <ul className="mt-5 space-y-2.5">
+        {capability.skills.map((skill) => (
+          <li
+            key={skill}
+            className="flex items-start gap-3 text-sm leading-6 text-neutral-400"
           >
-            <InfrastructureIcon type={capability.icon} />
-          </span>
-
-          <span className="font-mono text-[0.62rem] font-semibold tracking-[0.2em] text-slate-600">
-            MODULE {String(index + 1).padStart(2, "0")}
-          </span>
-        </div>
-
-        <p
-          className="mt-6 text-[0.62rem] font-semibold uppercase tracking-[0.2em]"
-          style={{ color: accent }}
-        >
-          {capability.status}
-        </p>
-
-        <h4 className="mt-2 text-xl font-semibold tracking-[-0.035em] text-white sm:text-2xl">
-          {capability.label}
-        </h4>
-
-        <ul className="mt-5 space-y-3 border-t border-white/[0.08] pt-4">
-          {capability.skills.map((skill) => (
-            <li
-              key={skill}
-              className="flex items-start gap-3 text-sm leading-6 text-slate-400"
-            >
-              <span
-                aria-hidden="true"
-                className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
-                style={{ backgroundColor: accent }}
-              />
-              <span>{skill}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+            <span
+              aria-hidden="true"
+              className="mt-3 h-px w-3 shrink-0 bg-neutral-600"
+            />
+            <span>{skill}</span>
+          </li>
+        ))}
+      </ul>
     </motion.article>
   );
 }
@@ -185,72 +139,29 @@ export default function InfrastructurePanel({
   allowMotion = false,
 }) {
   return (
-    <section
-      aria-labelledby="skills-operations-title"
-      className="relative overflow-hidden rounded-[1.75rem] border border-cyan-300/[0.17] bg-slate-950/75 p-4 shadow-[0_26px_80px_rgba(0,0,0,0.27)] sm:p-6 lg:p-8"
-    >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.24] [background-image:linear-gradient(rgba(148,163,184,0.16)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.16)_1px,transparent_1px)] [background-size:28px_28px]"
-      />
+    <section aria-labelledby="skills-support-title">
+      <header className="max-w-2xl">
+        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-neutral-400">
+          Hands-on support
+        </p>
 
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -left-36 top-0 h-64 w-64 rounded-full bg-cyan-300/[0.08] blur-3xl"
-      />
+        <h3
+          id="skills-support-title"
+          className="mt-5 text-3xl font-semibold tracking-[-0.045em] text-white sm:text-4xl"
+        >
+          Hardware, networks, and systems.
+        </h3>
+      </header>
 
-      <div className="relative">
-        <header className="border-b border-white/[0.1] px-1 pb-6 sm:px-2">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="inline-flex items-center gap-2 text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-cyan-100">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300/50 motion-reduce:animate-none" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-300" />
-              </span>
-              Operations console
-            </p>
-
-            <span className="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-slate-500">
-              {String(capabilities.length).padStart(2, "0")} modules online
-            </span>
-          </div>
-
-          <div className="mt-5 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <h3
-                id="skills-operations-title"
-                className="text-2xl font-semibold tracking-[-0.045em] text-white sm:text-3xl"
-              >
-                IT OPERATIONS
-              </h3>
-
-              <p className="mt-2 text-sm font-medium tracking-[0.06em] text-cyan-100/85">
-                Hardware <span aria-hidden="true">•</span> Networking{" "}
-                <span aria-hidden="true">•</span> Infrastructure
-              </p>
-            </div>
-
-            <p className="max-w-md text-sm leading-6 text-slate-400">
-              Practical support experience behind dependable day-to-day systems.
-            </p>
-          </div>
-        </header>
-
-        <div className="grid border-l border-t border-white/[0.09] sm:grid-cols-3">
-          {capabilities.map((capability, index) => (
-            <ConsoleModule
-              key={capability.id ?? capability.label}
-              capability={capability}
-              index={index}
-              allowMotion={allowMotion}
-            />
-          ))}
-        </div>
-
-        <footer className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.1] px-1 pt-5 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-slate-600 sm:px-2">
-          <span>Console status: ready</span>
-          <span>Support layer / hands-on</span>
-        </footer>
+      <div className="mt-9 grid divide-y divide-white/[0.1] border-y border-white/[0.1] md:grid-cols-3 md:divide-x md:divide-y-0">
+        {capabilities.map((capability, index) => (
+          <CapabilityBlock
+            key={capability.id ?? capability.label}
+            capability={capability}
+            index={index}
+            allowMotion={allowMotion}
+          />
+        ))}
       </div>
     </section>
   );

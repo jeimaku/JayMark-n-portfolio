@@ -8,25 +8,25 @@ export default function MediaLightbox({ media, onClose }) {
   return (
     <div
       data-lenis-prevent=""
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/90 p-4 backdrop-blur-xl"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-neutral-950/90 p-4 backdrop-blur-xl"
       role="dialog"
       aria-modal="true"
     >
       <button
         type="button"
         onClick={onClose}
-        className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white transition hover:border-cyan-300/40 hover:bg-white/[0.1]"
+        className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/[0.06] text-white transition hover:border-neutral-100/40 hover:bg-white/[0.1]"
         aria-label="Close media preview"
       >
         <X size={20} />
       </button>
 
-      <div className="w-full max-w-6xl overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-950 shadow-2xl shadow-black/50">
+      <div className="w-full max-w-6xl overflow-hidden rounded-[1.75rem] border border-white/10 bg-neutral-950 shadow-2xl shadow-black/50">
         <div className="border-b border-white/10 p-5">
           <p className="text-lg font-semibold text-white">{media.title}</p>
 
           {media.description && (
-            <p className="mt-1 text-sm leading-6 text-slate-400">
+            <p className="mt-1 text-sm leading-6 text-neutral-400">
               {media.description}
             </p>
           )}

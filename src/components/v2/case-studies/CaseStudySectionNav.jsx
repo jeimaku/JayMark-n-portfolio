@@ -81,7 +81,7 @@ export default function CaseStudySectionNav({
   return (
     <nav
       aria-label="Case study sections"
-      className="sticky top-16 z-40 border-y border-white/10 bg-slate-950/90 backdrop-blur-xl"
+      className="sticky top-16 z-40 border-y border-white/10 bg-neutral-950/90 backdrop-blur-xl"
     >
       <div className="mx-auto w-full max-w-[90rem] overflow-x-auto px-4 sm:px-6 lg:px-10">
         <ul className="flex min-w-max items-center gap-1 py-2">
@@ -105,10 +105,10 @@ export default function CaseStudySectionNav({
                     "text-xs font-semibold transition",
                     "focus-visible:outline-none",
                     "focus-visible:ring-2",
-                    "focus-visible:ring-cyan-200",
+                    "focus-visible:ring-white",
                     active
-                      ? "bg-cyan-300/[0.1] text-cyan-100"
-                      : "text-slate-500 hover:bg-white/[0.035] hover:text-slate-200",
+                      ? "bg-neutral-100/[0.1] text-neutral-100"
+                      : "text-neutral-500 hover:bg-white/[0.035] hover:text-neutral-200",
                   ].join(" ")}
                 >
                   <span
@@ -116,8 +116,8 @@ export default function CaseStudySectionNav({
                     className={[
                       "font-mono text-[0.6rem]",
                       active
-                        ? "text-cyan-300"
-                        : "text-slate-700",
+                        ? "text-neutral-100"
+                        : "text-neutral-700",
                     ].join(" ")}
                   >
                     {String(index + 1).padStart(

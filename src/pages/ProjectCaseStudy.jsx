@@ -66,12 +66,12 @@ export default function ProjectCaseStudy() {
         key={project.id}
         id="main-content"
         tabIndex={-1}
-        className="min-h-screen bg-transparent text-slate-50 focus:outline-none"
+        className="min-h-screen bg-transparent text-neutral-50 focus:outline-none"
       >
         <Section spacing="hero">
           <Container>
             <Card>
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-white">
                 Case Study Not Found
               </p>
 
@@ -79,7 +79,7 @@ export default function ProjectCaseStudy() {
                 This project page does not exist.
               </h1>
 
-              <p className="mt-4 text-slate-400">
+              <p className="mt-4 text-neutral-400">
                 The project may have been moved, renamed, or not added yet.
               </p>
 
@@ -147,7 +147,7 @@ export default function ProjectCaseStudy() {
       <main
         id="main-content"
         tabIndex={-1}
-        className="min-h-screen bg-transparent text-slate-50 focus:outline-none"
+        className="min-h-screen bg-transparent text-neutral-50 focus:outline-none"
       >
       
       <Seo
@@ -164,7 +164,7 @@ export default function ProjectCaseStudy() {
             <Reveal>
               <Link
                 to="/"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-slate-400 transition hover:text-cyan-200"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-neutral-400 transition hover:text-white"
               >
                 <ArrowLeft size={16} />
                 Back to Portfolio
@@ -176,7 +176,7 @@ export default function ProjectCaseStudy() {
                 <div>
                   <div className="flex flex-wrap gap-2">
                     <Badge>{project.eyebrow}</Badge>
-                    <Badge className="border-white/10 bg-white/[0.03] text-slate-200">
+                    <Badge className="border-white/10 bg-white/[0.03] text-neutral-200">
                       {project.category}
                     </Badge>
                   </div>
@@ -185,25 +185,25 @@ export default function ProjectCaseStudy() {
                     {project.title}
                   </h1>
 
-                  <p className="mt-6 text-base leading-8 text-slate-400 sm:text-lg">
+                  <p className="mt-6 text-base leading-8 text-neutral-400 sm:text-lg">
                     {project.summary}
                   </p>
 
                   <div className="mt-8 grid gap-3 sm:grid-cols-2">
                     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                      <div className="flex items-center gap-2 text-cyan-200">
+                      <div className="flex items-center gap-2 text-white">
                         <Calendar size={16} />
                         <p className="text-sm font-semibold">Year</p>
                       </div>
-                      <p className="mt-2 text-slate-300">{project.year}</p>
+                      <p className="mt-2 text-neutral-300">{project.year}</p>
                     </div>
 
                     <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-                      <div className="flex items-center gap-2 text-cyan-200">
+                      <div className="flex items-center gap-2 text-white">
                         <CheckCircle2 size={16} />
                         <p className="text-sm font-semibold">Status</p>
                       </div>
-                      <p className="mt-2 text-slate-300">{project.status}</p>
+                      <p className="mt-2 text-neutral-300">{project.status}</p>
                     </div>
                   </div>
                 </div>
@@ -212,7 +212,7 @@ export default function ProjectCaseStudy() {
               <Reveal direction="left">
                 <Card className="p-0">
                   <div className="relative overflow-hidden rounded-[1.75rem] p-4">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.18),transparent_26rem)]" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.18),transparent_26rem)]" />
 
                     <div className="relative z-10 flex justify-center">
                       {isMobileCaseStudy ? (
@@ -263,7 +263,7 @@ export default function ProjectCaseStudy() {
             <Reveal>
               <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-white">
                     Recruiter Snapshot
                   </p>
 
@@ -272,7 +272,7 @@ export default function ProjectCaseStudy() {
                   </h2>
                 </div>
 
-                <p className="max-w-xl text-sm leading-7 text-slate-400">
+                <p className="max-w-xl text-sm leading-7 text-neutral-400">
                   A quick overview of the project’s problem, my contribution,
                   solution, and value before going into the detailed previews.
                 </p>
@@ -286,15 +286,15 @@ export default function ProjectCaseStudy() {
                 return (
                   <StaggerItem key={item.label}>
                     <Card className="h-full">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-neutral-100/20 bg-neutral-100/10 text-white">
                         <Icon size={20} />
                       </div>
 
-                      <p className="mt-5 text-xs font-semibold uppercase tracking-[0.25em] text-cyan-200">
+                      <p className="mt-5 text-xs font-semibold uppercase tracking-[0.25em] text-white">
                         {item.label}
                       </p>
 
-                      <p className="mt-4 line-clamp-5 text-sm leading-7 text-slate-400">
+                      <p className="mt-4 line-clamp-5 text-sm leading-7 text-neutral-400">
                         {item.body}
                       </p>
                     </Card>
@@ -311,7 +311,7 @@ export default function ProjectCaseStudy() {
             <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
               <Reveal>
                 <Card className="h-full">
-                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-white">
                     Project Context
                   </p>
 
@@ -319,7 +319,7 @@ export default function ProjectCaseStudy() {
                     Why this project was built
                   </h2>
 
-                  <p className="mt-5 text-sm leading-7 text-slate-400">
+                  <p className="mt-5 text-sm leading-7 text-neutral-400">
                     {project.overview}
                   </p>
                 </Card>
@@ -327,7 +327,7 @@ export default function ProjectCaseStudy() {
 
               <Reveal delay={0.08}>
                 <Card className="h-full">
-                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-white">
                     Technologies Used
                   </p>
 
@@ -335,7 +335,7 @@ export default function ProjectCaseStudy() {
                     {project.techStack.map((tech) => (
                       <Badge
                         key={tech}
-                        className="border-white/10 bg-white/[0.03] text-slate-200"
+                        className="border-white/10 bg-white/[0.03] text-neutral-200"
                       >
                         {tech}
                       </Badge>
@@ -353,7 +353,7 @@ export default function ProjectCaseStudy() {
             <div className="grid gap-6 lg:grid-cols-2">
               <Reveal>
                 <Card className="h-full">
-                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-white">
                     Problem
                   </p>
 
@@ -361,7 +361,7 @@ export default function ProjectCaseStudy() {
                     What needed to be solved
                   </h2>
 
-                  <p className="mt-5 text-sm leading-7 text-slate-400">
+                  <p className="mt-5 text-sm leading-7 text-neutral-400">
                     {project.problem}
                   </p>
                 </Card>
@@ -369,7 +369,7 @@ export default function ProjectCaseStudy() {
 
               <Reveal delay={0.08}>
                 <Card className="h-full">
-                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-white">
                     Solution
                   </p>
 
@@ -377,7 +377,7 @@ export default function ProjectCaseStudy() {
                     How the project approached it
                   </h2>
 
-                  <p className="mt-5 text-sm leading-7 text-slate-400">
+                  <p className="mt-5 text-sm leading-7 text-neutral-400">
                     {project.solution}
                   </p>
                 </Card>
@@ -392,7 +392,7 @@ export default function ProjectCaseStudy() {
             <Reveal>
               <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-white">
                     {isDesignCaseStudy ? "Design Gallery" : "Key Screens"}
                   </p>
 
@@ -409,7 +409,7 @@ export default function ProjectCaseStudy() {
                   <p className="text-2xl font-semibold text-white">
                     {project.systems.length}
                   </p>
-                  <p className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-500">
+                  <p className="mt-1 text-xs uppercase tracking-[0.2em] text-neutral-500">
                     {isDesignCaseStudy ? "Works" : "Previews"}
                   </p>
                 </div>
@@ -441,11 +441,11 @@ export default function ProjectCaseStudy() {
             <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
               <Reveal>
                 <Card className="h-full">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-100/20 bg-neutral-100/10 text-white">
                     <Layers size={22} />
                   </div>
 
-                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+                  <p className="mt-6 text-sm font-semibold uppercase tracking-[0.25em] text-white">
                     Impact
                   </p>
 
@@ -453,7 +453,7 @@ export default function ProjectCaseStudy() {
                     What this project demonstrates.
                   </h2>
 
-                  <p className="mt-5 text-sm leading-7 text-slate-400">
+                  <p className="mt-5 text-sm leading-7 text-neutral-400">
                     A quick summary of the project’s value, what it proves, and why it
                     matters in my portfolio.
                   </p>
@@ -464,10 +464,10 @@ export default function ProjectCaseStudy() {
                 <StaggerContainer className="grid gap-3">
                   {project.impact.map((item) => (
                     <StaggerItem key={item}>
-                      <div className="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-7 text-slate-300">
+                      <div className="flex gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm leading-7 text-neutral-300">
                         <CheckCircle2
                           size={18}
-                          className="mt-1 shrink-0 text-cyan-200"
+                          className="mt-1 shrink-0 text-white"
                         />
                         <span>{item}</span>
                       </div>
@@ -480,11 +480,11 @@ export default function ProjectCaseStudy() {
                     {project.sections.map((section) => (
                       <StaggerItem key={section.title}>
                         <Card className="h-full">
-                          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+                          <p className="text-sm font-semibold uppercase tracking-[0.25em] text-white">
                             {section.title}
                           </p>
 
-                          <p className="mt-5 text-sm leading-7 text-slate-400">
+                          <p className="mt-5 text-sm leading-7 text-neutral-400">
                             {section.body}
                           </p>
                         </Card>
@@ -496,9 +496,9 @@ export default function ProjectCaseStudy() {
             </div>
 
             <Reveal>
-              <div className="mt-10 rounded-[2rem] border border-cyan-300/20 bg-cyan-300/[0.06] p-6 sm:p-8">
+              <div className="mt-10 rounded-[2rem] border border-neutral-100/20 bg-neutral-100/[0.06] p-6 sm:p-8">
                 <div className="text-center">
-                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+                  <p className="text-sm font-semibold uppercase tracking-[0.25em] text-white">
                     Continue Exploring
                   </p>
 
@@ -506,7 +506,7 @@ export default function ProjectCaseStudy() {
                     Explore more project case studies.
                   </h2>
 
-                  <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-400">
+                  <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-neutral-400">
                     Browse another project or return to the main portfolio to continue
                     exploring my work, experience, certifications, and activities.
                   </p>
@@ -527,7 +527,7 @@ export default function ProjectCaseStudy() {
                 </div>
 
                 <div className="mt-8 border-t border-white/10 pt-8">
-                  <p className="text-center text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">
+                  <p className="text-center text-xs font-semibold uppercase tracking-[0.25em] text-neutral-500">
                     More Case Studies
                   </p>
 
@@ -536,9 +536,9 @@ export default function ProjectCaseStudy() {
                       <Link
                         key={item.id}
                         to={`/projects/${item.id}`}
-                        className="group rounded-2xl border border-white/10 bg-slate-950/40 p-4 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/35 hover:bg-white/[0.05]"
+                        className="group rounded-2xl border border-white/10 bg-neutral-950/40 p-4 transition duration-300 hover:-translate-y-1 hover:border-neutral-100/35 hover:bg-white/[0.05]"
                       >
-                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200">
+                        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white">
                           {item.eyebrow}
                         </p>
 
@@ -546,7 +546,7 @@ export default function ProjectCaseStudy() {
                           {item.title}
                         </h3>
 
-                        <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-400">
+                        <p className="mt-2 line-clamp-2 text-sm leading-6 text-neutral-400">
                           {item.summary}
                         </p>
                       </Link>
@@ -596,11 +596,11 @@ function MobileCaseStudyShowcase({ systems, openMedia }) {
                   {system.name}
                 </h3>
 
-                <p className="mt-4 text-sm leading-7 text-slate-400">
+                <p className="mt-4 text-sm leading-7 text-neutral-400">
                   {system.description}
                 </p>
 
-                <p className="mt-5 rounded-2xl border border-white/10 bg-white/[0.025] p-4 text-sm leading-6 text-slate-300">
+                <p className="mt-5 rounded-2xl border border-white/10 bg-white/[0.025] p-4 text-sm leading-6 text-neutral-300">
                   Presented inside a phone mockup to better reflect the actual
                   mobile app experience.
                 </p>
@@ -636,7 +636,7 @@ function DesignCaseStudyShowcase({ systems, openMedia }) {
 
   return (
     <div className="mt-8">
-      <div className="rounded-[2rem] border border-cyan-300/20 bg-cyan-300/[0.06] p-5 sm:p-6 lg:p-8">
+      <div className="rounded-[2rem] border border-neutral-100/20 bg-neutral-100/[0.06] p-5 sm:p-6 lg:p-8">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <Badge>
@@ -648,13 +648,13 @@ function DesignCaseStudyShowcase({ systems, openMedia }) {
               Interface design studies.
             </h3>
 
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-400">
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-neutral-400">
               These works highlight interface layout, user flow, visual
               hierarchy, and product presentation.
             </p>
           </div>
 
-          <p className="text-sm text-slate-500">{figmaWorks.length} screens</p>
+          <p className="text-sm text-neutral-500">{figmaWorks.length} screens</p>
         </div>
 
         <StaggerContainer className="mt-8 grid gap-5 lg:grid-cols-2">
@@ -667,7 +667,7 @@ function DesignCaseStudyShowcase({ systems, openMedia }) {
                 }
                 className="group block w-full text-left"
               >
-                <div className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-950/50 p-4 transition duration-300 group-hover:-translate-y-1 group-hover:border-cyan-300/35">
+                <div className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-neutral-950/50 p-4 transition duration-300 group-hover:-translate-y-1 group-hover:border-neutral-100/35">
                   <MediaFrame
                     src={work.media.src}
                     type={work.media.type}
@@ -681,7 +681,7 @@ function DesignCaseStudyShowcase({ systems, openMedia }) {
 
                   <div className="mt-5 flex flex-wrap gap-2">
                     <Badge>{work.category}</Badge>
-                    <Badge className="border-white/10 bg-white/[0.03] text-slate-200">
+                    <Badge className="border-white/10 bg-white/[0.03] text-neutral-200">
                       0{index + 1}
                     </Badge>
                   </div>
@@ -690,7 +690,7 @@ function DesignCaseStudyShowcase({ systems, openMedia }) {
                     {work.name}
                   </h4>
 
-                  <p className="mt-3 text-sm leading-7 text-slate-400">
+                  <p className="mt-3 text-sm leading-7 text-neutral-400">
                     {work.description}
                   </p>
                 </div>
@@ -712,13 +712,13 @@ function DesignCaseStudyShowcase({ systems, openMedia }) {
               Creative editing and visual outputs.
             </h3>
 
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-400">
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-neutral-400">
               A complete artwork wall showing Photoshop outputs, creative
               editing, image treatment, and visual communication.
             </p>
           </div>
 
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-neutral-500">
             {photoshopWorks.length} artworks
           </p>
         </div>
@@ -733,7 +733,7 @@ function DesignCaseStudyShowcase({ systems, openMedia }) {
                 }
                 className="group block w-full text-left"
               >
-                <div className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-950/50 p-4 transition duration-300 group-hover:-translate-y-1 group-hover:border-cyan-300/35">
+                <div className="overflow-hidden rounded-[1.75rem] border border-white/10 bg-neutral-950/50 p-4 transition duration-300 group-hover:-translate-y-1 group-hover:border-neutral-100/35">
                   <MediaFrame
                     src={work.media.src}
                     type={work.media.type}
@@ -753,7 +753,7 @@ function DesignCaseStudyShowcase({ systems, openMedia }) {
                     {work.name}
                   </h4>
 
-                  <p className="mt-3 text-sm leading-7 text-slate-400">
+                  <p className="mt-3 text-sm leading-7 text-neutral-400">
                     {work.description}
                   </p>
                 </div>
@@ -789,7 +789,7 @@ function DefaultCaseStudyShowcase({ systems, openMedia }) {
               </button>
 
               <div className="mt-6 flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-neutral-100/20 bg-neutral-100/10 text-white">
                   <MonitorPlay size={22} />
                 </div>
 
@@ -798,7 +798,7 @@ function DefaultCaseStudyShowcase({ systems, openMedia }) {
                     {system.name}
                   </h3>
 
-                  <p className="mt-3 text-sm leading-7 text-slate-400">
+                  <p className="mt-3 text-sm leading-7 text-neutral-400">
                     {system.description}
                   </p>
                 </div>
@@ -815,10 +815,10 @@ function CaseStudyNavCard({ label, project, direction }) {
   return (
     <Link
       to={`/projects/${project.id}`}
-      className="group flex h-full flex-col justify-between rounded-[1.5rem] border border-white/10 bg-slate-950/50 p-5 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/35 hover:bg-white/[0.05]"
+      className="group flex h-full flex-col justify-between rounded-[1.5rem] border border-white/10 bg-neutral-950/50 p-5 transition duration-300 hover:-translate-y-1 hover:border-neutral-100/35 hover:bg-white/[0.05]"
     >
       <div>
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-200">
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white">
           {label}
         </p>
 
@@ -826,12 +826,12 @@ function CaseStudyNavCard({ label, project, direction }) {
           {project.title}
         </h3>
 
-        <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-400">
+        <p className="mt-3 line-clamp-2 text-sm leading-6 text-neutral-400">
           {project.summary}
         </p>
       </div>
 
-      <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-white transition group-hover:text-cyan-200">
+      <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-white transition group-hover:text-white">
         {direction === "previous" ? (
           <>
             <ArrowLeft size={16} />
@@ -853,16 +853,16 @@ function CaseStudyLoading({ title }) {
     <main
       id="main-content"
       tabIndex={-1}
-      className="min-h-screen bg-transparent text-slate-50 focus:outline-none"
+      className="min-h-screen bg-transparent text-neutral-50 focus:outline-none"
     >
       <Section spacing="hero">
         <Container>
           <div className="mx-auto max-w-2xl rounded-[2rem] border border-white/10 bg-white/[0.03] p-8 text-center">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10">
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-cyan-200 border-t-transparent" />
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-neutral-100/20 bg-neutral-100/10">
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
             </div>
 
-            <p className="mt-6 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-200">
+            <p className="mt-6 text-sm font-semibold uppercase tracking-[0.25em] text-white">
               Loading Case Study
             </p>
 
@@ -870,7 +870,7 @@ function CaseStudyLoading({ title }) {
               {title}
             </h1>
 
-            <p className="mt-4 text-sm leading-7 text-slate-400">
+            <p className="mt-4 text-sm leading-7 text-neutral-400">
               Preparing the project layout and media previews.
             </p>
           </div>

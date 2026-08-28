@@ -52,7 +52,7 @@ function StoryNumber({ number }) {
         font-mono
         text-[0.65rem]
         tracking-[0.22em]
-        text-cyan-200
+        text-white
       "
     >
       {number}
@@ -118,14 +118,14 @@ function DesktopPhotoStack({ onSelect, reduceMotion }) {
               rounded-[1.4rem]
               border
               border-white/10
-              bg-slate-950/78
+              bg-neutral-950/78
               text-left
               shadow-[0_26px_90px_rgba(0,0,0,0.45)]
               outline-none
               transition-colors
-              hover:border-cyan-300/35
+              hover:border-neutral-100/35
               focus-visible:ring-2
-              focus-visible:ring-cyan-300/50
+              focus-visible:ring-neutral-100/50
             "
             aria-label={`Open ${item.title}`}
           >
@@ -150,8 +150,8 @@ function DesktopPhotoStack({ onSelect, reduceMotion }) {
                   absolute
                   inset-0
                   bg-gradient-to-t
-                  from-slate-950/90
-                  via-slate-950/5
+                  from-neutral-950/90
+                  via-neutral-950/5
                   to-transparent
                 "
               />
@@ -194,13 +194,13 @@ function DesktopPhotoStack({ onSelect, reduceMotion }) {
                     rounded-full
                     border
                     border-white/15
-                    bg-slate-950/60
+                    bg-neutral-950/60
                     text-lg
-                    text-cyan-100
+                    text-neutral-100
                     backdrop-blur
                     transition
-                    group-hover:border-cyan-300/40
-                    group-hover:bg-cyan-300/10
+                    group-hover:border-neutral-100/40
+                    group-hover:bg-neutral-100/10
                   "
                   aria-hidden="true"
                 >
@@ -223,7 +223,7 @@ function DesktopPhotoStack({ onSelect, reduceMotion }) {
           text-[0.6rem]
           uppercase
           tracking-[0.28em]
-          text-slate-600
+          text-neutral-600
         "
       >
         Select a moment
@@ -334,8 +334,8 @@ function ImageSwitcher({
 
               ${
                 active
-                  ? "border-cyan-300/45 bg-cyan-300/10 text-cyan-100"
-                  : "border-white/10 bg-white/[0.02] text-slate-400 hover:border-white/20 hover:text-white"
+                  ? "border-neutral-100/45 bg-neutral-100/10 text-neutral-100"
+                  : "border-white/10 bg-white/[0.02] text-neutral-400 hover:border-white/20 hover:text-white"
               }
             `}
           >
@@ -347,8 +347,8 @@ function ImageSwitcher({
 
                 ${
                   active
-                    ? "bg-cyan-300"
-                    : "bg-slate-600"
+                    ? "bg-neutral-100"
+                    : "bg-neutral-600"
                 }
               `}
             />
@@ -422,7 +422,7 @@ function ActiveStory({
             relative
             min-h-[320px]
             overflow-hidden
-            bg-slate-950
+            bg-neutral-950
             sm:min-h-[430px]
             lg:min-h-[560px]
           "
@@ -472,9 +472,9 @@ function ActiveStory({
               absolute
               inset-0
               bg-gradient-to-t
-              from-slate-950/50
+              from-neutral-950/50
               via-transparent
-              to-slate-950/10
+              to-neutral-950/10
             "
           />
 
@@ -489,14 +489,14 @@ function ActiveStory({
               rounded-full
               border
               border-white/10
-              bg-slate-950/65
+              bg-neutral-950/65
               px-3
               py-2
               font-mono
               text-[0.6rem]
               uppercase
               tracking-[0.2em]
-              text-slate-300
+              text-neutral-300
               backdrop-blur-md
             "
           >
@@ -529,9 +529,9 @@ function ActiveStory({
                 text-[0.65rem]
                 uppercase
                 tracking-[0.18em]
-                text-slate-500
+                text-neutral-500
                 transition
-                hover:text-cyan-200
+                hover:text-white
               "
             >
               <span
@@ -553,7 +553,7 @@ function ActiveStory({
                 text-[0.65rem]
                 uppercase
                 tracking-[0.24em]
-                text-cyan-200
+                text-white
               "
             >
               {item.eyebrow}
@@ -578,7 +578,7 @@ function ActiveStory({
                 max-w-md
                 text-sm
                 leading-7
-                text-slate-400
+                text-neutral-400
                 sm:text-base
                 sm:leading-8
               "
@@ -608,7 +608,7 @@ function ActiveStory({
                     text-[0.6rem]
                     uppercase
                     tracking-[0.12em]
-                    text-slate-400
+                    text-neutral-400
                   "
                 >
                   {tag}
@@ -639,7 +639,7 @@ function ActiveStory({
                 text-[0.55rem]
                 uppercase
                 tracking-[0.2em]
-                text-slate-600
+                text-neutral-600
               "
             >
               Explore
@@ -672,8 +672,8 @@ function ActiveStory({
 
                       ${
                         active
-                          ? "border-cyan-300/40 bg-cyan-300/10 text-cyan-100"
-                          : "border-white/10 text-slate-600 hover:border-white/20 hover:text-slate-300"
+                          ? "border-neutral-100/40 bg-neutral-100/10 text-neutral-100"
+                          : "border-white/10 text-neutral-600 hover:border-white/20 hover:text-neutral-300"
                       }
                     `}
                   >
@@ -715,7 +715,7 @@ export default function ExperienceGallery() {
             text-[0.65rem]
             uppercase
             tracking-[0.28em]
-            text-cyan-200
+            text-white
           "
         >
           Experience / Field Notes
@@ -743,7 +743,7 @@ export default function ExperienceGallery() {
             max-w-2xl
             text-sm
             leading-7
-            text-slate-400
+            text-neutral-400
             sm:text-base
           "
         >
