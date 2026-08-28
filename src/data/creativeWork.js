@@ -169,33 +169,96 @@ export const creativeWorkArtworks = creativeWork.flatMap((work) =>
   }))
 );
 
-export const creativeWorkMarqueeLanes = [
-  {
-    id: "creative-lane-left",
-    label: "Selected visual work moving left",
-    direction: "left",
-    duration: 64,
-    imageIds: [
-      "bulldog-pay-overview",
-      "act-2",
-      "yt-music-high",
-      "bulldog-pay-home",
-      "act-3",
-      "yt-music-presentation",
-    ],
-  },
-  {
-    id: "creative-lane-right",
-    label: "Selected visual work moving right",
-    direction: "right",
-    duration: 72,
-    imageIds: [
-      "act-1-alt",
-      "bulldog-pay-transactions",
-      "yt-music-low",
-      "act-4",
-      "bulldog-pay-qr",
-      "act-1",
-    ],
-  },
-];
+export const creativeWorkMarqueeLayouts = {
+  desktop: [
+    {
+      id: "creative-column-one",
+      label: "Interface and visual artwork column one",
+      direction: "up",
+      duration: 42,
+      width: 304,
+      imageIds: [
+        "yt-music-high",
+        "act-2",
+        "bulldog-pay-home",
+      ],
+    },
+    {
+      id: "creative-column-two",
+      label: "Interface and visual artwork column two",
+      direction: "down",
+      duration: 48,
+      width: 272,
+      imageIds: [
+        "act-1-alt",
+        "bulldog-pay-qr",
+        "yt-music-presentation",
+      ],
+    },
+    {
+      id: "creative-column-three",
+      label: "Interface and visual artwork column three",
+      direction: "up",
+      duration: 45,
+      width: 320,
+      imageIds: [
+        "bulldog-pay-overview",
+        "act-4",
+        "yt-music-low",
+      ],
+    },
+    {
+      id: "creative-column-four",
+      label: "Interface and visual artwork column four",
+      direction: "down",
+      duration: 51,
+      width: 276,
+      imageIds: [
+        "bulldog-pay-transactions",
+        "act-1",
+        "act-3",
+      ],
+    },
+  ],
+  tablet: [
+    {
+      id: "creative-tablet-column-one",
+      label: "Interface and visual artwork column one",
+      direction: "up",
+      duration: 46,
+      width: 278,
+      imageIds: [
+        "yt-music-high",
+        "act-2",
+        "bulldog-pay-home",
+        "act-3",
+      ],
+    },
+    {
+      id: "creative-tablet-column-two",
+      label: "Interface and visual artwork column two",
+      direction: "down",
+      duration: 52,
+      width: 264,
+      imageIds: [
+        "act-1-alt",
+        "bulldog-pay-qr",
+        "yt-music-presentation",
+        "bulldog-pay-transactions",
+      ],
+    },
+    {
+      id: "creative-tablet-column-three",
+      label: "Interface and visual artwork column three",
+      direction: "up",
+      duration: 49,
+      width: 286,
+      imageIds: [
+        "bulldog-pay-overview",
+        "act-4",
+        "yt-music-low",
+        "act-1",
+      ],
+    },
+  ],
+};

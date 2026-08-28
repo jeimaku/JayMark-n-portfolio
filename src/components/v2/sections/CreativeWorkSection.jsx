@@ -6,7 +6,7 @@ import Section from "../../layout/Section";
 
 import {
   creativeWorkArtworks,
-  creativeWorkMarqueeLanes,
+  creativeWorkMarqueeLayouts,
 } from "../../../data";
 import useMotionRuntime from "../../../hooks/useMotionRuntime";
 
@@ -40,7 +40,11 @@ export default function CreativeWorkSection() {
     useState(null);
   const {
     allowEntranceMotion,
+    allowComplexMotion,
+    allowScrollLinkedMotion,
     isMobile,
+    isPageVisible,
+    isTablet,
     prefersReducedMotion,
   } = useMotionRuntime();
 
@@ -59,19 +63,14 @@ export default function CreativeWorkSection() {
       id="creative-work"
       spacing="compact"
       optimize={false}
-      className="isolate bg-slate-950/[0.46]"
+      className="isolate bg-transparent"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-200/30 to-transparent"
-      />
-
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[28rem] w-[min(72rem,96vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-300/[0.045] blur-3xl"
       />
 
-      <Container>
+      <Container className="max-w-[90rem]">
         <motion.div {...headingRevealProps(allowEntranceMotion)}>
           <SectionHeading
             eyebrow="Selected Visual Work"
@@ -80,21 +79,18 @@ export default function CreativeWorkSection() {
           />
         </motion.div>
 
-        <div className="relative mt-10 overflow-hidden rounded-[1.75rem] border border-white/[0.11] bg-slate-950/[0.34] py-4 shadow-[0_28px_88px_rgba(0,0,0,0.26)] sm:mt-12 sm:py-6">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(115deg,rgba(34,211,238,0.04),transparent_30%,rgba(99,102,241,0.035))]"
-          />
-
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-100/35 to-transparent"
-          />
-
+        <div className="relative mt-10 sm:mt-12">
           <CreativeMarquee
             allowEntranceMotion={allowEntranceMotion}
+            allowDepthMotion={allowScrollLinkedMotion}
+            allowPointerMotion={allowComplexMotion}
             artworks={creativeWorkArtworks}
-            lanes={creativeWorkMarqueeLanes}
+            isPageVisible={isPageVisible}
+            layout={
+              isTablet
+                ? creativeWorkMarqueeLayouts.tablet
+                : creativeWorkMarqueeLayouts.desktop
+            }
             onOpen={openArtwork}
             paused={activeArtworkIndex !== null}
             staticLayout={isMobile || prefersReducedMotion}

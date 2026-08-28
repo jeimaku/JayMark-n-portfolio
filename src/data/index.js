@@ -33,5 +33,5 @@ export { experienceGallery } from "./experienceGallery";
 export {
   creativeWork,
   creativeWorkArtworks,
-  creativeWorkMarqueeLanes,
+  creativeWorkMarqueeLayouts,
 } from "./creativeWork";
